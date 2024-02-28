@@ -16,9 +16,9 @@ public class MainQuanLyGUI extends JFrame {
 
     ArrayList<JLabel> listMenuLeft;
 
-    final Color Main = new Color(0, 160, 80);
-    final Color Hover = new Color(0, 192, 96);
-    final Color Select = new Color(76, 204, 76);
+    final Color ClMain = new Color(0, 160, 80);
+    final Color ClHover = new Color(0, 192, 96);
+    final Color ClSelect = new Color(76, 204, 76);
 
     int xMouse = 0;
     int yMouse = 0;
@@ -50,7 +50,7 @@ public class MainQuanLyGUI extends JFrame {
          */
         pnTitle = new JPanel(null);
         pnTitle.setPreferredSize(new Dimension(width, 46));
-        pnTitle.setBackground(Main);
+        pnTitle.setBackground(ClMain);
 
         btnDoiMatKhau = new JLabel(new ImageIcon("image/btn/gear.png"));
         btnDoiMatKhau.setToolTipText("Đổi mật khẩu");
@@ -83,7 +83,7 @@ public class MainQuanLyGUI extends JFrame {
          */
         JPanel pnMenuLeft = new JPanel();
         pnMenuLeft.setPreferredSize(new Dimension(250, height - pnTitle.getHeight()));
-        pnMenuLeft.setBackground(Main);
+        pnMenuLeft.setBackground(ClMain);
         pnMenuLeft.setLayout(new BoxLayout(pnMenuLeft, BoxLayout.Y_AXIS));
 
         JLabel iconApp = new JLabel(new ImageIcon("image/logo/logo.png"));
@@ -194,7 +194,7 @@ public class MainQuanLyGUI extends JFrame {
                         lb.setOpaque(false);
                         lb.setBackground(null);
                     }
-                    opt.setBackground(Select);
+                    opt.setBackground(ClSelect);
                     opt.setOpaque(true);
                 }
 
@@ -208,15 +208,15 @@ public class MainQuanLyGUI extends JFrame {
 
                 @Override
                 public void mouseEntered(MouseEvent e) {
-                    if (!opt.getBackground().equals(Select)) {
+                    if (!opt.getBackground().equals(ClSelect)) {
                         opt.setOpaque(true);
-                        opt.setBackground(Hover);
+                        opt.setBackground(ClHover);
                     }
                 }
 
                 @Override
                 public void mouseExited(MouseEvent e) {
-                    if (opt.getBackground().equals(Hover)) {
+                    if (opt.getBackground().equals(ClHover)) {
                         opt.setOpaque(false);
                         opt.setBackground(null);
                     }
