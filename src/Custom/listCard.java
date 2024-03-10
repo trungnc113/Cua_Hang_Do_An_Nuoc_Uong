@@ -10,7 +10,7 @@ import javax.swing.JScrollPane;
 public class listCard extends JPanel {
 
     int w = 700;
-    int h = 700;
+    int h = 318 ; // chỉ chỉnh lại chổ này
 
     public listCard(ArrayList<SanPham> listSP) {
 
