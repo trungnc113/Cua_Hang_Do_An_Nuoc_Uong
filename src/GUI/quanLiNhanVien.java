@@ -49,7 +49,7 @@ public class quanLiNhanVien extends JPanel {
 
         JLabel lblMaNV, lblHoDem, lblTen,lblGioiTinh, lblChucVu, lblTimKiem;
 
-        lblMaNV = new JLabel("Mã NV");
+        lblMaNV = new JLabel("Mã nhân viên");
         lblHoDem = new JLabel("Họ đệm");
         lblTen = new JLabel("Tên");
         lblGioiTinh = new JLabel("Giới tính");
@@ -106,7 +106,7 @@ public class quanLiNhanVien extends JPanel {
         TimKiem.add(txtTimKiem);
         pnTextField.add(TimKiem);
 
-        Dimension lblSize = lblChucVu.getPreferredSize();
+        Dimension lblSize = lblMaNV.getPreferredSize();
         lblMaNV.setPreferredSize(lblSize);
         lblHoDem.setPreferredSize(lblSize);
         lblGioiTinh.setPreferredSize(lblSize);
