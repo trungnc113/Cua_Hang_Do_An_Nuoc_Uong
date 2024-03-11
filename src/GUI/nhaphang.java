@@ -46,7 +46,7 @@ import java.awt.event.MouseEvent;
 
             // Đặt màu nền cho tiêu đề cột
             setBackground(new Color(0,160,80));
-            setForeground(Color.WHITE);
+            setForeground(Color.BLACK);
 
             return this;
         }
