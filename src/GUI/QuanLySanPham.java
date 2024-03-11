@@ -34,7 +34,7 @@ public class QuanLySanPham extends JPanel {
 
         JPanel pnTitle = new JPanel();
         JLabel lblTitle = new JLabel("<html><h1>QUẢN LÝ SẢN PHẨM</h1></html>");
-        btnReset = new JButton(new ImageIcon("image/Refresh-icon.png"));
+        btnReset = new JButton(new ImageIcon("image/btn/Refresh-icon.png"));
         btnReset.setPreferredSize(new Dimension(40, 40));
         pnTitle.add(lblTitle);
         pnTitle.add(btnReset);
@@ -166,12 +166,12 @@ public class QuanLySanPham extends JPanel {
         btnXuatExcel.setFont(fontButton);
         btnNhapExcel.setFont(fontButton);
 
-        btnThem.setIcon(new ImageIcon("image/add-icon.png"));
-        btnLuu.setIcon(new ImageIcon("image/Pencil-icon.png"));
-        btnXoa.setIcon(new ImageIcon("image/delete-icon.png"));
-        btnTim.setIcon(new ImageIcon("image/Search-icon.png"));
-        btnXuatExcel.setIcon(new ImageIcon("image/excel-icon.png"));
-        btnNhapExcel.setIcon(new ImageIcon("image/excel-icon.png"));
+        btnThem.setIcon(new ImageIcon("image/btn/add-icon.png"));
+        btnLuu.setIcon(new ImageIcon("image/btn/Pencil-icon.png"));
+        btnXoa.setIcon(new ImageIcon("image/btn/delete-icon.png"));
+        btnTim.setIcon(new ImageIcon("image/btn/Search-icon.png"));
+        btnXuatExcel.setIcon(new ImageIcon("image/btn/excel-icon.png"));
+        btnNhapExcel.setIcon(new ImageIcon("image/btn/excel-icon.png"));
 
         JPanel pnTimKiem = new JPanel();
         JLabel lblTimKiem = new JLabel("Từ khoá tìm");
