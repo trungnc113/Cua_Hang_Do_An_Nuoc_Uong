@@ -1,4 +1,4 @@
-package com.mycompany.shopproject;
+package GUI;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
