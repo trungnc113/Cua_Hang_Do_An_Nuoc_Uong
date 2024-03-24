@@ -45,7 +45,7 @@ public class ProductCard extends JPanel {
         nameProduct = new JTextArea(sp.getTenSP());
         nameProduct.setFont(new Font("Arial", Font.BOLD, 20));
         nameProduct.setLineWrap(true);
-        nameProduct.setForeground(Color.red);
+        nameProduct.setForeground(Color.black);
         nameProduct.setEditable(false);
         nameProduct.setHighlighter(null);
         nameProduct.setBorder(null);

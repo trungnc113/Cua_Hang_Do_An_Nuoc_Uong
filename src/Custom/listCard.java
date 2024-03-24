@@ -9,23 +9,44 @@ import javax.swing.JScrollPane;
 
 public class listCard extends JPanel {
 
-    int w = 700;
-    int h = 318 ; // chỉ chỉnh lại chổ này
+    private int w = 1000;
+    private int h = 350;
+    JPanel productList = new JPanel();
 
+    // khởi tạo khi không có danh sách
+    public listCard() {
+        productList.setLayout(new GridLayout(0, 5, 5, 5));
+        JScrollPane scrollPane = new JScrollPane(productList);
+        scrollPane.setPreferredSize(new Dimension(w, h));
+        this.setPreferredSize(new Dimension(w, 500));
+        this.add(scrollPane);
+    }
+
+    //khởi tạo khi có danh sách
     public listCard(ArrayList<SanPham> listSP) {
+        productList.setLayout(new GridLayout(0, 5, 5, 5));
+        JScrollPane scrollPane = new JScrollPane(productList);
+        scrollPane.setPreferredSize(new Dimension(w, h));
+        this.setPreferredSize(new Dimension(w, 500));
+        this.add(scrollPane);
+        addCards(listSP);
+    }
 
-        JPanel productList = new JPanel();
-
-        productList.setLayout(new GridLayout(0, 3, 5, 5));
-
+    // thêm khi có danh sách
+    public void addCards(ArrayList<SanPham> listSP) {
         for (int i = 0; i < listSP.size(); i++) {
             productList.add(new ProductCard(listSP.get(i)));
         }
 
-        JScrollPane scrollPane = new JScrollPane(productList);
+    }
 
-        scrollPane.setPreferredSize(new Dimension(w, h));
+    //thêm khi chỉ có 1 sản phẩm
+    public void addCard(SanPham sp) {
+        productList.add(new ProductCard(sp));
+    }
 
-        this.add(scrollPane);
+    //clear
+    public void removeAll() {
+        productList.removeAll();
     }
 }

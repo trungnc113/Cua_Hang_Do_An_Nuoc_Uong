@@ -1,4 +1,4 @@
-package GUI;
+package demoGUI;
 import Custom.listCard;
 import DTO.SanPham;
 
@@ -114,5 +114,16 @@ public class Sell extends JPanel {
                 button.setBackground(Color.LIGHT_GRAY);
             }
         });
+    }
+    public static void main(String[] args) {
+        JFrame myfFrame=new JFrame();
+        Sell s=new Sell();
+        myfFrame.add(s);
+        myfFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+        myfFrame.pack();
+        myfFrame.setResizable(false);
+        myfFrame.setLocationRelativeTo(null);
+        myfFrame.setVisible(true);
     }
 }

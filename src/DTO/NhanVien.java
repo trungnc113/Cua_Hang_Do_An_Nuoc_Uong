@@ -6,17 +6,35 @@ public class NhanVien {
     private String ho;
     private String ten;
     private String gioiTinh;
-    private String chucVu;
+    private String dienThoai;
+    private int trangThai;
 
     public NhanVien() {
     }
 
-    public NhanVien(int maNV, String ho, String ten, String gioiTinh, String chucVu) {
+    public NhanVien(int maNV, String ho, String ten, String gioiTinh, String dienThoai, int trangThai) {
         this.maNV = maNV;
         this.ho = ho;
         this.ten = ten;
         this.gioiTinh = gioiTinh;
-        this.chucVu = chucVu;
+        this.dienThoai = dienThoai;
+        this.trangThai = trangThai;
+    }
+
+    public int getTrangThai() {
+        return trangThai;
+    }
+
+    public void setTrangThai(int trangThai) {
+        this.trangThai = trangThai;
+    }
+
+    public String getDienThoai() {
+        return dienThoai;
+    }
+
+    public void setDienThoai(String dienThoai) {
+        this.dienThoai = dienThoai;
     }
 
     public int getMaNV() {
@@ -49,14 +67,6 @@ public class NhanVien {
 
     public void setGioiTinh(String gioiTinh) {
         this.gioiTinh = gioiTinh;
-    }
-
-    public String getChucVu() {
-        return chucVu;
-    }
-
-    public void setChucVu(String chucVu) {
-        this.chucVu = chucVu;
     }
 
 }

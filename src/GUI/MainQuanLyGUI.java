@@ -1,6 +1,5 @@
 package GUI;
 
-
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -8,7 +7,9 @@ import javax.swing.*;
 
 public class MainQuanLyGUI extends JFrame {
 
-    JPanel pnTitle;
+    JPanel pnTitle, pnCardListMenu;
+
+    CardLayout cardListMenu;
 
     JLabel btnDoiMatKhau, btnClose, btnMinimize, lbBanhang, lbKhuyenmai, lbNhaphang, lbSanpham, lbNhanvien, lbKhachhang, lbThongke;
 
@@ -16,7 +17,7 @@ public class MainQuanLyGUI extends JFrame {
 
     ArrayList<JLabel> listMenuLeft;
 
-    final Color ClMain = new Color(0, 160, 80);
+    final Color ClMain = new Color(0, 160, 80); //#00A050
     final Color ClHover = new Color(0, 192, 96);
     final Color ClSelect = new Color(76, 204, 76);
 
@@ -51,6 +52,7 @@ public class MainQuanLyGUI extends JFrame {
         pnTitle = new JPanel(null);
         pnTitle.setPreferredSize(new Dimension(width, 46));
         pnTitle.setBackground(ClMain);
+        pnTitle.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.white));
 
         btnDoiMatKhau = new JLabel(new ImageIcon("image/btn/gear.png"));
         btnDoiMatKhau.setToolTipText("Đổi mật khẩu");
@@ -62,7 +64,6 @@ public class MainQuanLyGUI extends JFrame {
         lbTitleText.setFont(FtTitleText);
         lbTitleText.setForeground(Color.white);
         lbTitleText.setBounds(width / 2 - 492 / 2, 3, 492, 38);
-        //lbTitleText.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.black));
         pnTitle.add(lbTitleText);
 
         btnClose = new JLabel(new ImageIcon("image/btn/close.png"));
@@ -85,6 +86,7 @@ public class MainQuanLyGUI extends JFrame {
         pnMenuLeft.setPreferredSize(new Dimension(250, height - pnTitle.getHeight()));
         pnMenuLeft.setBackground(ClMain);
         pnMenuLeft.setLayout(new BoxLayout(pnMenuLeft, BoxLayout.Y_AXIS));
+        pnMenuLeft.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, Color.white));
 
         JLabel iconApp = new JLabel(new ImageIcon("image/logo/logo.png"));
         iconApp.setHorizontalAlignment(JLabel.CENTER);
@@ -113,12 +115,29 @@ public class MainQuanLyGUI extends JFrame {
             opt.setPreferredSize(new Dimension(250, 65));
             opt.setOpaque(false);
             opt.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
             pnMenuLeft.add(opt);
         }
-
+        lbBanhang.setBackground(ClSelect);
+        lbBanhang.setOpaque(true);
         pnMain.add(pnMenuLeft, BorderLayout.WEST);
 
+        PnQuanLyNhanVienGUI pnQuanLyNhanVienGUI = new PnQuanLyNhanVienGUI();
+        PnQuanLySanPhamGUI pnQuanLySanPhamGUI = new PnQuanLySanPhamGUI();
+        PnQuanLyBanHangGUI pnQuanLyBanHangGUI = new PnQuanLyBanHangGUI();
+        PnQuanLyNhapHangGUI pnQuanLyNhapHangGUI = new PnQuanLyNhapHangGUI();
+        PnQuanLyKhachHangGUI pnQuanLyKhachHangGUI = new PnQuanLyKhachHangGUI();
+        PnQuanLyKhuyenMaiGUI pnQuanLyKhuyenMaiGUI = new PnQuanLyKhuyenMaiGUI();
+
+        cardListMenu = new CardLayout();
+        pnCardListMenu = new JPanel(cardListMenu);
+        pnCardListMenu.add(pnQuanLyBanHangGUI, "1");
+        pnCardListMenu.add(pnQuanLyKhuyenMaiGUI, "2");
+        pnCardListMenu.add(pnQuanLySanPhamGUI, "3");
+        pnCardListMenu.add(pnQuanLyNhanVienGUI, "4");
+        pnCardListMenu.add(pnQuanLyKhachHangGUI, "5");
+        pnCardListMenu.add(pnQuanLyNhapHangGUI, "6");
+
+        pnMain.add(pnCardListMenu, BorderLayout.EAST);
         con.add(pnMain);
     }
 
@@ -194,8 +213,23 @@ public class MainQuanLyGUI extends JFrame {
                         lb.setOpaque(false);
                         lb.setBackground(null);
                     }
-                    opt.setBackground(ClSelect);
                     opt.setOpaque(true);
+                    opt.setBackground(ClSelect);
+                    String cardName = "";
+                    if (opt == lbBanhang) {
+                        cardName = "1";
+                    } else if (opt == lbKhuyenmai) {
+                        cardName = "2";
+                    } else if (opt == lbSanpham) {
+                        cardName = "3";
+                    } else if (opt == lbNhanvien) {
+                        cardName = "4";
+                    } else if (opt == lbKhachhang) {
+                        cardName = "5";
+                    } else if (opt == lbNhaphang) {
+                        cardName = "6";
+                    }
+                    cardListMenu.show(pnCardListMenu, cardName);
                 }
 
                 @Override
@@ -237,5 +271,6 @@ public class MainQuanLyGUI extends JFrame {
     public static void main(String[] args) {
         MainQuanLyGUI test = new MainQuanLyGUI();
         test.setVisible(true);
+
     }
 }

@@ -1,4 +1,4 @@
-package GUI;
+package demoGUI;
 
 import Custom.*;
 import javax.swing.table.*;
@@ -141,6 +141,16 @@ public class QuanLyHoaDon extends JPanel {
             }
         });
     }
+    public static void main(String[] args) {
+        JFrame myFrame = new JFrame();
+        QuanLyHoaDon test = new QuanLyHoaDon();
+        myFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        myFrame.add(test);
 
+        myFrame.pack();
+        myFrame.setResizable(false);
+        myFrame.setLocationRelativeTo(null);
+        myFrame.setVisible(true);
+    }
 
 }

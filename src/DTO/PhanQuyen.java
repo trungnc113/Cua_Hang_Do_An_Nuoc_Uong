@@ -9,8 +9,9 @@ public class PhanQuyen {
     private int qlNhanVien;
     private int qlKhachHang;
     private int thongKe;
+    private int trangThai;
 
-    public PhanQuyen(int maQuyen, String tenQuyen, int nhapHang, int qlSanPham, int qlNhanVien, int qlKhachHang, int thongKe) {
+    public PhanQuyen(int maQuyen, String tenQuyen, int nhapHang, int qlSanPham, int qlNhanVien, int qlKhachHang, int thongKe, int trangThai) {
         this.maQuyen = maQuyen;
         this.tenQuyen = tenQuyen;
         this.nhapHang = nhapHang;
@@ -18,6 +19,15 @@ public class PhanQuyen {
         this.qlNhanVien = qlNhanVien;
         this.qlKhachHang = qlKhachHang;
         this.thongKe = thongKe;
+        this.trangThai = trangThai;
+    }
+
+    public int getTrangThai() {
+        return trangThai;
+    }
+
+    public void setTrangThai(int trangThai) {
+        this.trangThai = trangThai;
     }
 
     public int getMaQuyen() {

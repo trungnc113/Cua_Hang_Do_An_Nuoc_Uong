@@ -14,7 +14,7 @@ public class HoaDon {
     public HoaDon() {
     }
 
-    public HoaDon(int maHD, int maKH, int maNV, Date ngayLap, int tongTien, int maGiam) {
+    public HoaDon(int maHD, int maKH, int maNV, int maGiam, Date ngayLap, int tongTien) {
         this.maHD = maHD;
         this.maKH = maKH;
         this.maNV = maNV;

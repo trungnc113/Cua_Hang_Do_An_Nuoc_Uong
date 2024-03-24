@@ -1,21 +1,42 @@
 package DTO;
 
 public class KhachHang {
+
     private int maKH;
     private String ho;
     private String ten;
     private String gioiTinh;
+    private String dienThoai;
     private int tongChiTieu;
+    private int trangThai;
 
     public KhachHang() {
     }
 
-    public KhachHang(int maKH, String ho, String ten, String gioiTinh, int tongChiTieu) {
+    public KhachHang(int maKH, String ho, String ten, String gioiTinh, String dienThoai, int tongChiTieu, int trangThai) {
         this.maKH = maKH;
         this.ho = ho;
         this.ten = ten;
         this.gioiTinh = gioiTinh;
         this.tongChiTieu = tongChiTieu;
+        this.dienThoai = dienThoai;
+        this.trangThai = trangThai;
+    }
+
+    public String getDienThoai() {
+        return dienThoai;
+    }
+
+    public void setDienThoai(String dienThoai) {
+        this.dienThoai = dienThoai;
+    }
+
+    public int getTrangThai() {
+        return trangThai;
+    }
+
+    public void setTrangThai(int trangThai) {
+        this.trangThai = trangThai;
     }
 
     public int getMaKH() {
@@ -57,6 +78,5 @@ public class KhachHang {
     public void setTongChiTieu(int tongChiTieu) {
         this.tongChiTieu = tongChiTieu;
     }
-
 
 }

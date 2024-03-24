@@ -8,12 +8,13 @@ public class SanPham {
     private String donViTinh;
     private String hinhAnh;
     private int donGia;
+    private int trangThai;
 
     public SanPham() {
 
     }
 
-    public SanPham(int maSP, String tenSP, int maLoai, int soLuong, String donViTinh, String hinhAnh, int donGia) {
+    public SanPham(int maSP, String tenSP, int maLoai, int soLuong, String donViTinh, String hinhAnh, int donGia,int trangThai) {
         this.maSP = maSP;
         this.tenSP = tenSP;
         this.maLoai = maLoai;
@@ -21,6 +22,15 @@ public class SanPham {
         this.donViTinh = donViTinh;
         this.hinhAnh = hinhAnh;
         this.donGia = donGia;
+        this.trangThai=trangThai;
+    }
+
+    public int getTrangThai() {
+        return trangThai;
+    }
+
+    public void setTrangThai(int trangThai) {
+        this.trangThai = trangThai;
     }
 
     public int getMaSP() {
