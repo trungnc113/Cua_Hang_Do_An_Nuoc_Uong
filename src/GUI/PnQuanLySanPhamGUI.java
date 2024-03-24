@@ -2,7 +2,6 @@ package GUI;
 
 import Custom.Mytable;
 import static Main.Main.changLNF;
-import demoGUI.QuanLySanPham;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
