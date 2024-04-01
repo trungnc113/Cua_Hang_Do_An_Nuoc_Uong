@@ -7,7 +7,7 @@ import javax.swing.*;
 
 public class MainQuanLyGUI extends JFrame {
 
-    JPanel pnTitle, pnCardListMenu;
+    JPanel pnTitle, pnCardListMenu, pnMain;
 
     CardLayout cardListMenu;
 
@@ -23,6 +23,11 @@ public class MainQuanLyGUI extends JFrame {
 
     int xMouse = 0;
     int yMouse = 0;
+
+    boolean resizing = false;
+    boolean canMove = false;
+    int PosX, PosY;
+    Point initialClick;
 
     public MainQuanLyGUI() {
         this.setTitle("Quản lý bán đồ ăn thức uống");
@@ -41,7 +46,7 @@ public class MainQuanLyGUI extends JFrame {
 
         Container con = getContentPane();
 
-        JPanel pnMain = new JPanel();
+        pnMain = new JPanel();
         pnMain.setLayout(new BorderLayout());
 
         //title
@@ -129,11 +134,90 @@ public class MainQuanLyGUI extends JFrame {
         pnCardListMenu.add(pnQuanLyKhachHangGUI, "5");
         pnCardListMenu.add(pnQuanLyNhapHangGUI, "6");
 
-        pnMain.add(pnCardListMenu, BorderLayout.EAST);
+        pnMain.add(pnCardListMenu, BorderLayout.CENTER);
+        pnMain.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
         con.add(pnMain);
+
     }
 
     private void addEvents() {
+        pnMain.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent e) {
+                initialClick = e.getLocationOnScreen(); //lấy vị trí chuột khi ấn
+                resizing = true;
+                if (e.getX() == 0) {
+                    canMove = true;
+                } else if (e.getX() == getWidth() - 1) {
+                    canMove = false;
+                } else if (e.getY() == 0) {
+                    canMove = true;
+                } else if (e.getY() == getHeight() - 1) {
+                    canMove = false;
+                } else {
+                    setCursor(null);
+                    resizing = false;
+                    canMove = false;
+                }
+            }
+
+            public void mouseReleased(MouseEvent e) {
+                resizing = false;
+                setCursor(null);
+            }
+        });
+
+        pnMain.addMouseMotionListener(new MouseAdapter() {
+            public void mouseDragged(MouseEvent e) {
+                if (initialClick == null) {
+                    return;
+                }
+                if (resizing) {
+                    Point currentClick = e.getLocationOnScreen();
+                    int dx = currentClick.x - initialClick.x;
+                    int dy = currentClick.y - initialClick.y;
+                    if (canMove) {
+                        moveFrame(e.getXOnScreen(), e.getYOnScreen());
+                        dx = -dx;
+                        dy = -dy;
+                    }
+                    int newWidth = getWidth() + dx;
+                    int newHeight = getHeight() + dy;
+
+                    int minWidth = 100;
+                    int minHeight = 100;
+
+                    if (newWidth >= minWidth && newHeight >= minHeight) {
+                        setSize(newWidth, newHeight);
+                        initialClick = currentClick;
+                    }
+                }
+            }
+
+            public void mouseMoved(MouseEvent e) {
+                xMouse = e.getX();
+                yMouse = e.getY();
+                if (e.getX() == 0) {
+                    setCursor(Cursor.getPredefinedCursor(Cursor.W_RESIZE_CURSOR));
+                } else if (e.getX() == getWidth() - 1) {
+                    setCursor(Cursor.getPredefinedCursor(Cursor.E_RESIZE_CURSOR));
+                } else if (e.getY() == 0) {
+                    setCursor(Cursor.getPredefinedCursor(Cursor.N_RESIZE_CURSOR));
+                } else if (e.getY() == getHeight() - 1) {
+                    setCursor(Cursor.getPredefinedCursor(Cursor.S_RESIZE_CURSOR));
+                } else if (e.getX() == 0 && e.getY() == 0) {
+                    setCursor(Cursor.getPredefinedCursor(Cursor.NW_RESIZE_CURSOR));
+                } else if (e.getX() == getWidth() - 1 && e.getY() == 0) {
+                    setCursor(Cursor.getPredefinedCursor(Cursor.NE_RESIZE_CURSOR));
+                } else if (e.getX() == 0 && e.getY() == getHeight() - 1) {
+                    setCursor(Cursor.getPredefinedCursor(Cursor.SW_RESIZE_CURSOR));
+                } else if (e.getX() == getWidth() - 1 && e.getY() == getHeight() - 1) {
+                    setCursor(Cursor.getPredefinedCursor(Cursor.SE_RESIZE_CURSOR));
+                } else {
+                    setCursor(null);
+                }
+            }
+        });
+
         pnTitle.addMouseMotionListener(new MouseMotionListener() {
             @Override
             public void mouseDragged(MouseEvent e) { //gọi khi kéo chuột
@@ -254,7 +338,7 @@ public class MainQuanLyGUI extends JFrame {
 
     private void minimizeFrame() {
         this.setState(Frame.ICONIFIED);
-    } 
+    }
 
     private void moveFrame(int x, int y) {
         this.setLocation(x - xMouse, y - yMouse);
@@ -263,6 +347,6 @@ public class MainQuanLyGUI extends JFrame {
     public static void main(String[] args) {
         MainQuanLyGUI test = new MainQuanLyGUI();
         test.setVisible(true);
-        
+
     }
 }

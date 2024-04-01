@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
- */
 package Custom;
 
 import java.io.BufferedReader;
@@ -10,10 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.*;
 
-/**
- *
- * @author nguyefskhgsf
- */
+
 public class JDBCUtil {
 
     private static String hostname; //mặc định là localhost
