@@ -42,8 +42,6 @@ public class PnQuanLyBanHangGUI extends JPanel {
 
     JLabel lbBanHang, lbHoaDon;
 
-    listCard listCardSP;
-
     CardLayout cardQLBanHang;
 
     JPanel pnCardQLBanHang;
@@ -163,7 +161,7 @@ public class PnQuanLyBanHangGUI extends JPanel {
         myFrame.add(test);
 
         myFrame.pack();
-        myFrame.setResizable(false);
+//        myFrame.setResizable(false);
         myFrame.setLocationRelativeTo(null);
         myFrame.setVisible(true);
     }
