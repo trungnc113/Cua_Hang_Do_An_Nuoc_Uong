@@ -35,7 +35,7 @@ public class MainQuanLyGUI extends JFrame {
         addEvents();
     }
 
-    public void addControls() {
+    private void addControls() {
         int width = this.getWidth();
         int height = this.getHeight();
 
@@ -44,11 +44,7 @@ public class MainQuanLyGUI extends JFrame {
         JPanel pnMain = new JPanel();
         pnMain.setLayout(new BorderLayout());
 
-        /*
-        ============================================================
-                                TITLE BAR
-        ============================================================
-         */
+        //title
         pnTitle = new JPanel(null);
         pnTitle.setPreferredSize(new Dimension(width, 46));
         pnTitle.setBackground(ClMain);
@@ -77,11 +73,7 @@ public class MainQuanLyGUI extends JFrame {
         pnTitle.add(btnMinimize);
 
         pnMain.add(pnTitle, BorderLayout.NORTH);
-        /*
-        ============================================================
-                                SIDE BAR MENU
-        ============================================================
-         */
+        //menuleft
         JPanel pnMenuLeft = new JPanel();
         pnMenuLeft.setPreferredSize(new Dimension(250, height - pnTitle.getHeight()));
         pnMenuLeft.setBackground(ClMain);
@@ -141,8 +133,8 @@ public class MainQuanLyGUI extends JFrame {
         con.add(pnMain);
     }
 
-    public void addEvents() {
-        this.addMouseMotionListener(new MouseMotionListener() {
+    private void addEvents() {
+        pnTitle.addMouseMotionListener(new MouseMotionListener() {
             @Override
             public void mouseDragged(MouseEvent e) { //gọi khi kéo chuột
                 moveFrame(e.getXOnScreen(), e.getYOnScreen());
@@ -260,17 +252,17 @@ public class MainQuanLyGUI extends JFrame {
 
     }
 
-    public void minimizeFrame() {
+    private void minimizeFrame() {
         this.setState(Frame.ICONIFIED);
-    }
+    } 
 
-    public void moveFrame(int x, int y) {
+    private void moveFrame(int x, int y) {
         this.setLocation(x - xMouse, y - yMouse);
     }
 
     public static void main(String[] args) {
         MainQuanLyGUI test = new MainQuanLyGUI();
         test.setVisible(true);
-
+        
     }
 }

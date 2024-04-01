@@ -1,15 +1,17 @@
 package DTO;
 
 public class NhaCungCap {
+
     private int maNCC;
     private String tenNCC;
     private String diaChi;
     private String dienThoai;
+    private int trangThai;
 
     public NhaCungCap() {
     }
 
-    public NhaCungCap(int maNCC, String tenNCC, String diaChi, String dienThoai) {
+    public NhaCungCap(int maNCC, String tenNCC, String diaChi, String dienThoai, int trangThai) {
         this.maNCC = maNCC;
         this.tenNCC = tenNCC;
         this.diaChi = diaChi;
@@ -46,5 +48,13 @@ public class NhaCungCap {
 
     public void setDienThoai(String dienThoai) {
         this.dienThoai = dienThoai;
+    }
+
+    public int getTrangThai() {
+        return trangThai;
+    }
+
+    public void setTrangThai(int trangThai) {
+        this.trangThai = trangThai;
     }
 }

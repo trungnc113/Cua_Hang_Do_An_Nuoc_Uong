@@ -4,13 +4,15 @@ public class LoaiSP {
 
     private int maLoai;
     private String tenLoai;
+    private int trangThai;
 
     public LoaiSP() {
     }
 
-    public LoaiSP(int maLoai, String tenLoai) {
+    public LoaiSP(int maLoai, String tenLoai, int trangThai) {
         this.maLoai = maLoai;
         this.tenLoai = tenLoai;
+        this.trangThai = trangThai;
     }
 
     public int getMaLoai() {
@@ -29,4 +31,12 @@ public class LoaiSP {
         this.tenLoai = tenLoai;
     }
 
+    public int getTrangThai() {
+        return trangThai;
+    }
+
+    public void setTrangThai(int trangThai) {
+        this.trangThai = trangThai;
+    }
+    
 }
