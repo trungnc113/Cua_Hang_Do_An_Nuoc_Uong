@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.BorderFactory;
@@ -41,25 +42,24 @@ public class PnQuanLyNhapHangGUI extends JPanel {
         int w = 1030;
         int h = 844;
         
-        JPanel pnTop = new JPanel(null);
+        JPanel pnTop = new JPanel();
         pnTop.setPreferredSize(new Dimension(w, 41));
+        pnTop.setLayout(new GridLayout(1, 2));
 
-        lbNhapHang = new JLabel("Nhập hàng");
+        lbNhapHang = new JLabel("Bán hàng");
         lbNhapHang.setFont(FtTitleText);
         lbNhapHang.setForeground(Color.white);
         lbNhapHang.setOpaque(true);
         lbNhapHang.setBackground(ClSelect);
-        lbNhapHang.setBounds(0, 0, pnTop.getPreferredSize().width / 2, pnTop.getPreferredSize().height);
         lbNhapHang.setHorizontalAlignment(JLabel.CENTER);
         lbNhapHang.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         pnTop.add(lbNhapHang);
 
-        lbPhieuNhap = new JLabel("Phiếu nhập");
+        lbPhieuNhap = new JLabel("Hóa đơn");
         lbPhieuNhap.setFont(FtTitleText);
         lbPhieuNhap.setForeground(ClMain);
         lbPhieuNhap.setOpaque(true);
         lbPhieuNhap.setBackground(Color.white);
-        lbPhieuNhap.setBounds(pnTop.getPreferredSize().width / 2, 0, pnTop.getPreferredSize().width / 2, pnTop.getPreferredSize().height);
         lbPhieuNhap.setHorizontalAlignment(JLabel.CENTER);
         lbPhieuNhap.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         lbPhieuNhap.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, ClMain));

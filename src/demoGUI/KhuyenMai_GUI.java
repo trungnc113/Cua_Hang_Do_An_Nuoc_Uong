@@ -4,19 +4,18 @@
  */
 package GUI;
 
-import demoGUI.*;
 import java.awt.Color;
 
 /**
  *
  * @author ADMIN
  */
-public class PnQuanLyKhuyenMaiGUI extends javax.swing.JPanel {
+public class KhuyenMai_GUI extends javax.swing.JPanel {
 
     /**
      * Creates new form KhuyenMai_GUI
      */
-    public PnQuanLyKhuyenMaiGUI() {
+    public KhuyenMai_GUI() {
         initComponents();
          jTable1.getTableHeader().setBackground(Color.green);
     }

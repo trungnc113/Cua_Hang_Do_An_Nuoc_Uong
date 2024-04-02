@@ -63,7 +63,4 @@ public class JDBCUtil {
     private static boolean checkNullValues() {
         return hostname == null || dbname == null || username == null;
     }
-    public static void main(String[] args) {
-        Connection c =JDBCUtil.getConnection();
-    }
 }

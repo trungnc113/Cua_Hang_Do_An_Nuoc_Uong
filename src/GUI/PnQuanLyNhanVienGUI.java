@@ -31,25 +31,24 @@ public class PnQuanLyNhanVienGUI extends JPanel {
         int w = 1030;
         int h = 844;
       
-        JPanel pnTop = new JPanel(null);
+        JPanel pnTop = new JPanel();
         pnTop.setPreferredSize(new Dimension(w, 41));
-        
+        pnTop.setLayout(new GridLayout(1, 2));
+
         lbNhanVien = new JLabel("Nhân Viên");
         lbNhanVien.setFont(FtTitleText);
         lbNhanVien.setForeground(Color.white);
         lbNhanVien.setOpaque(true);
         lbNhanVien.setBackground(ClSelect);
-        lbNhanVien.setBounds(0, 0, pnTop.getPreferredSize().width / 2, pnTop.getPreferredSize().height);
         lbNhanVien.setHorizontalAlignment(JLabel.CENTER);
         lbNhanVien.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         pnTop.add(lbNhanVien);
 
-        lbQuyen = new JLabel("Quyền");
+        lbQuyen = new JLabel("Phân Quyền");
         lbQuyen.setFont(FtTitleText);
         lbQuyen.setForeground(ClMain);
         lbQuyen.setOpaque(true);
         lbQuyen.setBackground(Color.white);
-        lbQuyen.setBounds(pnTop.getPreferredSize().width / 2, 0, pnTop.getPreferredSize().width / 2, pnTop.getPreferredSize().height);
         lbQuyen.setHorizontalAlignment(JLabel.CENTER);
         lbQuyen.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         lbQuyen.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, ClMain));

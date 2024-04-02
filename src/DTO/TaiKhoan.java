@@ -3,12 +3,12 @@ package DTO;
 public class TaiKhoan {
 
     private int maNhanVien;
+    private int maQuyen;
     private String tenDangNhap;
     private String matKhau;
-    private int maQuyen;
     private int trangThai;
 
-    public TaiKhoan(int maNhanVien, String tenDangNhap, String matKhau, int maQuyen, int trangThai) {
+    public TaiKhoan(int maNhanVien, int maQuyen, String tenDangNhap, String matKhau, int trangThai) {
         this.maNhanVien = maNhanVien;
         this.tenDangNhap = tenDangNhap;
         this.matKhau = matKhau;
@@ -56,5 +56,4 @@ public class TaiKhoan {
         this.trangThai = trangThai;
     }
 
-   
 }

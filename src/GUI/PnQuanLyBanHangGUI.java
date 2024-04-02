@@ -14,7 +14,9 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.BorderFactory;
@@ -57,15 +59,15 @@ public class PnQuanLyBanHangGUI extends JPanel {
         int w = 1030;
         int h = 844;
         
-        JPanel pnTop = new JPanel(null);
+        JPanel pnTop = new JPanel();
         pnTop.setPreferredSize(new Dimension(w, 41));
+        pnTop.setLayout(new GridLayout(1, 2));
 
         lbBanHang = new JLabel("Bán hàng");
         lbBanHang.setFont(FtTitleText);
         lbBanHang.setForeground(Color.white);
         lbBanHang.setOpaque(true);
         lbBanHang.setBackground(ClSelect);
-        lbBanHang.setBounds(0, 0, pnTop.getPreferredSize().width / 2, pnTop.getPreferredSize().height);
         lbBanHang.setHorizontalAlignment(JLabel.CENTER);
         lbBanHang.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         pnTop.add(lbBanHang);
@@ -75,7 +77,6 @@ public class PnQuanLyBanHangGUI extends JPanel {
         lbHoaDon.setForeground(ClMain);
         lbHoaDon.setOpaque(true);
         lbHoaDon.setBackground(Color.white);
-        lbHoaDon.setBounds(pnTop.getPreferredSize().width / 2, 0, pnTop.getPreferredSize().width / 2, pnTop.getPreferredSize().height);
         lbHoaDon.setHorizontalAlignment(JLabel.CENTER);
         lbHoaDon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         lbHoaDon.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, ClMain));

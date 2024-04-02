@@ -26,7 +26,6 @@ public class MainQuanLyGUI extends JFrame {
 
     boolean resizing = false;
     boolean canMove = false;
-    int PosX, PosY;
     Point initialClick;
 
     public MainQuanLyGUI() {
@@ -51,32 +50,36 @@ public class MainQuanLyGUI extends JFrame {
 
         //title
         pnTitle = new JPanel(null);
-        pnTitle.setPreferredSize(new Dimension(width, 46));
+        pnTitle.setLayout(new BorderLayout());
+        pnTitle.setPreferredSize(new Dimension(width, 50));
         pnTitle.setBackground(ClMain);
         pnTitle.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.white));
 
         btnDoiMatKhau = new JLabel(new ImageIcon("image/btn/gear.png"));
         btnDoiMatKhau.setToolTipText("Đổi mật khẩu");
-        btnDoiMatKhau.setBounds(5, 0, 46, 46);
         btnDoiMatKhau.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        pnTitle.add(btnDoiMatKhau);
+        pnTitle.add(btnDoiMatKhau, BorderLayout.WEST);
 
         JLabel lbTitleText = new JLabel("Phần mềm quản lý cửa hàng đồ ăn nước uống");
         lbTitleText.setFont(FtTitleText);
         lbTitleText.setForeground(Color.white);
-        lbTitleText.setBounds(width / 2 - 492 / 2, 3, 492, 38);
-        pnTitle.add(lbTitleText);
+        lbTitleText.setHorizontalAlignment(JLabel.CENTER);
+        pnTitle.add(lbTitleText, BorderLayout.CENTER);
 
+        JPanel pnBtn = new JPanel();
+        FlowLayout flopnBtn = new FlowLayout();
+        flopnBtn.setHgap(10);
+        pnBtn.setLayout(flopnBtn);
+        pnBtn.setOpaque(false);
         btnClose = new JLabel(new ImageIcon("image/btn/close.png"));
-        btnClose.setBounds(width - 55, 8, 32, 32);
         btnClose.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        pnTitle.add(btnClose);
 
         btnMinimize = new JLabel(new ImageIcon("image/btn/minimize.png"));
-        btnMinimize.setBounds(width - 102, 8, 32, 32);
         btnMinimize.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        pnTitle.add(btnMinimize);
 
+        pnBtn.add(btnMinimize);
+        pnBtn.add(btnClose);
+        pnTitle.add(pnBtn, BorderLayout.EAST);
         pnMain.add(pnTitle, BorderLayout.NORTH);
         //menuleft
         JPanel pnMenuLeft = new JPanel();
@@ -141,20 +144,19 @@ public class MainQuanLyGUI extends JFrame {
     }
 
     private void addEvents() {
-        pnMain.addMouseListener(new MouseAdapter() {
+        pnMain.addMouseListener(new MouseListener() {
             public void mousePressed(MouseEvent e) {
                 initialClick = e.getLocationOnScreen(); //lấy vị trí chuột khi ấn
                 resizing = true;
-                if (e.getX() == 0) {
+                if (e.getX() <= 1) {
                     canMove = true;
-                } else if (e.getX() == getWidth() - 1) {
+                } else if (e.getX() >= getWidth() - 1) {
                     canMove = false;
-                } else if (e.getY() == 0) {
+                } else if (e.getY() <= 1) {
                     canMove = true;
-                } else if (e.getY() == getHeight() - 1) {
+                } else if (e.getY() >= getHeight() - 1) {
                     canMove = false;
                 } else {
-                    setCursor(null);
                     resizing = false;
                     canMove = false;
                 }
@@ -164,9 +166,22 @@ public class MainQuanLyGUI extends JFrame {
                 resizing = false;
                 setCursor(null);
             }
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                
+            }
         });
 
-        pnMain.addMouseMotionListener(new MouseAdapter() {
+        pnMain.addMouseMotionListener(new MouseMotionListener() {
             public void mouseDragged(MouseEvent e) {
                 if (initialClick == null) {
                     return;
@@ -192,29 +207,28 @@ public class MainQuanLyGUI extends JFrame {
                     }
                 }
             }
-
+            
             public void mouseMoved(MouseEvent e) {
                 xMouse = e.getX();
                 yMouse = e.getY();
-                if (e.getX() == 0) {
+                setCursor(null);
+                if (e.getX() <= 1) {
                     setCursor(Cursor.getPredefinedCursor(Cursor.W_RESIZE_CURSOR));
-                } else if (e.getX() == getWidth() - 1) {
+                } else if (e.getX() >= getWidth() - 1) {
                     setCursor(Cursor.getPredefinedCursor(Cursor.E_RESIZE_CURSOR));
-                } else if (e.getY() == 0) {
+                } else if (e.getY() <= 1) {
                     setCursor(Cursor.getPredefinedCursor(Cursor.N_RESIZE_CURSOR));
-                } else if (e.getY() == getHeight() - 1) {
+                } else if (e.getY() >= getHeight() - 1) {
                     setCursor(Cursor.getPredefinedCursor(Cursor.S_RESIZE_CURSOR));
-                } else if (e.getX() == 0 && e.getY() == 0) {
+                } else if (e.getX() <= 1 && e.getY() <= 1) {
                     setCursor(Cursor.getPredefinedCursor(Cursor.NW_RESIZE_CURSOR));
-                } else if (e.getX() == getWidth() - 1 && e.getY() == 0) {
+                } else if (e.getX() >= getWidth() - 1 && e.getY() <= 1) {
                     setCursor(Cursor.getPredefinedCursor(Cursor.NE_RESIZE_CURSOR));
-                } else if (e.getX() == 0 && e.getY() == getHeight() - 1) {
+                } else if (e.getX() <= 1 && e.getY() >= getHeight() - 1) {
                     setCursor(Cursor.getPredefinedCursor(Cursor.SW_RESIZE_CURSOR));
-                } else if (e.getX() == getWidth() - 1 && e.getY() == getHeight() - 1) {
+                } else if (e.getX() >= getWidth() - 1 && e.getY() >= getHeight() - 1) {
                     setCursor(Cursor.getPredefinedCursor(Cursor.SE_RESIZE_CURSOR));
-                } else {
-                    setCursor(null);
-                }
+                } 
             }
         });
 
@@ -228,6 +242,7 @@ public class MainQuanLyGUI extends JFrame {
             public void mouseMoved(MouseEvent e) { //gọi khi di chuyển chuột
                 xMouse = e.getX();
                 yMouse = e.getY();
+                setCursor(null);
             }
         });
 

@@ -25,9 +25,7 @@
             <file>file:/C:/Users/nguye/OneDrive/Documents/NetBeansProjects/DoAn_QuanLyBanDoAnNuocUong/src/demoGUI/QuanLyHoaDon.java</file>
             <file>file:/C:/Users/nguye/OneDrive/Documents/NetBeansProjects/DoAn_QuanLyBanDoAnNuocUong/src/DTO/NhaCungCap.java</file>
             <file>file:/C:/Users/nguye/OneDrive/Documents/NetBeansProjects/DoAn_QuanLyBanDoAnNuocUong/src/GUI/PnHoaDon.java</file>
-            <file>file:/C:/Users/nguye/OneDrive/Documents/NetBeansProjects/DoAn_QuanLyBanDoAnNuocUong/src/Custom/JDBCUtil.java</file>
             <file>file:/C:/Users/nguye/OneDrive/Documents/NetBeansProjects/DoAn_QuanLyBanDoAnNuocUong/src/DAO/NhanVienDAO.java</file>
-            <file>file:/C:/Users/nguye/OneDrive/Documents/NetBeansProjects/DoAn_QuanLyBanDoAnNuocUong/src/GUI/test.java</file>
             <file>file:/C:/Users/nguye/OneDrive/Documents/NetBeansProjects/DoAn_QuanLyBanDoAnNuocUong/src/DTO/GiamGia.java</file>
             <file>file:/C:/Users/nguye/OneDrive/Documents/NetBeansProjects/DoAn_QuanLyBanDoAnNuocUong/src/Custom/dialog.java</file>
             <file>file:/C:/Users/nguye/OneDrive/Documents/NetBeansProjects/DoAn_QuanLyBanDoAnNuocUong/src/DTO/HoaDon.java</file>
@@ -55,11 +53,8 @@
             <file>file:/C:/Users/nguye/OneDrive/Documents/NetBeansProjects/DoAn_QuanLyBanDoAnNuocUong/src/GUI/PnQuanLyKhachHangGUI.java</file>
             <file>file:/C:/Users/nguye/OneDrive/Documents/NetBeansProjects/DoAn_QuanLyBanDoAnNuocUong/src/DAO/LoaiSPDAO.java</file>
             <file>file:/C:/Users/nguye/OneDrive/Documents/NetBeansProjects/DoAn_QuanLyBanDoAnNuocUong/src/DAO/PhieuNhapDAO.java</file>
-            <file>file:/C:/Users/nguye/OneDrive/Documents/NetBeansProjects/DoAn_QuanLyBanDoAnNuocUong/src/Custom/listCard.java</file>
             <file>file:/C:/Users/nguye/OneDrive/Documents/NetBeansProjects/DoAn_QuanLyBanDoAnNuocUong/src/GUI/MainQuanLyGUI.java</file>
-            <file>file:/C:/Users/nguye/OneDrive/Documents/NetBeansProjects/DoAn_QuanLyBanDoAnNuocUong/image/btn/plus.png</file>
             <file>file:/C:/Users/nguye/OneDrive/Documents/NetBeansProjects/DoAn_QuanLyBanDoAnNuocUong/src/GUI/PnNhapHang.java</file>
-            <file>file:/C:/Users/nguye/OneDrive/Documents/NetBeansProjects/DoAn_QuanLyBanDoAnNuocUong/src/demoGUI/QuanLySanPham.java</file>
         </group>
     </open-files>
 </project-private>

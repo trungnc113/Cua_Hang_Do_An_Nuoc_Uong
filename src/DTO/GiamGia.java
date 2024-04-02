@@ -10,17 +10,19 @@ public class GiamGia {
     private int dieuKien;
     private Date ngayBD;
     private Date ngayKT;
+    private int trangThai;
 
     public GiamGia() {
     }
 
-    public GiamGia(int maGiam, String tenGiamGia, int phanTramGiam, int dieuKien, Date ngayBD, Date ngayKT) {
+    public GiamGia(int maGiam, String tenGiamGia, int phanTramGiam, int dieuKien, Date ngayBD, Date ngayKT, int trangThai) {
         this.maGiam = maGiam;
         this.tenGiamGia = tenGiamGia;
         this.phanTramGiam = phanTramGiam;
         this.dieuKien = dieuKien;
         this.ngayBD = ngayBD;
         this.ngayKT = ngayKT;
+        this.trangThai = trangThai;
     }
 
     public int getMaGiam() {
@@ -70,4 +72,14 @@ public class GiamGia {
     public void setNgayKT(Date ngayKT) {
         this.ngayKT = ngayKT;
     }
+
+    public int getTrangThai() {
+        return trangThai;
+    }
+
+    public void setTrangThai(int trangThai) {
+        this.trangThai = trangThai;
+    }
+    
+    
 }
