@@ -28,7 +28,6 @@ public class CTHoaDonDAO {
                 tempCTHD.setThanhTien(rs.getInt(5));
                 lsCTHD.add(tempCTHD);
             }
-
         }
         catch (SQLException ex){
         }
@@ -37,37 +36,42 @@ public class CTHoaDonDAO {
     public boolean addCTHoaDon(CTHoaDon cthd) {
         boolean result = false;
         try {
-            String sql = "INSERT INTO cthoadon VALUES(?,?,?,?,?)";
-            PreparedStatement prep = JDBCUtil.getConnection().prepareStatement(sql);
+            Connection c = JDBCUtil.getConnection();
+            String sql = "INSERT INTO dbo.cthoadon VALUES(?,?,?,?,?)";
+            PreparedStatement prep = c.prepareStatement(sql);
             prep.setInt(1, cthd.getMaHD());
             prep.setInt(2, cthd.getMaSP());
             prep.setInt(3, cthd.getSoLuong());
             prep.setInt(4, cthd.getDonGia());
             prep.setInt(5, cthd.getThanhTien());
             result = prep.executeUpdate() > 0;
+            JDBCUtil.closeConnection(c);
         } catch(SQLException ex) {
             ex.printStackTrace();
             return false;
         }
         return result;
     }
-    public boolean deleteCTHoaDon(int maHD, int maSP) {
-        boolean result = false;
-        try {
-            String sql = "DELETE FROM cthoadon WHERE MaHD="+maHD+" AND MaSP="+maSP;
-            Statement stmt = JDBCUtil.getConnection().createStatement();
-            result = stmt.executeUpdate(sql) > 0;
-        } catch(SQLException ex) {
-            return false;
-        }
-        return result;
-    }
+//    public boolean deleteCTHoaDon(int maHD, int maSP) {
+//        boolean result = false;
+//        try {
+//            Connection c = JDBCUtil.getConnection();
+//            String sql = "DELETE FROM cthoadon WHERE MaHD="+maHD+" AND MaSP="+maSP;
+//            Statement stmt = c.createStatement();
+//            result = stmt.executeUpdate(sql) > 0;
+//            JDBCUtil.closeConnection(c);
+//        } catch(SQLException ex) {
+//            return false;
+//        }
+//        return result;
+//    }
     public boolean updateCTHoaDon(int maHD, int maSP, CTHoaDon cthd) {
         boolean result = false;
         try {
+            Connection c = JDBCUtil.getConnection();
             String sql = "UPDATE cthoadon SET MaHD=?, MaSP=?, SoLuong=?, DonGia=? ThanhTien=? "
                     + "WHERE MaHD=? AND MaSP=?";
-            PreparedStatement prep = JDBCUtil.getConnection().prepareStatement(sql);
+            PreparedStatement prep = c.prepareStatement(sql);
             prep.setInt(1, cthd.getMaHD());
             prep.setInt(2, cthd.getMaSP());
             prep.setInt(3, cthd.getSoLuong());
@@ -76,10 +80,12 @@ public class CTHoaDonDAO {
             prep.setInt(6, maHD);
             prep.setInt(7, maSP);
             result = prep.executeUpdate() > 0;
+            JDBCUtil.closeConnection(c);
         } catch(SQLException ex) {
             return false;
         }
         return result;
     }
 }
+
 

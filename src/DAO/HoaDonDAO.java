@@ -39,11 +39,9 @@ public class HoaDonDAO {
     public boolean addHoaDon(HoaDon hd) {
         boolean result = false;
         try {
-            String sql1 = "UPDATE KhachHang SET TongChiTieu=TongChiTieu+" + hd.getTongTien() + " WHERE MaKH=" + hd.getMaKH();
-            Statement st = JDBCUtil.getConnection().createStatement();
-            st.executeUpdate(sql1);
+            Connection c = JDBCUtil.getConnection();
             String sql = "INSERT INTO hoadon(MaHD, MaKH, MaNV, MaGiam, NgayLap, TongTien) VALUES(?,?, ?, ?, ?, ?)";
-            PreparedStatement prep = JDBCUtil.getConnection().prepareStatement(sql);
+            PreparedStatement prep = c.prepareStatement(sql);
             prep.setInt(1, hd.getMaHD());
             prep.setInt(2, hd.getMaKH());
             prep.setInt(3, hd.getMaNV());
@@ -51,6 +49,7 @@ public class HoaDonDAO {
             prep.setTimestamp(5, new java.sql.Timestamp(new java.util.Date().getTime()));
             prep.setInt(5, hd.getTongTien());
             result = prep.executeUpdate() > 0;
+            JDBCUtil.closeConnection(c);
         } catch (SQLException ex) {
             ex.printStackTrace();
             return false;
@@ -59,8 +58,9 @@ public class HoaDonDAO {
     }
     public ArrayList<HoaDon> getListHoaDon(Date dateMin, Date dateMax) {
         try {
+            Connection c = JDBCUtil.getConnection();
             String sql = "SELECT * FROM hoadon WHERE NgayLap BETWEEN CAST(? AS DATE) AND CAST(? AS DATE)";
-            PreparedStatement pre = JDBCUtil.getConnection().prepareStatement(sql);
+            PreparedStatement pre = c.prepareStatement(sql);
             pre.setDate(1, dateMin);
             pre.setDate(2, dateMax);
             ResultSet rs = pre.executeQuery();
