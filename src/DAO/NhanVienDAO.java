@@ -1,9 +1,9 @@
 package DAO;
 import DTO.NhanVien;
+import Custom.JDBCUtil;
 
 import java.sql.Statement;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,14 +13,9 @@ public class NhanVienDAO {
 
     public ArrayList<NhanVien> getDanhSachNhanVien(){
         try{
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            Connection connection = JDBCUtil.getConnection();
 
-            String url = "jdbc:sqlserver://DESKTOP-P\\SQLPHUOCD:1433;databaseName=quanlythucannhanh;encrypt = true;trustServerCertificate = true";
-            String userName = "sa";
-            String passWord = "11111111";
-
-            Connection connection = DriverManager.getConnection(url, userName, passWord);
-            String sql = "select * from nhanvien";
+            String sql = "select * from nhanvien where trangThai=1";
             Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery(sql);
             ArrayList<NhanVien> listNV = new ArrayList<>();
@@ -35,7 +30,7 @@ public class NhanVienDAO {
                 listNV.add(nv);
             }
             return listNV;
-        }catch(SQLException | ClassNotFoundException e){
+        }catch(SQLException e){
             e.printStackTrace();
         }
 
@@ -45,13 +40,8 @@ public class NhanVienDAO {
     public boolean updateInfoNhanVien(NhanVien nv){
         boolean ketqua = false;
         try{
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            Connection connection = JDBCUtil.getConnection();
 
-            String url = "jdbc:sqlserver://DESKTOP-P\\SQLPHUOCD:1433;databaseName=quanlythucannhanh;encrypt = true;trustServerCertificate = true";
-            String userName = "sa";
-            String passWord = "11111111";
-
-            Connection connection = DriverManager.getConnection(url, userName, passWord);
             String sql = "update nhanvien set ho=?, ten=?, gioiTinh=?, dienThoai=?, trangThai=? where maNV=?";
             PreparedStatement pre = connection.prepareStatement(sql);
 
@@ -63,7 +53,7 @@ public class NhanVienDAO {
             pre.setInt(6,nv.getMaNV());
             ketqua = pre.executeUpdate() > 5;
 
-        }catch(SQLException | ClassNotFoundException e){
+        }catch(SQLException e){
             e.printStackTrace();
         }
 
@@ -72,13 +62,8 @@ public class NhanVienDAO {
 
     public boolean deleteNhanVien(int MaNV){
         try{
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            Connection connection = JDBCUtil.getConnection();
 
-            String url = "jdbc:sqlserver://DESKTOP-P\\SQLPHUOCD:1433;databaseName=quanlythucannhanh;encrypt = true;trustServerCertificate = true";
-            String userName = "sa";
-            String passWord = "11111111";
-
-            Connection connection = DriverManager.getConnection(url, userName, passWord);
             String sql = "update nhanvien set trangThai=? where maNV=?";
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setInt(1, 0);
@@ -87,7 +72,7 @@ public class NhanVienDAO {
             int rowsAffected = pre.executeUpdate();
 
             return rowsAffected > 0;
-        }catch(SQLException | ClassNotFoundException e){
+        }catch(SQLException e){
             e.printStackTrace();
             return false;
         }
@@ -96,13 +81,8 @@ public class NhanVienDAO {
     public boolean themNhanVien(NhanVien nv){
         boolean ketqua = false;
         try{
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            Connection connection = JDBCUtil.getConnection();
 
-            String url = "jdbc:sqlserver://DESKTOP-P\\SQLPHUOCD:1433;databaseName=quanlythucannhanh;encrypt = true;trustServerCertificate = true";
-            String userName = "sa";
-            String passWord = "11111111";
-
-            Connection connection = DriverManager.getConnection(url, userName, passWord);
             String sql = "insert into nhanvien(maNV, ho, ten, gioiTinh, dienThoai, trangThai)  values(?, ?, ?, ?, ?, ?)";
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setInt(1,nv.getMaNV());
@@ -113,7 +93,7 @@ public class NhanVienDAO {
             pre.setInt(6, nv.getTrangThai());
             ketqua = pre.executeUpdate() > 5;
 
-        }catch(SQLException | ClassNotFoundException e){
+        }catch(SQLException e){
             e.printStackTrace();
         }
         return ketqua;
@@ -122,14 +102,8 @@ public class NhanVienDAO {
     public NhanVien getNhanVien(int maNV){
             NhanVien nv = null;
             try{
-                Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-    
-                String url = "jdbc:sqlserver://DESKTOP-P\\SQLPHUOCD:1433;databaseName=quanlythucannhanh;encrypt = true;trustServerCertificate = true";
-                String userName = "sa";
-                String passWord = "11111111";
-    
-                Connection connection = DriverManager.getConnection(url, userName, passWord);
-                String sql = "select * from nhanvien where maNV = ?";
+                Connection connection = JDBCUtil.getConnection();
+                String sql = "select * from nhanvien where maNV = ? and trangThai=1";
                 PreparedStatement pre = connection.prepareStatement(sql);
                 pre.setInt(1,maNV);
                 ResultSet rs = pre.executeQuery();
@@ -144,22 +118,42 @@ public class NhanVienDAO {
                 }
 
                 return nv;
-            }catch(SQLException | ClassNotFoundException e){
+            }catch(SQLException e){
                 e.printStackTrace();
             }
             return null;
     }
 
+    public NhanVien getNhanVienTheoTen(String tenNV){
+        NhanVien nv = null;
+        try{
+            Connection connection = JDBCUtil.getConnection();
+            String slq = "select * from nhanvien where ten = ? and trangThai=1";
+            PreparedStatement pre = connection.prepareStatement(slq);
+            pre.setString(1,tenNV);
+            ResultSet rs = pre.executeQuery();
+
+            while (rs.next()) {
+                nv = new NhanVien();
+                nv.setMaNV(rs.getInt(1));
+                nv.setHo(rs.getString(2));
+                nv.setTen(rs.getString(3));
+                nv.setGioiTinh(rs.getString(4));
+                nv.setDienThoai(rs.getString(5));
+                nv.setTrangThai(rs.getInt(6));
+            }
+            
+            return nv;
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+}
+
     public boolean importNhanVienFromExcel(NhanVien nv){
 
         try{
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-
-            String url = "jdbc:sqlserver://DESKTOP-P\\SQLPHUOCD:1433;databaseName=quanlythucannhanh;encrypt = true;trustServerCertificate = true";
-            String userName = "sa";
-            String passWord = "11111111";
-
-            Connection connection = DriverManager.getConnection(url, userName, passWord);
+            Connection connection = JDBCUtil.getConnection();
             String sql = "DELETE FROM nhanvien" + 
                 "insert into nhanvien(maNV, ho, ten, gioiTinh, dienThoai, trangThai) values(?, ?, ?, ?, ?, ?) ";
             PreparedStatement pre = connection.prepareStatement(sql);
@@ -174,10 +168,9 @@ public class NhanVienDAO {
             int rowsAffected = pre.executeUpdate();
             return rowsAffected > 0;
 
-        }catch(SQLException | ClassNotFoundException e){
+        }catch(SQLException e){
             e.printStackTrace();
         }
         return false;
     }
-        
 }
