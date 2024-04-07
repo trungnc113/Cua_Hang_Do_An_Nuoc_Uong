@@ -5,12 +5,11 @@
 package DAO;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
+import Custom.*;
 import DTO.CTPhieuNhap;
 import DTO.PhieuNhap;
 
@@ -25,15 +24,13 @@ public class PhieuNhapDAO {
         
         ArrayList<PhieuNhap> dspn = new ArrayList<>();
 
-        String url ="jdbc:sqlserver://LAPTOP-PHANLOC:1433;databaseName=quanlythucannhanh;encrypt= true;trustServerCertificate=true";
-        String username = "sa";
-        String password = "123456";
+        
         try {
             
-            Connection connection = DriverManager.getConnection(url,username, password);
+            Connection c = JDBCUtil.getConnection();
             System.out.println("connect");
             String sql = "SELECT * FROM phieunhap";
-            PreparedStatement stmt = connection.prepareStatement(sql);
+            PreparedStatement stmt = c.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 PhieuNhap pn = new PhieuNhap();
@@ -52,13 +49,11 @@ public class PhieuNhapDAO {
         
     }
     public boolean themPhieuNhap(PhieuNhap pn) {
-        String url ="jdbc:sqlserver://LAPTOP-PHANLOC:1433;databaseName=quanlythucannhanh;encrypt= true;trustServerCertificate=true";
-        String username = "sa";
-        String password = "123456";
+        
         try {
-            Connection connection = DriverManager.getConnection(url,username, password);
+            Connection c = JDBCUtil.getConnection();
             String sql = "INSERT INTO phieunhap (MaNCC, MaNV, NgayLap, TongTien) VALUES (?, ?, ?, ?)";
-            PreparedStatement stmt = connection.prepareStatement(sql);
+            PreparedStatement stmt = c.prepareStatement(sql);
             stmt.setInt(1, pn.getMaNCC());
             stmt.setInt(2, pn.getMaNV());
             stmt.setDate(3, new java.sql.Date(pn.getNgayLap().getTime()));
@@ -71,13 +66,11 @@ public class PhieuNhapDAO {
         }
     }
     public boolean capNhatPhieuNhap(PhieuNhap pn) {
-        String url ="jdbc:sqlserver://LAPTOP-PHANLOC:1433;databaseName=quanlythucannhanh;encrypt= true;trustServerCertificate=true";
-        String username = "sa";
-        String password = "123456";
+        
         try {
-            Connection connection = DriverManager.getConnection(url,username, password);
+            Connection c = JDBCUtil.getConnection();
             String sql = "UPDATE phieunhap SET MaNCC=?, MaNV=?, NgayLap=?, TongTien=? WHERE MaPN=?";
-            PreparedStatement stmt = connection.prepareStatement(sql);
+            PreparedStatement stmt = c.prepareStatement(sql);
             stmt.setInt(1, pn.getMaNCC());
             stmt.setInt(2, pn.getMaNV());
             stmt.setDate(3, new java.sql.Date(pn.getNgayLap().getTime()));
@@ -92,13 +85,11 @@ public class PhieuNhapDAO {
     }
     public ArrayList<CTPhieuNhap> timkiemtheomaPN(int maPN) {
         ArrayList<CTPhieuNhap> dsctpn = new ArrayList<>();
-        String url ="jdbc:sqlserver://LAPTOP-PHANLOC:1433;databaseName=quanlythucannhanh;encrypt= true;trustServerCertificate=true";
-        String username = "sa";
-        String password = "123456";
+        
         try  {
-            Connection connection = DriverManager.getConnection(url,username,password);
+            Connection c = JDBCUtil.getConnection();
             String sql = "SELECT * FROM ctphieunhap WHERE MaPN = ?";
-            PreparedStatement stmt = connection.prepareStatement(sql);
+            PreparedStatement stmt = c.prepareStatement(sql);
             stmt.setInt(1, maPN);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
