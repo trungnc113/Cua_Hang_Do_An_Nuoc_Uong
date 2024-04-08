@@ -106,12 +106,7 @@ public class GiamGiaDAO {
         return false;
         
     }
-    public static void main(String[] args) {
-        GiamGiaDAO giamGiaDao= new GiamGiaDAO();
-        System.out.println(giamGiaDao.getListGiamGia());
-        
-    }
-
+   
     
 
     
