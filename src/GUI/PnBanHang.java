@@ -88,8 +88,10 @@ public class PnBanHang extends JPanel {
 
         this.add(pnSearchSP);
 
+        JPanel test = new JPanel();
         listCardSP = new listCard(); // tạo listCard
-        this.add(listCardSP);
+        test.add(listCardSP);
+        this.add(test);
 
         JPanel pnTltGioHang = new JPanel();//tạo khung chứa tên giỏ hàng
         JLabel lbTltGioHang = new JLabel("<html><h1>Giỏ hàng</h1></html>");

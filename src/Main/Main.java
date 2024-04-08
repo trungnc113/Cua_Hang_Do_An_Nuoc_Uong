@@ -1,7 +1,14 @@
 package Main;
 
-public class Main {
+import GUI.DangNhapGUI;
 
+public class Main {
+    
+    public static void main(String[] args) {
+        DangNhapGUI dangNhapGUI=new DangNhapGUI();
+        dangNhapGUI.setVisible(true);   
+    }
+            
     public static void changLNF(String nameLNF) {
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {

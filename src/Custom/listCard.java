@@ -15,7 +15,7 @@ public class listCard extends JPanel {
 
     // khởi tạo khi không có danh sách
     public listCard() {
-        productList.setLayout(new GridLayout(0, 5, 5, 5));
+        productList.setLayout(null);
         JScrollPane scrollPane = new JScrollPane(productList);
         scrollPane.setPreferredSize(new Dimension(w, h));
         this.setPreferredSize(new Dimension(w, 500));

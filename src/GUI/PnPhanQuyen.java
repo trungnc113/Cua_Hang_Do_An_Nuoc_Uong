@@ -14,9 +14,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
@@ -144,5 +146,16 @@ public class PnPhanQuyen extends JPanel {
         mtbQuyen.getColumnModel().getColumn(5).setPreferredWidth(100);
         mtbQuyen.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
         mtbQuyen.getColumnModel().getColumn(6).setCellRenderer(centerRenderer);
+    }
+     public static void main(String[] args) {
+        JFrame myFrame = new JFrame();
+        PnPhanQuyen test = new PnPhanQuyen();
+        myFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        myFrame.add(test);
+
+        myFrame.pack();
+//        myFrame.setResizable(false);
+        myFrame.setLocationRelativeTo(null);
+        myFrame.setVisible(true);
     }
 }

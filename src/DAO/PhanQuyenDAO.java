@@ -128,6 +128,7 @@ public class PhanQuyenDAO {
                 int trangThai = rs.getInt("trangThai");
                 phanQuyen = new PhanQuyen(maQuyen, tenQuyen, nhapHang, qlSanPham, qlKhachHang, qlKhachHang, thongke, trangThai);
             }
+            JDBCUtil.closeConnection(c);
         } catch (SQLException e) {
             e.printStackTrace();
         }
