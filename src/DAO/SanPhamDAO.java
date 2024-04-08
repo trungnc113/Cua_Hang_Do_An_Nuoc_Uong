@@ -1,8 +1,9 @@
 package DAO;
 import DTO.SanPham;
+import Custom.JDBCUtil;
+
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,14 +14,8 @@ public class SanPhamDAO {
 
     public ArrayList<SanPham> getDanhSachSanPham(){
         try{
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-
-            String url = "jdbc:sqlserver://DESKTOP-P\\SQLPHUOCD:1433;databaseName=quanlythucannhanh;encrypt = true;trustServerCertificate = true";
-            String userName = "sa";
-            String passWord = "11111111";
-
-            Connection connection = DriverManager.getConnection(url, userName, passWord);
-            String slq = "select * from sanpham";
+            Connection connection = JDBCUtil.getConnection();
+            String slq = "select * from sanpham where trangThai=1";
             Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery(slq);
             ArrayList<SanPham> listSP = new ArrayList<>();
@@ -34,28 +29,21 @@ public class SanPhamDAO {
                 sp.setDonViTinh(rs.getString(6));
                 sp.setHinhAnh(rs.getString(7));
                 sp.setTrangThai(rs.getInt(8));
-                
                 listSP.add(sp);
             }
             return listSP;
-        }catch(SQLException | ClassNotFoundException e){
+        }catch(SQLException e){
             e.printStackTrace();
         }
 
         return null;
     }
 
-    public SanPham getSanPhamTheoMA(int maSP){
+    public SanPham getSanPhamTheoMa(int maSP){
         SanPham sanpham = null;
         try{
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-
-            String url = "jdbc:sqlserver://DESKTOP-P\\SQLPHUOCD:1433;databaseName=quanlythucannhanh;encrypt = true;trustServerCertificate = true";
-            String userName = "sa";
-            String passWord = "11111111";
-
-            Connection connection = DriverManager.getConnection(url, userName, passWord);
-            String slq = "select * from sanpham where maSP = ?";
+            Connection connection = JDBCUtil.getConnection();
+            String slq = "select * from sanpham where maSP = ? and trangThai=1";
             PreparedStatement pre = connection.prepareStatement(slq);
             pre.setInt(1,maSP);
             ResultSet rs = pre.executeQuery();
@@ -72,7 +60,7 @@ public class SanPhamDAO {
             }
             
             return sanpham;
-        }catch(SQLException | ClassNotFoundException e){
+        }catch(SQLException e){
             e.printStackTrace();
         }
 
@@ -82,14 +70,9 @@ public class SanPhamDAO {
     public SanPham getSanPhamTheoTen(String tenSP){
         SanPham sanpham = null;
         try{
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            Connection connection = JDBCUtil.getConnection();
 
-            String url = "jdbc:sqlserver://DESKTOP-P\\SQLPHUOCD:1433;databaseName=quanlythucannhanh;encrypt = true;trustServerCertificate = true";
-            String userName = "sa";
-            String passWord = "11111111";
-
-            Connection connection = DriverManager.getConnection(url, userName, passWord);
-            String slq = "select * from sanpham where tenSP = ?";
+            String slq = "select * from sanpham where tenSP=? and trangThai=1";
             PreparedStatement pre = connection.prepareStatement(slq);
             pre.setString(1,tenSP);
             ResultSet rs = pre.executeQuery();
@@ -106,7 +89,7 @@ public class SanPhamDAO {
             }
             
             return sanpham;
-        }catch(SQLException | ClassNotFoundException e){
+        }catch(SQLException e){
             e.printStackTrace();
         }
 
@@ -116,14 +99,9 @@ public class SanPhamDAO {
     public String getHinhAnh(int maSP){
         
         try{
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            Connection connection = JDBCUtil.getConnection();
 
-            String url = "jdbc:sqlserver://DESKTOP-P\\SQLPHUOCD:1433;databaseName=quanlythucannhanh;encrypt = true;trustServerCertificate = true";
-            String userName = "sa";
-            String passWord = "11111111";
-
-            Connection connection = DriverManager.getConnection(url, userName, passWord);
-            String slq = "select hinhAnh from sanpham where maSP = ?";
+            String slq = "select hinhAnh from sanpham where maSP = ? and trangThai=1";
             PreparedStatement pre = connection.prepareStatement(slq);
             pre.setInt(1,maSP);
             ResultSet rs = pre.executeQuery();
@@ -131,7 +109,7 @@ public class SanPhamDAO {
                 System.out.println(rs.getString("hinhAnh"));
                 return rs.getString("hinhAnh");
             }
-        }catch(SQLException | ClassNotFoundException e){
+        }catch(SQLException e){
             e.printStackTrace();
         }
 
@@ -140,14 +118,9 @@ public class SanPhamDAO {
 
     public ArrayList<SanPham> getSanPhamTheoLoai(int maLoai){
         try{
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            Connection connection = JDBCUtil.getConnection();
 
-            String url = "jdbc:sqlserver://DESKTOP-P\\SQLPHUOCD:1433;databaseName=quanlythucannhanh;encrypt = true;trustServerCertificate = true";
-            String userName = "sa";
-            String passWord = "11111111";
-
-            Connection connection = DriverManager.getConnection(url, userName, passWord);
-            String slq = "select * from sanpham where maLoai = ?";
+            String slq = "select * from sanpham where maLoai = ? and trangThai=1";
             PreparedStatement pre = connection.prepareStatement(slq);
             pre.setInt(1,maLoai);
             ArrayList<SanPham> listSp = new ArrayList<>();
@@ -166,7 +139,7 @@ public class SanPhamDAO {
             }
             
             return listSp;
-        }catch(SQLException | ClassNotFoundException e){
+        }catch(SQLException e){
             e.printStackTrace();
         }
 
@@ -176,13 +149,8 @@ public class SanPhamDAO {
     public boolean updateInfoSanPham(SanPham sp ){
         boolean ketqua = false;
         try{
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            Connection connection = JDBCUtil.getConnection();
 
-            String url = "jdbc:sqlserver://DESKTOP-P\\SQLPHUOCD:1433;databaseName=quanlythucannhanh;encrypt = true;trustServerCertificate = true";
-            String userName = "sa";
-            String passWord = "11111111";
-
-            Connection connection = DriverManager.getConnection(url, userName, passWord);
             String slq = "update sanpham set tensp=?, maLoai=?, donGia=?, soLuong=?, donViTinh=?, hinhAnh=?, trangThai=? where maSP=?";
             PreparedStatement pre = connection.prepareStatement(slq);
             pre.setString(1,sp.getTenSP());
@@ -197,7 +165,7 @@ public class SanPhamDAO {
             ketqua = pre.executeUpdate() > 7;
             return ketqua;
             
-        }catch(SQLException | ClassNotFoundException e){
+        }catch(SQLException e){
             e.printStackTrace();
         }
         return ketqua;
@@ -206,13 +174,8 @@ public class SanPhamDAO {
     public boolean deleteSanPham(int maSP){
         boolean ketqua = false;
         try{
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            Connection connection = JDBCUtil.getConnection();
 
-            String url = "jdbc:sqlserver://DESKTOP-P\\SQLPHUOCD:1433;databaseName=quanlythucannhanh;encrypt = true;trustServerCertificate = true";
-            String userName = "sa";
-            String passWord = "11111111";
-
-            Connection connection = DriverManager.getConnection(url, userName, passWord);
             String slq = "update sanpham set trangThai=? where maSP=?";
             PreparedStatement pre = connection.prepareStatement(slq);
             pre.setInt(1,0);
@@ -220,7 +183,7 @@ public class SanPhamDAO {
             ketqua = pre.executeUpdate() > 1;
             return ketqua;
             
-        }catch(SQLException | ClassNotFoundException e){
+        }catch(SQLException e){
             e.printStackTrace();
         }
         return ketqua;
@@ -229,13 +192,8 @@ public class SanPhamDAO {
     public  boolean themSanPham(SanPham sp){
         boolean ketqua = false;
         try{
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            Connection connection = JDBCUtil.getConnection();
 
-            String url = "jdbc:sqlserver://DESKTOP-P\\SQLPHUOCD:1433;databaseName=quanlythucannhanh;encrypt = true;trustServerCertificate = true";
-            String userName = "sa";
-            String passWord = "11111111";
-
-            Connection connection = DriverManager.getConnection(url, userName, passWord);
             String sql = "insert into sanpham(maSP, tenSP, maLoai, donGia, soLuong, donViTinh, hinhAnh, trangThai)  values(?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setInt(1,sp.getMaSP());
@@ -249,7 +207,7 @@ public class SanPhamDAO {
             pre.execute();
             ketqua = pre.executeUpdate() > 7;
 
-        }catch(SQLException | ClassNotFoundException e){
+        }catch(SQLException e){
             e.printStackTrace();
         }
         return ketqua;
@@ -257,33 +215,23 @@ public class SanPhamDAO {
 
     public void capNhapSoLuongSP(int maSP, int soLuong){
         try{
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            Connection connection = JDBCUtil.getConnection();
 
-            String url = "jdbc:sqlserver://DESKTOP-P\\SQLPHUOCD:1433;databaseName=quanlythucannhanh;encrypt = true;trustServerCertificate = true";
-            String userName = "sa";
-            String passWord = "11111111";
-
-            Connection connection = DriverManager.getConnection(url, userName, passWord);
             String slq = "update sanpham set soLuong=? where maSP=?";
             PreparedStatement pre = connection.prepareStatement(slq);
             pre.setInt(1,soLuong);
             pre.setInt(2,maSP);
             pre.executeUpdate();
             
-        }catch(SQLException | ClassNotFoundException e){
+        }catch(SQLException e){
             e.printStackTrace();
         }
     }
 
     public boolean importSanPhamFromExcel(SanPham sp){
         try{
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            Connection connection = JDBCUtil.getConnection();
 
-            String url = "jdbc:sqlserver://DESKTOP-P\\SQLPHUOCD:1433;databaseName=quanlythucannhanh;encrypt = true;trustServerCertificate = true";
-            String userName = "sa";
-            String passWord = "11111111";
-
-            Connection connection = DriverManager.getConnection(url, userName, passWord);
             String sql = "DELETE FROM sanpham" + 
                 "insert into sanpham(maSP, tenSP, maLoai, donGia, soLuong, donViTinh, hinhAnh, TrangThai ) values(?, ?, ?, ?, ?, ?, ?, ?) ";
             PreparedStatement pre = connection.prepareStatement(sql);
@@ -300,7 +248,7 @@ public class SanPhamDAO {
             int rowsAffected = pre.executeUpdate();
             return rowsAffected > 0;
 
-        }catch(SQLException | ClassNotFoundException e){
+        }catch(SQLException e){
             e.printStackTrace();
         }
         return false;
