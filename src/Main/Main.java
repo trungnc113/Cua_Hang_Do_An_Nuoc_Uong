@@ -1,10 +1,14 @@
 package Main;
 
+import Custom.JDBCUtil;
 import GUI.DangNhapGUI;
-
+import java.sql.*;
 public class Main {
     
     public static void main(String[] args) {
+        Connection c =JDBCUtil.getConnection();
+        if(c==null) return;
+        JDBCUtil.closeConnection(c);
         DangNhapGUI dangNhapGUI=new DangNhapGUI();
         dangNhapGUI.setVisible(true);   
     }

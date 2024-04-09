@@ -5,6 +5,7 @@
 package GUI;
 
 import Custom.Mytable;
+import DTO.NhaCungCap;
 
 /**
  *
@@ -12,9 +13,8 @@ import Custom.Mytable;
  */
 public class PnNhapHang extends javax.swing.JPanel {
 
-    /**
-     * Creates new form NewJPanel
-     */
+    private NhaCungCap currentNCC;
+
     public PnNhapHang() {
         initComponents();
     }
@@ -347,7 +347,12 @@ public class PnNhapHang extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnChonNhaCungCap1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChonNhaCungCap1ActionPerformed
-        // TODO add your handling code here:
+        dlgChonNhaCungCap dlChonNhaCungCap = new dlgChonNhaCungCap();
+        currentNCC = dlChonNhaCungCap.getSelectedNhaCungCap();
+        if (currentNCC == null) {
+            return;
+        }
+        txtNhaCungCap1.setText(currentNCC.getTenNCC());
     }//GEN-LAST:event_btnChonNhaCungCap1ActionPerformed
 
     private void btnXacNhan1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXacNhan1ActionPerformed

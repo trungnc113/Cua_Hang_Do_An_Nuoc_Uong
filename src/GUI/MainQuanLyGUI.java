@@ -1,5 +1,6 @@
 package GUI;
 
+import BUS.PhanQuyenBUS;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -121,21 +122,57 @@ public class MainQuanLyGUI extends JFrame {
         lbBanhang.setOpaque(true);
         pnMain.add(pnMenuLeft, BorderLayout.WEST);
 
-        PnQuanLyNhanVienGUI pnQuanLyNhanVienGUI = new PnQuanLyNhanVienGUI();
-        PnQuanLySanPhamGUI pnQuanLySanPhamGUI = new PnQuanLySanPhamGUI();
-        PnQuanLyBanHangGUI pnQuanLyBanHangGUI = new PnQuanLyBanHangGUI();
-        PnQuanLyNhapHangGUI pnQuanLyNhapHangGUI = new PnQuanLyNhapHangGUI();
-        PnQuanLyKhachHangGUI pnQuanLyKhachHangGUI = new PnQuanLyKhachHangGUI();
-        PnQuanLyKhuyenMaiGUI pnQuanLyKhuyenMaiGUI = new PnQuanLyKhuyenMaiGUI();
+        JPanel pnBanHang = new JPanel();
+        JPanel pnKhuyenMai = new JPanel();
+        JPanel pnNhapHang = new JPanel();
+        JPanel pnSanPham = new JPanel();
+        JPanel pnNhanVien = new JPanel();
+        JPanel pnKhachHang = new JPanel();
+        JPanel pnThongKe = new JPanel();
 
         cardListMenu = new CardLayout();
         pnCardListMenu = new JPanel(cardListMenu);
-        pnCardListMenu.add(pnQuanLyBanHangGUI, "1");
-        pnCardListMenu.add(pnQuanLyKhuyenMaiGUI, "2");
-        pnCardListMenu.add(pnQuanLySanPhamGUI, "3");
-        pnCardListMenu.add(pnQuanLyNhanVienGUI, "4");
-        pnCardListMenu.add(pnQuanLyKhachHangGUI, "5");
-        pnCardListMenu.add(pnQuanLyNhapHangGUI, "6");
+        pnCardListMenu.add(pnBanHang, "1");
+        pnCardListMenu.add(pnKhuyenMai, "2");
+        pnCardListMenu.add(pnSanPham, "3");
+        pnCardListMenu.add(pnNhanVien, "4");
+        pnCardListMenu.add(pnKhachHang, "5");
+        pnCardListMenu.add(pnNhapHang, "6");
+        pnCardListMenu.add(pnThongKe, "7");
+
+        PnQuanLyBanHangGUI pnQuanLyBanHangGUI = new PnQuanLyBanHangGUI();
+        pnBanHang.setLayout(new BorderLayout());
+        pnBanHang.add(pnQuanLyBanHangGUI, BorderLayout.CENTER);
+
+        PnQuanLyKhuyenMaiGUI pnQuanLyKhuyenMaiGUI = new PnQuanLyKhuyenMaiGUI();
+        pnKhuyenMai.setLayout(new BorderLayout());
+        pnKhuyenMai.add(pnQuanLyKhuyenMaiGUI, BorderLayout.CENTER);
+
+        PhanQuyenBUS phanQuyenBUS = new PhanQuyenBUS();
+        phanQuyenBUS.UpdateCurrentQuyen();
+
+        if (PhanQuyenBUS.currentQuyen != null) {
+            if (PhanQuyenBUS.currentQuyen.getQlNhanVien() == 1) {
+                PnQuanLyNhanVienGUI pnQuanLyNhanVienGUI = new PnQuanLyNhanVienGUI();
+                pnNhanVien.setLayout(new BorderLayout());
+                pnNhanVien.add(pnQuanLyNhanVienGUI, BorderLayout.CENTER);
+            }
+            if (PhanQuyenBUS.currentQuyen.getQlSanPham() == 1) {
+                PnQuanLySanPhamGUI pnQuanLySanPhamGUI = new PnQuanLySanPhamGUI();
+                pnSanPham.setLayout(new BorderLayout());
+                pnSanPham.add(pnQuanLySanPhamGUI, BorderLayout.CENTER);
+            }
+            if (PhanQuyenBUS.currentQuyen.getQlNhapHang() == 1) {
+                PnQuanLyNhapHangGUI pnQuanLyNhapHangGUI = new PnQuanLyNhapHangGUI();
+                pnNhapHang.setLayout(new BorderLayout());
+                pnNhapHang.add(pnQuanLyNhapHangGUI, BorderLayout.CENTER);
+            }
+            if (PhanQuyenBUS.currentQuyen.getQlKhachHang() == 1) {
+                PnQuanLyKhachHangGUI pnQuanLyKhachHangGUI = new PnQuanLyKhachHangGUI();
+                pnKhachHang.setLayout(new BorderLayout());
+                pnKhachHang.add(pnQuanLyKhachHangGUI, BorderLayout.CENTER);
+            }
+        }
 
         pnMain.add(pnCardListMenu, BorderLayout.CENTER);
         pnMain.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
@@ -177,7 +214,7 @@ public class MainQuanLyGUI extends JFrame {
 
             @Override
             public void mouseExited(MouseEvent e) {
-                
+
             }
         });
 
@@ -207,7 +244,7 @@ public class MainQuanLyGUI extends JFrame {
                     }
                 }
             }
-            
+
             public void mouseMoved(MouseEvent e) {
                 xMouse = e.getX();
                 yMouse = e.getY();
@@ -228,7 +265,7 @@ public class MainQuanLyGUI extends JFrame {
                     setCursor(Cursor.getPredefinedCursor(Cursor.SW_RESIZE_CURSOR));
                 } else if (e.getX() >= getWidth() - 1 && e.getY() >= getHeight() - 1) {
                     setCursor(Cursor.getPredefinedCursor(Cursor.SE_RESIZE_CURSOR));
-                } 
+                }
             }
         });
 
@@ -359,9 +396,4 @@ public class MainQuanLyGUI extends JFrame {
         this.setLocation(x - xMouse, y - yMouse);
     }
 
-    public static void main(String[] args) {
-        MainQuanLyGUI test = new MainQuanLyGUI();
-        test.setVisible(true);
-
-    }
 }

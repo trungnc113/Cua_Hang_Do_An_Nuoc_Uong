@@ -107,7 +107,10 @@ public class GiamGiaDAO {
         
     }
    
-    
+    public static void main(String[] args) {
+        GiamGiaDAO test=new GiamGiaDAO();
+        System.out.println(test.getListGiamGia());
+    }
 
     
 }

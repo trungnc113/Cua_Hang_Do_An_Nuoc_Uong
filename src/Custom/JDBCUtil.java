@@ -18,15 +18,16 @@ public class JDBCUtil {
         Connection c = null;
         readFileText();
         if (checkNullValues()) {
+            new dialog("Vui lòng chỉnh sửa file connect.txt", dialog.ERROR_DIALOG);
             return c;
         }
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             String dbUrl = "jdbc:sqlserver://" + hostname + ":1433;DatabaseName=" + dbname + ";encrypt= true;trustServerCertificate=true";
             c = DriverManager.getConnection(dbUrl, username, password);
-            System.out.println("success");
         } catch (ClassNotFoundException | SQLException ex) {
             ex.printStackTrace();
+            new dialog("Không thể kết nối tới CSDL", dialog.ERROR_DIALOG);
         }
         return c;
     }

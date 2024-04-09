@@ -1,8 +1,10 @@
 package Custom;
 
 import DTO.SanPham;
-import java.awt.Dimension;
+import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -11,25 +13,55 @@ public class listCard extends JPanel {
 
     private int w = 1000;
     private int h = 350;
-    JPanel productList = new JPanel();
+    JPanel productList;
+    JScrollPane scrollPane;
 
     // khởi tạo khi không có danh sách
     public listCard() {
-        productList.setLayout(null);
-        JScrollPane scrollPane = new JScrollPane(productList);
-        scrollPane.setPreferredSize(new Dimension(w, h));
-        this.setPreferredSize(new Dimension(w, 500));
-        this.add(scrollPane);
+        addControls();
+        addEvents();
     }
 
     //khởi tạo khi có danh sách
     public listCard(ArrayList<SanPham> listSP) {
-        productList.setLayout(new GridLayout(0, 5, 5, 5));
-        JScrollPane scrollPane = new JScrollPane(productList);
-        scrollPane.setPreferredSize(new Dimension(w, h));
-        this.setPreferredSize(new Dimension(w, 500));
-        this.add(scrollPane);
+        addControls();
+        addEvents();
         addCards(listSP);
+    }
+
+    private void addControls() {
+        productList=new JPanel();
+        productList.setLayout(new GridLayout(0, 5));
+        scrollPane = new JScrollPane(productList);
+        this.setLayout(new BorderLayout());
+        this.add(scrollPane, BorderLayout.CENTER);
+    }
+
+    private void addEvents() {
+        scrollPane.addComponentListener(new ComponentListener() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                updateCols();
+            }
+
+            @Override
+            public void componentMoved(ComponentEvent e) {
+            }
+
+            @Override
+            public void componentShown(ComponentEvent e) {
+            }
+
+            @Override
+            public void componentHidden(ComponentEvent e) {
+            }
+        });
+    }
+
+    private void updateCols() {
+        int width = scrollPane.getViewport().getWidth();
+        int col = Math.max(1, width / 200);
+        productList.setLayout(new GridLayout(0, col));
     }
 
     // thêm khi có danh sách
@@ -37,14 +69,12 @@ public class listCard extends JPanel {
         for (int i = 0; i < listSP.size(); i++) {
             productList.add(new ProductCard(listSP.get(i)));
         }
-
     }
 
     //thêm khi chỉ có 1 sản phẩm
     public void addCard(SanPham sp) {
         productList.add(new ProductCard(sp));
     }
-
     //clear
     public void removeAll() {
         productList.removeAll();

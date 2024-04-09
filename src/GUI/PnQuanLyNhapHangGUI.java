@@ -46,7 +46,7 @@ public class PnQuanLyNhapHangGUI extends JPanel {
         pnTop.setPreferredSize(new Dimension(w, 41));
         pnTop.setLayout(new GridLayout(1, 2));
 
-        lbNhapHang = new JLabel("Bán hàng");
+        lbNhapHang = new JLabel("Nhập hàng");
         lbNhapHang.setFont(FtTitleText);
         lbNhapHang.setForeground(Color.white);
         lbNhapHang.setOpaque(true);
@@ -55,7 +55,7 @@ public class PnQuanLyNhapHangGUI extends JPanel {
         lbNhapHang.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         pnTop.add(lbNhapHang);
 
-        lbPhieuNhap = new JLabel("Hóa đơn");
+        lbPhieuNhap = new JLabel("Phiếu nhập");
         lbPhieuNhap.setFont(FtTitleText);
         lbPhieuNhap.setForeground(ClMain);
         lbPhieuNhap.setOpaque(true);

@@ -30,7 +30,7 @@ public class PhanQuyenDAO {
             PreparedStatement pst = c.prepareStatement(sql);
             pst.setInt(1, t.getMaQuyen());
             pst.setString(2, "" + t.getTenQuyen());
-            pst.setInt(3, t.getNhapHang());
+            pst.setInt(3, t.getQlNhapHang());
             pst.setInt(4, t.getQlSanPham());
             pst.setInt(5, t.getQlNhanVien());
             pst.setInt(6, t.getQlKhachHang());
@@ -51,7 +51,7 @@ public class PhanQuyenDAO {
             String sql = "update phanquyen set tenQuyen=? ,nhapHang=?,qlSanPham=?,qlNhanVien=?,qlKhachHang=?,thongKe=?,trangThai=? where maQuyen=? ";
             PreparedStatement pst = c.prepareStatement(sql);
             pst.setString(1, t.getTenQuyen());
-            pst.setInt(2, t.getNhapHang());
+            pst.setInt(2, t.getQlNhapHang());
             pst.setInt(3, t.getQlSanPham());
             pst.setInt(4, t.getQlNhanVien());
             pst.setInt(5, t.getQlKhachHang());
@@ -117,6 +117,7 @@ public class PhanQuyenDAO {
             Connection c = JDBCUtil.getConnection();
             String sql = "select * from phanquyen where maQuyen=? and trangThai=1";
             PreparedStatement pst = c.prepareStatement(sql);
+            pst.setInt(1, t.getMaQuyen());
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 int maQuyen = rs.getInt("maQuyen");

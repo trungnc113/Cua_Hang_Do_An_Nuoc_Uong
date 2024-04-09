@@ -4,17 +4,22 @@ public class PhanQuyen {
 
     private int maQuyen;
     private String tenQuyen;
-    private int nhapHang;
+    private int qlNhapHang;
     private int qlSanPham;
     private int qlNhanVien;
     private int qlKhachHang;
     private int thongKe;
     private int trangThai;
 
-    public PhanQuyen(int maQuyen, String tenQuyen, int nhapHang, int qlSanPham, int qlNhanVien, int qlKhachHang, int thongKe, int trangThai) {
+    public PhanQuyen() {
+    }
+
+    
+    
+    public PhanQuyen(int maQuyen, String tenQuyen, int qlNhapHang, int qlSanPham, int qlNhanVien, int qlKhachHang, int thongKe, int trangThai) {
         this.maQuyen = maQuyen;
         this.tenQuyen = tenQuyen;
-        this.nhapHang = nhapHang;
+        this.qlNhapHang = qlNhapHang;
         this.qlSanPham = qlSanPham;
         this.qlNhanVien = qlNhanVien;
         this.qlKhachHang = qlKhachHang;
@@ -46,14 +51,16 @@ public class PhanQuyen {
         this.tenQuyen = tenQuyen;
     }
 
-    public int getNhapHang() {
-        return nhapHang;
+    public int getQlNhapHang() {
+        return qlNhapHang;
     }
 
-    public void setNhapHang(int nhapHang) {
-        this.nhapHang = nhapHang;
+    public void setQlNhapHang(int qlNhapHang) {
+        this.qlNhapHang = qlNhapHang;
     }
 
+   
+    
     public int getQlSanPham() {
         return qlSanPham;
     }

@@ -17,6 +17,7 @@ import java.util.ArrayList;
  * @author nguye
  */
 public class NhaCungCapDAO {
+
     public NhaCungCapDAO() {
 
     }
@@ -27,7 +28,7 @@ public class NhaCungCapDAO {
             Connection c = JDBCUtil.getConnection();
             String sql = "select * from nhacungcap where maNCC=? and trangThai=1";
             PreparedStatement pst = c.prepareStatement(sql);
-            pst.setString(1, "" + t.getMaNCC());
+            pst.setInt(1, t.getMaNCC());
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 int maNCC = rs.getInt("maNCC");
@@ -146,4 +147,22 @@ public class NhaCungCapDAO {
         }
         return nhaCungCaps;
     }
+
+    public int getNewMa() {
+        int ma = -1;
+        try {
+            Connection c = JDBCUtil.getConnection();
+            String sql = "select max(maNCC) as maNCC from nhacungcap";
+            PreparedStatement pst = c.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                ma = rs.getInt("maNCC");
+            }
+            JDBCUtil.closeConnection(c);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return ma;
+    }
+
 }

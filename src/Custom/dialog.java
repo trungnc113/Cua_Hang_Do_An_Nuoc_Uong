@@ -15,7 +15,6 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -36,10 +35,10 @@ public class dialog extends JDialog {
     final ImageIcon iconInfo = new ImageIcon("image/btn/icons8_info_70px.png");
     final ImageIcon iconWarning = new ImageIcon("image/btn/icons8_warning_shield_70px.png");
 
-    public final static int ERROR_DIALOG = 1;
-    public final static int SUCCESS_DIALOG = 2;
-    public final static int INFO_DIALOG = 3;
-    public final static int WARNING_DIALOG = 4;
+    public final static int ERROR_DIALOG = 1;//thông báo lỗi
+    public final static int SUCCESS_DIALOG = 2;//thông báo thành công
+    public final static int INFO_DIALOG = 3;//thông báo thông tin
+    public final static int WARNING_DIALOG = 4;//cảnh báo
 
     JButton btnOK, btnCancel;
     JLabel lbClose, lbIcon, lbContent;
@@ -54,6 +53,7 @@ public class dialog extends JDialog {
     public dialog(String content, int type) {
         this.content = content;
         this.type = type;
+        Main.changLNF("Windows");
         Show();
     }
 
@@ -62,6 +62,7 @@ public class dialog extends JDialog {
 
         JPanel pnMain = new JPanel();
         pnMain.setLayout(new BoxLayout(pnMain, BoxLayout.Y_AXIS));
+        pnMain.setBackground(Color.white);
 
         pnHeader = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         pnHeader.setPreferredSize(new Dimension(400, 25));
@@ -71,11 +72,13 @@ public class dialog extends JDialog {
         pnMain.add(pnHeader);
 
         JPanel pnIcon = new JPanel();
+        pnIcon.setOpaque(false);
         lbIcon = new JLabel();
         pnIcon.add(lbIcon);
         pnMain.add(pnIcon);
 
         JPanel pnContent = new JPanel();
+        pnContent.setOpaque(false);
         lbContent = new JLabel(content);
         lbContent.setForeground(Color.BLACK);
         lbContent.setFont(font);
@@ -83,6 +86,7 @@ public class dialog extends JDialog {
         pnMain.add(pnContent);
 
         JPanel pnbtn = new JPanel(new FlowLayout());
+        pnbtn.setOpaque(false);
         btnOK = new JButton("OK");
         btnOK.setFont(font);
         btnOK.setFocusable(false);
@@ -94,6 +98,7 @@ public class dialog extends JDialog {
         pnMain.add(pnbtn);
         
         JPanel pnFooter = new JPanel();
+        pnFooter.setOpaque(false);
         pnFooter.setPreferredSize(new Dimension(400, 20));
         pnMain.add(pnFooter);
 
@@ -176,7 +181,7 @@ public class dialog extends JDialog {
     }
 
     private void Close() {
-        this.setVisible(false);
+        this.dispose();
     }
 
     private void Show() {
@@ -185,10 +190,10 @@ public class dialog extends JDialog {
         addEvents();
         this.setUndecorated(true);
         this.setSize(400, 250);
-        this.setVisible(true);
-        this.setAlwaysOnTop(true);
         this.setLocationRelativeTo(null);
+        this.setAlwaysOnTop(true);
         this.setModal(true);
+        this.setVisible(true);
         getRootPane().setDefaultButton(btnOK);
     }
 
@@ -198,18 +203,5 @@ public class dialog extends JDialog {
 
     public int getAction() {
         return Action;
-    }
-
-    public static void main(String[] args) {
-        JFrame myFrame = new JFrame();
-        dialog test = new dialog("Không kết nối được", dialog.ERROR_DIALOG);
-
-//        myFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-//        myFrame.add(test);
-//
-//        myFrame.pack();
-//        myFrame.setResizable(false);
-//        myFrame.setLocationRelativeTo(null);
-//        myFrame.setVisible(true);
     }
 }

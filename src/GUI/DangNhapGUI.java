@@ -49,6 +49,7 @@ public class DangNhapGUI extends JFrame {
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.pack();
         this.setLocationRelativeTo(null);
+        this.getRootPane().setDefaultButton(btnLogin);
     }
 
     private void addControls() {
@@ -139,9 +140,4 @@ public class DangNhapGUI extends JFrame {
         mainQuanLyGUI.setVisible(true);
         this.dispose();
     }
-
-//    public static void main(String[] args) {
-//   
-//        DangNhapGUI dangNhapGUI = new DangNhapGUI();
-//    }
 }

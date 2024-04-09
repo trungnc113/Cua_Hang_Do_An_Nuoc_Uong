@@ -16,6 +16,7 @@ public class NhaCungCap {
         this.tenNCC = tenNCC;
         this.diaChi = diaChi;
         this.dienThoai = dienThoai;
+        this.trangThai=trangThai;
     }
 
     public int getMaNCC() {

@@ -5,7 +5,7 @@
 package GUI;
 
 import Custom.Mytable;
-import Custom.listCard;
+import Custom.listCard; 
 import DTO.SanPham;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -73,6 +73,7 @@ public class PnBanHang extends JPanel {
         pnSearchSP.add(pnTypeSP);
 
         JPanel pnFindSP = new JPanel();//tạo khung chứa thanh tìm sp
+        pnFindSP.setLayout(new BoxLayout(pnFindSP,BoxLayout.X_AXIS));
         JLabel lbFindSP = new JLabel("Tìm kiếm");
         lbFindSP.setFont(font);
         JTextField textFind = new JTextField(25);
@@ -88,10 +89,8 @@ public class PnBanHang extends JPanel {
 
         this.add(pnSearchSP);
 
-        JPanel test = new JPanel();
         listCardSP = new listCard(); // tạo listCard
-        test.add(listCardSP);
-        this.add(test);
+        this.add(listCardSP);
 
         JPanel pnTltGioHang = new JPanel();//tạo khung chứa tên giỏ hàng
         JLabel lbTltGioHang = new JLabel("<html><h1>Giỏ hàng</h1></html>");
