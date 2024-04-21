@@ -213,7 +213,7 @@ public class SanPhamDAO {
         return ketqua;
     }
 
-    public void capNhapSoLuongSP(int maSP, int soLuong){
+    public void capNhatSoLuongSP(int maSP, int soLuong){
         try{
             Connection connection = JDBCUtil.getConnection();
 
