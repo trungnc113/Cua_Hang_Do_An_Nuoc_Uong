@@ -253,5 +253,84 @@ public class SanPhamDAO {
         }
         return false;
     }
+    public ArrayList<SanPham> getDanhSachSanPhamTheoLoai(String tenloai){
+        try{
+            Connection connection = JDBCUtil.getConnection();
+            String slq = "select * from sanpham, loaiSP where sanpham.trangThai=1 and loaiSP.maLoai = sanpham.maLoai and loaiSP.tenLoai = N'"+tenloai+"'";
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(slq);
+            ArrayList<SanPham> listSP = new ArrayList<>();
+            while (rs.next()) {
+                SanPham sp = new SanPham();
+                sp.setMaSP(rs.getInt(1));
+                sp.setTenSP(rs.getString(2));
+                sp.setMaLoai(rs.getInt(3));
+                sp.setDonGia(rs.getInt(4));
+                sp.setSoLuong(rs.getInt(5));
+                sp.setDonViTinh(rs.getString(6));
+                sp.setHinhAnh(rs.getString(7));
+                sp.setTrangThai(rs.getInt(8));
+                listSP.add(sp);
+            }
+            return listSP;
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+    public ArrayList<SanPham> getDanhSachSanPhamTheoTimKiem(String tenSP){
+        try{
+            Connection connection = JDBCUtil.getConnection();
+            String slq = "select * from sanpham where sanpham.trangThai=1 and tenSP like N'%"+tenSP+"%'";
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(slq);
+            ArrayList<SanPham> listSP = new ArrayList<>();
+            while (rs.next()) {
+                SanPham sp = new SanPham();
+                sp.setMaSP(rs.getInt(1));
+                sp.setTenSP(rs.getString(2));
+                sp.setMaLoai(rs.getInt(3));
+                sp.setDonGia(rs.getInt(4));
+                sp.setSoLuong(rs.getInt(5));
+                sp.setDonViTinh(rs.getString(6));
+                sp.setHinhAnh(rs.getString(7));
+                sp.setTrangThai(rs.getInt(8));
+                listSP.add(sp);
+            }
+            return listSP;
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+    public ArrayList<SanPham> getDanhSachSanPhamTheoLoaivaTimKiem(String tenloai, String tenSP){
+        try{
+            Connection connection = JDBCUtil.getConnection();
+            String slq = "select * from sanpham, loaiSP where sanpham.trangThai=1 and loaiSP.maLoai = sanpham.maLoai and loaiSP.tenLoai = N'"+tenloai+"' and sanpham.tenSP like N'%"+tenSP+"%'";
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(slq);
+            ArrayList<SanPham> listSP = new ArrayList<>();
+            while (rs.next()) {
+                SanPham sp = new SanPham();
+                sp.setMaSP(rs.getInt(1));
+                sp.setTenSP(rs.getString(2));
+                sp.setMaLoai(rs.getInt(3));
+                sp.setDonGia(rs.getInt(4));
+                sp.setSoLuong(rs.getInt(5));
+                sp.setDonViTinh(rs.getString(6));
+                sp.setHinhAnh(rs.getString(7));
+                sp.setTrangThai(rs.getInt(8));
+                listSP.add(sp);
+            }
+            return listSP;
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
 
 }

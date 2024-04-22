@@ -1,6 +1,8 @@
 package Custom;
 
 import DTO.SanPham;
+import demoGUI.PUChiTietSP;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -8,11 +10,7 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
+import javax.swing.*;
 import javax.swing.border.BevelBorder;
 
 public class ProductCard extends JPanel {
@@ -32,7 +30,7 @@ public class ProductCard extends JPanel {
 
     private void drawProductCard() {
         //lấy ảnh và scale
-        ImageIcon imageIcon = new ImageIcon(sp.getHinhAnh());
+        ImageIcon imageIcon = new ImageIcon("image/products/"+sp.getHinhAnh());
         Image image = imageIcon.getImage();
         Image newimg = image.getScaledInstance(w - 50, 145, java.awt.Image.SCALE_SMOOTH); // scale img 
         imageIcon = new ImageIcon(newimg);  // gán lại
@@ -73,7 +71,14 @@ public class ProductCard extends JPanel {
         this.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                System.out.println(sp.getMaSP());
+                PUChiTietSP popup = new PUChiTietSP(sp);
+                JDialog dialog = new JDialog();
+                dialog.add(popup);
+                dialog.pack();
+                dialog.setModal(true);
+                dialog.setLocationRelativeTo(null);
+                dialog.setVisible(true);
+
             }
 
             @Override

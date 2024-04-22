@@ -4,13 +4,18 @@
  */
 package GUI;
 
+import BUS.SanPhamBUS;
 import Custom.Mytable;
-import Custom.listCard; 
+import Custom.listCard;
+import DAO.LoaiSPDAO;
+import DAO.SanPhamDAO;
 import DTO.SanPham;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -64,10 +69,10 @@ public class PnBanHang extends JPanel {
         JPanel pnTypeSP = new JPanel();//tạo khung chứa nơi chọn loại sp
         JLabel lbTypeSP = new JLabel("Loại");
         lbTypeSP.setFont(font);
-        JComboBox<String> cmbTypeSP = new JComboBox<>();
-        cmbTypeSP.addItem("Loại sản phẩm");// khi có database thì xóa dòng này tạo hàm mới để lấy data các loại và add vào combobox này
-        cmbTypeSP.setFont(font);
-        cmbTypeSP.setFocusable(false);
+        JComboBox<String> cmbTypeSP = loaisp();
+//        cmbTypeSP.addItem("Loại sản phẩm");// khi có database thì xóa dòng này tạo hàm mới để lấy data các loại và add vào combobox này
+//        cmbTypeSP.setFont(font);
+//        cmbTypeSP.setFocusable(false);
         pnTypeSP.add(lbTypeSP);
         pnTypeSP.add(cmbTypeSP);
         pnSearchSP.add(pnTypeSP);
@@ -76,7 +81,8 @@ public class PnBanHang extends JPanel {
         pnFindSP.setLayout(new BoxLayout(pnFindSP,BoxLayout.X_AXIS));
         JLabel lbFindSP = new JLabel("Tìm kiếm");
         lbFindSP.setFont(font);
-        JTextField textFind = new JTextField(25);
+        JTextField textFind = new JTextField(100);
+        textFind.setMaximumSize(new Dimension(2000, 30));
         textFind.setFont(font);
         JButton btnFindSP = new JButton(new ImageIcon("image/btn/search.png"));
         btnFindSP.setPreferredSize(new Dimension(40, 40));
@@ -88,9 +94,11 @@ public class PnBanHang extends JPanel {
         pnSearchSP.add(pnFindSP);
 
         this.add(pnSearchSP);
-
-        listCardSP = new listCard(); // tạo listCard
+        SanPhamDAO list = new SanPhamDAO(); // list này để lấy sản list sp ở lớp dao
+        listCardSP = new listCard(list.getDanhSachSanPham());
         this.add(listCardSP);
+        eventCombobox(cmbTypeSP);
+        eventBTN(btnFindSP,textFind,cmbTypeSP);
 
         JPanel pnTltGioHang = new JPanel();//tạo khung chứa tên giỏ hàng
         JLabel lbTltGioHang = new JLabel("<html><h1>Giỏ hàng</h1></html>");
@@ -119,13 +127,55 @@ public class PnBanHang extends JPanel {
 
         pnTbGioHang.add(scrmtbGioHang, BorderLayout.CENTER);
         this.add(pnTbGioHang);
-        loadDatalistSP();
-
     }
-
-    private void loadDatalistSP() { // có database thì sửa lại
-        for (int i = 1; i <= 8; i++) {
-            listCardSP.addCard(new SanPham(i, "Pizza " + i, 1, 100, "cái", "image/Logo/logo.png", 100000,1));
+    public JComboBox<String> loaisp() // lấy hết tên loại và gán vào combobox
+    {
+        LoaiSPDAO listLoai = new LoaiSPDAO();
+        JComboBox<String> cmbTypeSP = new JComboBox<>();
+        cmbTypeSP.addItem("Loại sản phẩm"); // mặc định
+        for(int i = 0; i < listLoai.getLoaiSanPham().size(); i++)
+        {
+            cmbTypeSP.addItem(listLoai.getLoaiSanPham().get(i).getTenLoai());
         }
+        cmbTypeSP.setFont(font);
+        cmbTypeSP.setFocusable(false);
+        return cmbTypeSP;
     }
+    public void eventCombobox(JComboBox CBB){ // set sự kiện của combobox phaan loai
+        SanPhamBUS list = new SanPhamBUS();
+        CBB.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(CBB.getSelectedIndex() == 0){
+                    listCardSP.removeAll();
+                    listCardSP.addCards(list.getListSP());
+                }
+                else {
+                    listCardSP.removeAll();
+                    listCardSP.addCards(list.listSPtheoLoai("" + CBB.getSelectedItem()));
+                }
+                listCardSP.revalidate(); // cập nhật lại danh sách
+                listCardSP.repaint();
+            }
+        });
+    }
+    public void eventBTN(JButton BTN, JTextField TF, JComboBox CBB){
+        SanPhamBUS list = new SanPhamBUS();
+        BTN.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(CBB.getSelectedIndex() == 0){
+                    listCardSP.removeAll();
+                    listCardSP.addCards(list.listSPtheoten(TF.getText()));
+                }
+                else{
+                    listCardSP.removeAll();
+                    listCardSP.addCards(list.listSPtheoLoaivaTenSP(""+CBB.getSelectedItem(),TF.getText()));
+                }
+                listCardSP.revalidate(); // cập nhật lại danh sách
+                listCardSP.repaint();
+            }
+        });
+    }
+
 }

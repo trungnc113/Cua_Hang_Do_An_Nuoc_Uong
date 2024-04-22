@@ -240,5 +240,14 @@ public class SanPhamBUS {
         }
         return false;
     }
+    public ArrayList<SanPham> listSPtheoLoai(String TenLoai){
+        return spDAO.getDanhSachSanPhamTheoLoai(TenLoai);
+    }
+    public ArrayList<SanPham> listSPtheoLoaivaTenSP(String tenloai, String tenSP){
+        return spDAO.getDanhSachSanPhamTheoLoaivaTimKiem(tenloai, tenSP);
+    }
+    public ArrayList<SanPham> listSPtheoten(String tenSP){
+        return spDAO.getDanhSachSanPhamTheoTimKiem(tenSP);
+    }
 
 }
