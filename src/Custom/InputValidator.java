@@ -27,4 +27,11 @@ public class InputValidator {
 
         return matcher.matches();
     }
+    //kiểm tra số dương
+    public static boolean isPositiveNumber(String number){
+        String pattern = "\\d+";
+        Pattern regex = Pattern.compile(pattern);
+        Matcher matcher = regex.matcher(number);
+        return matcher.matches();
+    }
 }

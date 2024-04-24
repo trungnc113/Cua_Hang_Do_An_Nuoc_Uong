@@ -85,7 +85,7 @@ public class NhaCungCapBUS {
         if (!checkInfors(nhaCungCap)) { //kiểm tra dữ liệu đầu vào 
             return false;
         }
-        int rs = nhaCungCapDAO.insert(nhaCungCap);
+        int rs = nhaCungCapDAO.insert(nhaCungCap);// tiến hành thêm nhà cung cấp
         if (rs == 0) {
             new dialog("Thêm không thành công", dialog.ERROR_DIALOG);
             return false;

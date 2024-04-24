@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 /**
@@ -149,16 +150,17 @@ public class NhaCungCapDAO {
     }
 
     public int getNewMa() {
-        int ma = -1;
+        int ma=-1;
         try {
             Connection c = JDBCUtil.getConnection();
-            String sql = "select max(maNCC) as maNCC from nhacungcap";
-            PreparedStatement pst = c.prepareStatement(sql);
-            ResultSet rs = pst.executeQuery();
-            if (rs.next()) {
-                ma = rs.getInt("maNCC");
+            String sql ="select max(maNCC) as maNCC from nhacungcap";
+            Statement st = c.createStatement();
+            ResultSet rs=st.executeQuery(sql);
+            if(rs.next()){
+                ma=rs.getInt("maNCC");
             }
             JDBCUtil.closeConnection(c);
+            return ma;
         } catch (SQLException e) {
             e.printStackTrace();
         }

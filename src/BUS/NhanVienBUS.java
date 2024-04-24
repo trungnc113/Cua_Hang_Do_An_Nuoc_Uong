@@ -4,10 +4,19 @@
  */
 package BUS;
 
+import DAO.NhanVienDAO;
+import DTO.NhanVien;
+
 /**
  *
  * @author nguye
  */
 public class NhanVienBUS {
-    
+    NhanVienDAO nhanVienDAO = new NhanVienDAO();
+
+    public NhanVienBUS() {
+    }
+    public NhanVien getById(int maNV){
+        return nhanVienDAO.getNhanVien(maNV);
+    }
 }

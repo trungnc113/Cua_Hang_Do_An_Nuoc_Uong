@@ -32,10 +32,7 @@ public class ProductCard extends JPanel {
 
     private void drawProductCard() {
         //lấy ảnh và scale
-        ImageIcon imageIcon = new ImageIcon(sp.getHinhAnh());
-        Image image = imageIcon.getImage();
-        Image newimg = image.getScaledInstance(w - 50, 145, java.awt.Image.SCALE_SMOOTH); // scale img 
-        imageIcon = new ImageIcon(newimg);  // gán lại
+        ImageIcon imageIcon = ScaleImage.scaleImage("image/products/"+sp.getHinhAnh(), w - 50, 145);
 
         JLabel imageJLabel = new JLabel(imageIcon);
         imageJLabel.setHorizontalAlignment(JLabel.CENTER);

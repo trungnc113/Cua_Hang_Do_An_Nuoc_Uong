@@ -113,6 +113,7 @@ public class MainQuanLyGUI extends JFrame {
         listMenuLeft.add(lbThongke);
 
         for (JLabel opt : listMenuLeft) {
+            opt.setVisible(false);
             opt.setPreferredSize(new Dimension(250, 65));
             opt.setOpaque(false);
             opt.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -143,10 +144,12 @@ public class MainQuanLyGUI extends JFrame {
         PnQuanLyBanHangGUI pnQuanLyBanHangGUI = new PnQuanLyBanHangGUI();
         pnBanHang.setLayout(new BorderLayout());
         pnBanHang.add(pnQuanLyBanHangGUI, BorderLayout.CENTER);
+        lbBanhang.setVisible(true);
 
         PnQuanLyKhuyenMaiGUI pnQuanLyKhuyenMaiGUI = new PnQuanLyKhuyenMaiGUI();
         pnKhuyenMai.setLayout(new BorderLayout());
         pnKhuyenMai.add(pnQuanLyKhuyenMaiGUI, BorderLayout.CENTER);
+        lbKhuyenmai.setVisible(true);
 
         PhanQuyenBUS phanQuyenBUS = new PhanQuyenBUS();
         phanQuyenBUS.UpdateCurrentQuyen();
@@ -156,21 +159,31 @@ public class MainQuanLyGUI extends JFrame {
                 PnQuanLyNhanVienGUI pnQuanLyNhanVienGUI = new PnQuanLyNhanVienGUI();
                 pnNhanVien.setLayout(new BorderLayout());
                 pnNhanVien.add(pnQuanLyNhanVienGUI, BorderLayout.CENTER);
+                lbNhanvien.setVisible(true);
             }
             if (PhanQuyenBUS.currentQuyen.getQlSanPham() == 1) {
                 PnQuanLySanPhamGUI pnQuanLySanPhamGUI = new PnQuanLySanPhamGUI();
                 pnSanPham.setLayout(new BorderLayout());
                 pnSanPham.add(pnQuanLySanPhamGUI, BorderLayout.CENTER);
+                lbSanpham.setVisible(true);
             }
             if (PhanQuyenBUS.currentQuyen.getQlNhapHang() == 1) {
                 PnQuanLyNhapHangGUI pnQuanLyNhapHangGUI = new PnQuanLyNhapHangGUI();
                 pnNhapHang.setLayout(new BorderLayout());
                 pnNhapHang.add(pnQuanLyNhapHangGUI, BorderLayout.CENTER);
+                lbNhaphang.setVisible(true);
             }
             if (PhanQuyenBUS.currentQuyen.getQlKhachHang() == 1) {
                 PnQuanLyKhachHangGUI pnQuanLyKhachHangGUI = new PnQuanLyKhachHangGUI();
                 pnKhachHang.setLayout(new BorderLayout());
                 pnKhachHang.add(pnQuanLyKhachHangGUI, BorderLayout.CENTER);
+                lbKhachhang.setVisible(true);
+            }
+            if (PhanQuyenBUS.currentQuyen.getThongKe() == 1) {
+                PnThongKe pnQuanLyThongKe = new PnThongKe();
+                pnThongKe.setLayout(new BorderLayout());
+                pnThongKe.add(pnQuanLyThongKe, BorderLayout.CENTER);
+                lbThongke.setVisible(true);
             }
         }
 
@@ -356,6 +369,8 @@ public class MainQuanLyGUI extends JFrame {
                         cardName = "5";
                     } else if (opt == lbNhaphang) {
                         cardName = "6";
+                    } else if (opt == lbThongke) {
+                        cardName = "7";
                     }
                     cardListMenu.show(pnCardListMenu, cardName);
                 }

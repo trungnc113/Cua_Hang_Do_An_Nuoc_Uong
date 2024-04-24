@@ -4,10 +4,24 @@
  */
 package BUS;
 
+import DAO.SanPhamDAO;
+import DTO.SanPham;
+import java.util.ArrayList;
+
 /**
  *
  * @author nguye
  */
 public class SanPhamBUS {
+    private SanPhamDAO sanPhamDAO =new SanPhamDAO();
+
+    public SanPhamBUS() {
+    }
+    public ArrayList<SanPham> getList(){
+        return sanPhamDAO.getDanhSachSanPham();
+    }
     
+    public SanPham getById(int maSP){
+        return sanPhamDAO.getSanPhamTheoMa(maSP);
+    }
 }

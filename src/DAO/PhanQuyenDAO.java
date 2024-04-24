@@ -6,6 +6,7 @@ package DAO;
 
 import Custom.JDBCUtil;
 import DTO.PhanQuyen;
+import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -48,16 +49,15 @@ public class PhanQuyenDAO {
         int ketQua = 0;
         try {
             Connection c = JDBCUtil.getConnection();
-            String sql = "update phanquyen set tenQuyen=? ,nhapHang=?,qlSanPham=?,qlNhanVien=?,qlKhachHang=?,thongKe=?,trangThai=? where maQuyen=? ";
+            String sql = "update phanquyen set nhapHang=?,qlSanPham=?,qlNhanVien=?,qlKhachHang=?,thongKe=?,trangThai=? where maQuyen=? ";
             PreparedStatement pst = c.prepareStatement(sql);
-            pst.setString(1, t.getTenQuyen());
-            pst.setInt(2, t.getQlNhapHang());
-            pst.setInt(3, t.getQlSanPham());
-            pst.setInt(4, t.getQlNhanVien());
-            pst.setInt(5, t.getQlKhachHang());
-            pst.setInt(6, t.getThongKe());
-            pst.setInt(7, t.getTrangThai());
-            pst.setInt(8, t.getMaQuyen());
+            pst.setInt(1, t.getQlNhapHang());
+            pst.setInt(2, t.getQlSanPham());
+            pst.setInt(3, t.getQlNhanVien());
+            pst.setInt(4, t.getQlKhachHang());
+            pst.setInt(5, t.getThongKe());
+            pst.setInt(6, t.getTrangThai());
+            pst.setInt(7, t.getMaQuyen());
             ketQua = pst.executeUpdate();
 
             JDBCUtil.closeConnection(c);
@@ -68,13 +68,13 @@ public class PhanQuyenDAO {
         return ketQua;
     }
 
-    public int delete(PhanQuyen t) {
+    public int delete(int ma) {
         int ketQua = 0;
         try {
             Connection c = JDBCUtil.getConnection();
             String sql = "update phanquyen set trangThai=0 where maQuyen = ?";
             PreparedStatement pst = c.prepareStatement(sql);
-            pst.setInt(1, t.getMaQuyen());
+            pst.setInt(1, ma);
 
             ketQua = pst.executeUpdate();
 
@@ -97,11 +97,12 @@ public class PhanQuyenDAO {
                 int maQuyen = rs.getInt("maQuyen");
                 String tenQuyen = rs.getString("tenQuyen");
                 int nhapHang = rs.getInt("nhapHang");
-                int qlSanPham = rs.getInt("qlNhanVien");
+                int qlSanPham = rs.getInt("qlSanPham");
+                int qlNhanVien=rs.getInt("qlNhanVien");
                 int qlKhachHang = rs.getInt("qlKhachHang");
                 int thongke = rs.getInt("thongKe");
                 int trangThai = rs.getInt("trangThai");
-                PhanQuyen phanQuyen = new PhanQuyen(maQuyen, tenQuyen, nhapHang, qlSanPham, qlKhachHang, qlKhachHang, thongke, trangThai);
+                PhanQuyen phanQuyen = new PhanQuyen(maQuyen, tenQuyen, nhapHang, qlSanPham, qlNhanVien, qlKhachHang, thongke, trangThai);
                 phanQuyens.add(phanQuyen);
             }
             JDBCUtil.closeConnection(c);
@@ -123,11 +124,12 @@ public class PhanQuyenDAO {
                 int maQuyen = rs.getInt("maQuyen");
                 String tenQuyen = rs.getString("tenQuyen");
                 int nhapHang = rs.getInt("nhapHang");
-                int qlSanPham = rs.getInt("qlNhanVien");
+                int qlSanPham = rs.getInt("qlSanPham");
+                int qlNhanVien=rs.getInt("qlNhanVien");
                 int qlKhachHang = rs.getInt("qlKhachHang");
                 int thongke = rs.getInt("thongKe");
                 int trangThai = rs.getInt("trangThai");
-                phanQuyen = new PhanQuyen(maQuyen, tenQuyen, nhapHang, qlSanPham, qlKhachHang, qlKhachHang, thongke, trangThai);
+                phanQuyen = new PhanQuyen(maQuyen, tenQuyen, nhapHang, qlSanPham, qlNhanVien, qlKhachHang, thongke, trangThai);
             }
             JDBCUtil.closeConnection(c);
         } catch (SQLException e) {
@@ -136,7 +138,6 @@ public class PhanQuyenDAO {
         return phanQuyen;
     }
 
-   
     public ArrayList<PhanQuyen> selectByCondition(String condition) {
         ArrayList<PhanQuyen> phanQuyens = new ArrayList<>();
         try {
@@ -148,11 +149,12 @@ public class PhanQuyenDAO {
                 int maQuyen = rs.getInt("maQuyen");
                 String tenQuyen = rs.getString("tenQuyen");
                 int nhapHang = rs.getInt("nhapHang");
-                int qlSanPham = rs.getInt("qlNhanVien");
+                int qlSanPham = rs.getInt("qlSanPham");
+                int qlNhanVien=rs.getInt("qlNhanVien");
                 int qlKhachHang = rs.getInt("qlKhachHang");
                 int thongke = rs.getInt("thongKe");
                 int trangThai = rs.getInt("trangThai");
-                PhanQuyen phanQuyen = new PhanQuyen(maQuyen, tenQuyen, nhapHang, qlSanPham, qlKhachHang, qlKhachHang, thongke, trangThai);
+                PhanQuyen phanQuyen = new PhanQuyen(maQuyen, tenQuyen, nhapHang, qlSanPham, qlNhanVien, qlKhachHang, thongke, trangThai);
                 phanQuyens.add(phanQuyen);
             }
             JDBCUtil.closeConnection(c);
@@ -160,5 +162,23 @@ public class PhanQuyenDAO {
             e.printStackTrace();
         }
         return phanQuyens;
+    }
+
+    public int getNewMa() {
+        int ma = -1;
+        try {
+            Connection c = JDBCUtil.getConnection();
+            String sql = "select max(maQuyen) as maQuyen from phanquyen";
+            Statement st = c.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            if (rs.next()) {
+                ma = rs.getInt("maQuyen");
+            }
+            JDBCUtil.closeConnection(c);
+            return ma;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return ma;
     }
 }
