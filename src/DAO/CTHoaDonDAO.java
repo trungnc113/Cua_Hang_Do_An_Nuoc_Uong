@@ -87,5 +87,3 @@ public class CTHoaDonDAO {
         return result;
     }
 }
-
-

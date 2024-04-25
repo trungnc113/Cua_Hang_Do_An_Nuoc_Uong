@@ -1,8 +1,8 @@
 package Custom;
 
 import DTO.SanPham;
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
+
+import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.util.ArrayList;
@@ -29,6 +29,7 @@ public class listCard extends JPanel {
     }
 
     private void addControls() {
+        this.setPreferredSize(new Dimension(w, h));
         productList=new JPanel();
         productList.setLayout(new GridLayout(0, 5));
         scrollPane = new JScrollPane(productList);
