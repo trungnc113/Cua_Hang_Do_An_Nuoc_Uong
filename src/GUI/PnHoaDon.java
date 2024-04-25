@@ -4,22 +4,25 @@
  */
 package GUI;
 
+import BUS.HoaDonBUS;
 import Custom.Mytable;
+import DTO.HoaDon;
 import com.toedter.calendar.JDateChooser;
+import demoGUI.PUChiTietHoaDon;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
+import java.util.ArrayList;
+import java.util.Objects;
+import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
 
 /**
  *
@@ -140,9 +143,13 @@ public class PnHoaDon extends JPanel{
         this.add(pnSearchHoaDon);
         
         JPanel pnTbHoaDon = new JPanel(new BorderLayout());//tạo khung chứa giỏ hàng
-        String[] coltbHoaDon = {"Mã SP", "Mã NV", "Mã KH", "Ngày tạo", "Tổng tiền"};
+        String[] coltbHoaDon = {"Mã HD","Mã SP", "Mã NV", "Mã KH", "Ngày tạo", "Tổng tiền"};
         DefaultTableModel dtmHoaDon = new DefaultTableModel(coltbHoaDon, 0);
-        Mytable mtbHoaDon = new Mytable(dtmHoaDon);
+        Mytable mtbHoaDon = new Mytable(dtmHoaDon){
+            public boolean isCellEditable(int row, int column) { // không cho phép sửa nội dung trong table
+                return false;
+            }
+        };
         
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();//lấy định dạng mặc định của ô
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);//set căn giữa nội dung cho định dạng
@@ -152,15 +159,47 @@ public class PnHoaDon extends JPanel{
         mtbHoaDon.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
         mtbHoaDon.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
         mtbHoaDon.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
+        mtbHoaDon.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
 
         mtbHoaDon.getColumnModel().getColumn(0).setPreferredWidth(10);
         mtbHoaDon.getColumnModel().getColumn(1).setPreferredWidth(10);
         mtbHoaDon.getColumnModel().getColumn(2).setPreferredWidth(10);
         mtbHoaDon.getColumnModel().getColumn(3).setPreferredWidth(10);
         mtbHoaDon.getColumnModel().getColumn(4).setPreferredWidth(10);
+        mtbHoaDon.getColumnModel().getColumn(5).setPreferredWidth(10);
 
         JScrollPane scrmtbHoaDon = new JScrollPane(mtbHoaDon);
         pnTbHoaDon.add(scrmtbHoaDon, BorderLayout.CENTER);
         this.add(pnTbHoaDon);
+        addrowTable(dtmHoaDon);
+        setEventTable(mtbHoaDon);
+    }
+    public void addrowTable(DefaultTableModel tble){
+        HoaDonBUS list = new HoaDonBUS();
+        ArrayList<HoaDon> listHD = list.getlistHD();
+        for(int i = 0; i<list.getlistHD().size(); i++){
+            Object[] newRowData = {listHD.get(i).getMaHD(), listHD.get(i).getMaKH(), listHD.get(i).getMaNV(), listHD.get(i).getMaGiam(), listHD.get(i).getNgayLap(), listHD.get(i).getTongTien()};
+            tble.addRow(newRowData);
+        }
+    }
+    public void setEventTable(JTable tble){
+        tble.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting()){
+                    int MHD = (int) tble.getSelectedRow();
+                    if(MHD != -1){
+                        System.out.println("test");
+                        PUChiTietHoaDon popup = new PUChiTietHoaDon();
+                        JDialog dialog = new JDialog();
+                        dialog.add(popup);
+                        dialog.pack();
+                        dialog.setModal(true);
+                        dialog.setLocationRelativeTo(null);
+                        dialog.setVisible(true);
+                    }
+               }
+            }
+        });
     }
 }

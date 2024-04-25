@@ -1,8 +1,12 @@
 package demoGUI;
 
+import Custom.Mytable;
+import DTO.CTHoaDon;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import java.awt.*;
@@ -16,11 +20,11 @@ public class PUChiTietHoaDon extends JPanel {
     Border customBorder = BorderFactory.createLineBorder(ClMain, 2);
     Font FtTitleText = new Font("Montserrat", Font.BOLD, 15);
 
-    public PUChiTietHoaDon() {
-        addGUI();
+    public PUChiTietHoaDon(CTHoaDon CTHD) {
+        addGUI(CTHD);
     }
 
-    private void addGUI() {
+    private void addGUI(CTHoaDon CTHD) {
         this.setPreferredSize(new Dimension(W, H));
         this.setBorder(customBorder);
         this.setLayout(null);
@@ -33,32 +37,41 @@ public class PUChiTietHoaDon extends JPanel {
 
         // table
         String NameColume[] = {"IDSP","Tên SP","Đơn Giá","SL","Thành Tiền"};
-        DefaultTableModel model = new DefaultTableModel(NameColume, 5);
-        JTable TB = new JTable(model);
-        TB.getColumnModel().getColumn(0).setPreferredWidth(50);
-        TB.getColumnModel().getColumn(1).setPreferredWidth(200);
-        TB.getColumnModel().getColumn(2).setPreferredWidth(100);
-        TB.getColumnModel().getColumn(3).setPreferredWidth(30);
-        TB.getColumnModel().getColumn(4).setPreferredWidth(120);
+        DefaultTableModel model = new DefaultTableModel(NameColume, 0);
+        Mytable TB = new Mytable(model);
+
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();//lấy định dạng mặc định của ô
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);//set căn giữa nội dung cho định dạng
+        TB.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+        TB.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
+        TB.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
+        TB.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
+        TB.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
+
+        TB.getColumnModel().getColumn(0).setPreferredWidth(10);
+        TB.getColumnModel().getColumn(1).setPreferredWidth(10);
+        TB.getColumnModel().getColumn(2).setPreferredWidth(10);
+        TB.getColumnModel().getColumn(3).setPreferredWidth(10);
+        TB.getColumnModel().getColumn(4).setPreferredWidth(10);
         TB.getTableHeader().setFont(FtTitleText);
 
         // chỉnh headertable ( chỉnh màu tiêu đề + xóa border tiêu đề)
-        TableCellRenderer TBHeader = TB.getTableHeader().getDefaultRenderer();
-        TB.getTableHeader().setDefaultRenderer(new TableCellRenderer() {
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                JLabel label = (JLabel) TBHeader.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                label.setBackground(ClMain);
-                label.setBorder(BorderFactory.createEmptyBorder());
-                return label;
-            }
-        });
+//        TableCellRenderer TBHeader = TB.getTableHeader().getDefaultRenderer();
+//        TB.getTableHeader().setDefaultRenderer(new TableCellRenderer() {
+//            @Override
+//            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+//                JLabel label = (JLabel) TBHeader.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+//                label.setBackground(ClMain);
+//                label.setBorder(BorderFactory.createEmptyBorder());
+//                return label;
+//            }
+//        });
         JScrollPane Scl = new JScrollPane(TB); // Thêm JTable vào JScrollPane
         Scl.setBounds(2, 70, 496, 350);
         this.add(Scl);
 
         // Tổng tiền
-        JLabel TongTien = new JLabel("Tổng Tiền: ");
+        JLabel TongTien = new JLabel();
         TongTien.setBounds(250, 430, 100, 30);
         TongTien.setFont(FtTitleText);
         JLabel KQTongTien = new JLabel("100.000đ");// thay giá trị tổng tiền
@@ -68,10 +81,10 @@ public class PUChiTietHoaDon extends JPanel {
         this.add(TongTien);
 
         // cảm ơn
-        JLabel txtThanks = new JLabel("Cảm ơn quý khách đã ủng hộ !!!");
-        txtThanks.setFont(FtTitleText);
-        txtThanks.setForeground(Color.RED);
-        txtThanks.setBounds(150, 470, 300, 25);
-        this.add(txtThanks);
+//        JLabel txtThanks = new JLabel("Cảm ơn quý khách đã ủng hộ !!!");
+//        txtThanks.setFont(FtTitleText);
+//        txtThanks.setForeground(Color.RED);
+//        txtThanks.setBounds(130, 470, 300, 25);
+//        this.add(txtThanks);
     }
 }

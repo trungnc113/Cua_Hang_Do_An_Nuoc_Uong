@@ -27,4 +27,10 @@ public class InputValidator {
 
         return matcher.matches();
     }
+    public static boolean isValidNumber(String Number){
+        String pattern ="^[0-9]+$";
+        Pattern regex = Pattern.compile(pattern);
+        Matcher matcher = regex.matcher(Number);
+        return matcher.matches();
+    }
 }
