@@ -2,10 +2,10 @@ package GUI;
 
 import BUS.NhaCungCapBUS;
 import Custom.Mytable;
+import Custom.NonEditableTableModel;
 import Custom.dialog;
 import DTO.NhaCungCap;
 import java.util.ArrayList;
-import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -13,7 +13,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class dlgChonNhaCungCap extends javax.swing.JDialog {
 
-    DefaultTableModel dtmNhaCungCap;
+    NonEditableTableModel dtmNhaCungCap;
     NhaCungCapBUS nhaCungCapBUS = new NhaCungCapBUS();
     private NhaCungCap selectedNhaCungCap = null;//nhà cung cấp đang được chọn
 
@@ -28,7 +28,7 @@ public class dlgChonNhaCungCap extends javax.swing.JDialog {
     }
 
     private void custom() {
-        dtmNhaCungCap = new DefaultTableModel();
+        dtmNhaCungCap = new NonEditableTableModel();
         dtmNhaCungCap.addColumn("Mã NCC");
         dtmNhaCungCap.addColumn("Tên NCC");
         dtmNhaCungCap.addColumn("Địa chỉ");
@@ -220,8 +220,8 @@ public class dlgChonNhaCungCap extends javax.swing.JDialog {
         if (row < 0) {
             return;
         }
-        selectedNhaCungCap = selectedRow(row);
-        dlgSuaNhaCungCap dlSuaNhaCungCap = new dlgSuaNhaCungCap(selectedNhaCungCap);//hiển thị dlg sửa
+        NhaCungCap sltNhaCungCap = selectedRow(row);
+        dlgSuaNhaCungCap dlSuaNhaCungCap = new dlgSuaNhaCungCap(sltNhaCungCap);//hiển thị dlg sửa
         loadData();// load lại dữ liệu
     }//GEN-LAST:event_btnSuaActionPerformed
     //nút thêm
@@ -235,16 +235,15 @@ public class dlgChonNhaCungCap extends javax.swing.JDialog {
         if (row < 0) {
             return;
         }
-        selectedNhaCungCap = selectedRow(row);
-        dialog dlg = new dialog("Xóa nhà cung cấp " + selectedNhaCungCap.getTenNCC(), dialog.WARNING_DIALOG);// hiển thị dlg xóa
+        NhaCungCap sltNhaCungCap = selectedRow(row);
+        dialog dlg = new dialog("Xóa nhà cung cấp " + sltNhaCungCap.getTenNCC(), dialog.WARNING_DIALOG);// hiển thị dlg xóa
         int action = dlg.getAction(); // lấy action để check xem người dùng chọn OK hay Cancel
         if (action == 2) { //Nếu chọn Cancel thì không làm gì cả
             return;
         }
-        if (!nhaCungCapBUS.Delete(selectedNhaCungCap)) {//Tiến hành xóa nếu người dùng chọn OK
+        if (!nhaCungCapBUS.Delete(sltNhaCungCap)) {//Tiến hành xóa nếu người dùng chọn OK
             return;
         }
-        selectedNhaCungCap = null;
         loadData();// load lại dữ liệu
     }//GEN-LAST:event_btnXoaActionPerformed
 

@@ -24,8 +24,7 @@ public class listCard extends JPanel {
 
     //khởi tạo khi có danh sách
     public listCard(ArrayList<SanPham> listSP) {
-        addControls();
-        addEvents();
+        this();
         addCards(listSP);
     }
 

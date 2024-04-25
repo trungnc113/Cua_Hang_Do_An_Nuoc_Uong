@@ -125,4 +125,12 @@ public class NhanVienBUS {
         boolean flag = nvDAO.importNhanVienFromExcel(nv);
         return flag;
     }
+    
+    public ArrayList<NhanVien> getList(){
+        return nvDAO.getDanhSachNhanVien();
+    }
+    
+    public NhanVien getById(int maNV){
+        return nvDAO.getNhanVien(maNV);
+    }
 }

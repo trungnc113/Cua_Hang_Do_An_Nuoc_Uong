@@ -59,8 +59,6 @@ public class PhanQuyen {
         this.qlNhapHang = qlNhapHang;
     }
 
-   
-    
     public int getQlSanPham() {
         return qlSanPham;
     }

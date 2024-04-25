@@ -5,6 +5,7 @@ import Custom.dialog;
 import java.util.ArrayList;
 
 public class SanPhamBUS {
+    private SanPhamDAO sanPhamDAO =new SanPhamDAO();
     private ArrayList<SanPham> listSP = null;  
     private SanPhamDAO spDAO = new SanPhamDAO();
 
@@ -249,5 +250,12 @@ public class SanPhamBUS {
     public ArrayList<SanPham> listSPtheoten(String tenSP){
         return spDAO.getDanhSachSanPhamTheoTimKiem(tenSP);
     }
-
+    
+    public ArrayList<SanPham> getList(){
+        return spDAO.getDanhSachSanPham();
+    }
+    
+    public SanPham getById(int maSP){
+        return spDAO.getSanPhamTheoMa(maSP);
+    }
 }

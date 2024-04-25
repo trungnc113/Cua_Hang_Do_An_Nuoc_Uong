@@ -9,7 +9,6 @@ import Custom.Mytable;
 import Custom.listCard;
 import DAO.LoaiSPDAO;
 import DAO.SanPhamDAO;
-import DTO.SanPham;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
