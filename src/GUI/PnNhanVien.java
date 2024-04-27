@@ -1,12 +1,23 @@
 package GUI;
 
 import Custom.Mytable;
+import Custom.dialog;
+import Custom.XuLyFileExcel;
 import static Main.Main.changLNF;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseEvent;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Vector;
+import DTO.NhanVien;
+import BUS.NhanVienBUS;
+import BUS.TaiKhoanBUS;
 
 
 public class PnNhanVien extends JPanel {
@@ -14,7 +25,11 @@ public class PnNhanVien extends JPanel {
     public PnNhanVien() {
         changLNF("Windows");
         addControls();
+        addEventsNhanVienGUI();
+        
     }
+    private NhanVienBUS NVBUS = new NhanVienBUS();
+    TaiKhoanBUS taiKhoanBUS = new TaiKhoanBUS();
 
     final Color colorPanel = new Color(247, 247, 247);
     final Color ClHover  = new Color(0,160,80);
@@ -22,8 +37,9 @@ public class PnNhanVien extends JPanel {
     final Color ClMain = new Color(0, 160, 80);
 
     DefaultTableModel dtmNhanVien;
-    JTextField txtMaNV, txtHodem, Ten, txtChucVu, txtTimKiem;
+    JTextField txtMaNV, txtHodem, txtTen, txtDienThoai, txtTimKiem;
     JComboBox<String> cmbGioiTinh;
+    Mytable tblNhanVien;
     JButton btnThemNV, btnLuuNV, btnXoaNV, btnTimNV,btnCapTaiKhoan, btnResetMatKhauNV, btnKhoaTaiKhoanNV, btnResetNV, btnXuatExcel, btnNhapExcel;
 
     private void addControls() {
@@ -53,20 +69,20 @@ public class PnNhanVien extends JPanel {
         JPanel pnTextField = new JPanel();
         pnTextField.setLayout(new BoxLayout(pnTextField, BoxLayout.Y_AXIS));
 
-        JLabel lblMaNV, lblHoDem, lblTen,lblGioiTinh, lblChucVu, lblTimKiem;
+        JLabel lblMaNV, lblHoDem, lblTen,lblGioiTinh, lblDienThoai, lblTimKiem;
 
         lblMaNV = new JLabel("Mã NV");
         lblHoDem = new JLabel("Họ đệm");
         lblTen = new JLabel("Tên");
         lblGioiTinh = new JLabel("Giới tính");
-        lblChucVu = new JLabel("Chức vụ");
+        lblDienThoai = new JLabel("Điện thoại");
         lblTimKiem = new JLabel("Từ khóa tìm");
         txtMaNV = new JTextField(25);
         txtMaNV.setEditable(false);
         txtHodem = new JTextField(25);
-        Ten = new JTextField(25);
+        txtTen = new JTextField(25);
         cmbGioiTinh = new JComboBox<String>();
-        txtChucVu = new JTextField(25);
+        txtDienThoai = new JTextField(25);
         txtTimKiem = new JTextField(25);
 
         JPanel pnMaNV = new JPanel();
@@ -94,16 +110,16 @@ public class PnNhanVien extends JPanel {
 
         JPanel pnTen = new JPanel();
         lblTen.setFont(font);
-        Ten.setFont(font);
+        txtTen.setFont(font);
         pnTen.add(lblTen);
-        pnTen.add(Ten);
+        pnTen.add(txtTen);
         pnTextField.add(pnTen);
 
         JPanel pnChucVu = new JPanel();
-        lblChucVu.setFont(font);
-        txtChucVu.setFont(font);
-        pnChucVu.add(lblChucVu);
-        pnChucVu.add(txtChucVu);
+        lblDienThoai.setFont(font);
+        txtDienThoai.setFont(font);
+        pnChucVu.add(lblDienThoai);
+        pnChucVu.add(txtDienThoai);
         pnTextField.add(pnChucVu);
 
         JPanel TimKiem = new JPanel();
@@ -118,7 +134,7 @@ public class PnNhanVien extends JPanel {
         lblHoDem.setPreferredSize(lblSize);
         lblGioiTinh.setPreferredSize(lblSize);
         lblTen.setPreferredSize(lblSize);
-        lblChucVu.setPreferredSize(lblSize);
+        lblDienThoai.setPreferredSize(lblSize);
         lblTimKiem.setPreferredSize(lblSize);
 
         pnThongTin.add(pnTextField);
@@ -202,11 +218,11 @@ public class PnNhanVien extends JPanel {
         dtmNhanVien.addColumn("Họ đệm");
         dtmNhanVien.addColumn("Tên");
         dtmNhanVien.addColumn("Giới tính");
-        dtmNhanVien.addColumn("Chức vụ");
+        dtmNhanVien.addColumn("Điện thoại");
         dtmNhanVien.addColumn("Tài khoản");
-        Mytable tblSanPham = new Mytable(dtmNhanVien); // sử dụng MyTable mình tạo sẵn
+        tblNhanVien = new Mytable(dtmNhanVien); // sử dụng MyTable mình tạo sẵn
 
-        TableColumnModel columnModelBanHang = tblSanPham.getColumnModel();
+        TableColumnModel columnModelBanHang = tblNhanVien.getColumnModel();
         columnModelBanHang.getColumn(0).setPreferredWidth(20);
         columnModelBanHang.getColumn(1).setPreferredWidth(20);
         columnModelBanHang.getColumn(2).setPreferredWidth(20);
@@ -214,11 +230,12 @@ public class PnNhanVien extends JPanel {
         columnModelBanHang.getColumn(4).setPreferredWidth(20);
         columnModelBanHang.getColumn(5).setPreferredWidth(20);
 
-        JScrollPane scrTblSanPham = new JScrollPane(tblSanPham);
-        pnTable.add(scrTblSanPham, BorderLayout.CENTER);
+        JScrollPane scrTblNhanVien = new JScrollPane(tblNhanVien);
+        pnTable.add(scrTblNhanVien, BorderLayout.CENTER);
         this.add(pnTable);
 
         loadDataCmbGioiTinh();
+        loadDataTblNhanVien();
     }
 
     private void loadDataCmbGioiTinh() {
@@ -227,6 +244,268 @@ public class PnNhanVien extends JPanel {
         cmbGioiTinh.addItem("Nữ");
         cmbGioiTinh.addItem("Nam");
         cmbGioiTinh.addItem("Khác");
+    }
+
+    private void addEventsNhanVienGUI(){
+
+            btnResetNV.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                loadDataTblNhanVien();
+                txtMaNV.setText("");
+                txtHodem.setText("");
+                txtTen.setText("");
+                txtDienThoai.setText("");
+                txtTimKiem.setText("");
+                cmbGioiTinh.setSelectedIndex(0);
+            }
+            });
+
+            tblNhanVien.addMouseListener(new MouseListener() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    xuLyClickTblNhanVien();
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+
+                }
+            });
+
+            txtTimKiem.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    xuLyTimKiemNhanVien();
+                }
+            });
+
+            btnTimNV.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    xuLyTimKiemNhanVien();
+                }
+            });
+            
+            btnThemNV.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    xuLyThemNhanVien();
+                }
+            });
+
+            btnLuuNV.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    xuLySuaNhanVien();
+                }
+            });
+
+            btnXoaNV.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    xuLyXoaNhanVien();
+                }
+            });
+
+            btnXuatExcel.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    xuLyXuatExcel();
+                }
+            });
+
+            btnNhapExcel.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    xuLyNhapExcel();
+                }
+            });
+
+            btnCapTaiKhoan.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    xuLyCapTaiKhoan();
+                }
+            });
+
+            btnResetMatKhauNV.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    xuLyResetMatKhau();
+                }
+            });
+
+            btnKhoaTaiKhoanNV.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    xuLyKhoaTaiKhoan();
+                }
+            });
+    }
+
+    private void xuLyKhoaTaiKhoan() {
+        TaiKhoanBUS taiKhoanBUS = new TaiKhoanBUS();
+        taiKhoanBUS.khoaTaiKhoan(txtMaNV.getText());
+        loadDataTblNhanVien();
+    }
+
+    private void xuLyResetMatKhau() {
+        String maNV = txtMaNV.getText();
+        if (maNV.trim().equals("")) {
+            new dialog("Bạn chưa chọn nhân viên!", dialog.ERROR_DIALOG);
+            return;
+        }
+        dlgQuyen_MK dialog = new dlgQuyen_MK(maNV);
+        dialog.setVisible(true);
+    }
+
+    private void xuLyCapTaiKhoan() {
+        if (txtMaNV.getText().trim().equals("")) {
+            new dialog("Bạn chưa chọn nhân viên!", dialog.ERROR_DIALOG);
+            return;
+        }
+        dlgCapTaiKhoan dialog = new dlgCapTaiKhoan(txtMaNV.getText());
+        dialog.setVisible(true);
+        loadDataTblNhanVien();
+    }
+
+    private void xuLyNhapExcel() {
+        dialog dlg = new dialog("Dữ liệu cũ sẽ bị xoá, tiếp tục?", dialog.WARNING_DIALOG);
+        if (dlg.getAction() != dialog.OK_OPTION) {
+            return;
+        }
+
+        XuLyFileExcel nhapExcel = new XuLyFileExcel();
+        nhapExcel.nhapExcel(tblNhanVien);
+        NVBUS.xoaFKHoadon_PhieuNhap_NV();
+        NVBUS.xoaAllNhanVien();
+
+        int row = tblNhanVien.getRowCount();
+        for (int i = 0; i < row; i++) {
+            String manv = tblNhanVien.getValueAt(i,0) + "";
+            String ho = tblNhanVien.getValueAt(i, 1) + "";
+            String ten = tblNhanVien.getValueAt(i, 2) + "";
+            String gioiTinh = tblNhanVien.getValueAt(i, 3) + "";
+            String dienthoai = tblNhanVien.getValueAt(i, 4) + "";
+
+            NVBUS.nhapExcel(manv, ho, ten, gioiTinh, dienthoai,1);
+        }
+        NVBUS.updateFKHoadon_PhieuNhap_NV();
+    }
+
+    private void xuLyXuatExcel() {
+        XuLyFileExcel xuatExcel = new XuLyFileExcel();
+        xuatExcel.xuatExcel(tblNhanVien);
+    }
+
+    private void xuLyXoaNhanVien() {
+        String ma = txtMaNV.getText();
+        boolean flag = NVBUS.xoaNhanVien(ma);
+        if (flag) {
+            NVBUS.docDanhSach();
+            loadDataTblNhanVien();
+        }
+    }
+
+    private void xuLySuaNhanVien() {
+        if (cmbGioiTinh.getSelectedIndex() == 0) {
+            new dialog("Bạn chưa chọn giới tính!", dialog.ERROR_DIALOG);
+            return;
+        }
+        String ma = txtMaNV.getText();
+        String ho = txtHodem.getText();
+        String ten = txtTen.getText();
+        String gioiTinh = cmbGioiTinh.getSelectedItem() + "";
+        String dienthoai = txtDienThoai.getText();
+        if (NVBUS.updateNhanVien(ma, ho, ten, gioiTinh, dienthoai)) {
+            NVBUS.docDanhSach();
+            loadDataTblNhanVien();
+        }
+    }
+
+    private void xuLyThemNhanVien() {
+        if (cmbGioiTinh.getSelectedIndex() == 0) {
+            new dialog("Bạn chưa chọn giới tính!", dialog.ERROR_DIALOG);
+            return;
+        }
+        String ho = txtHodem.getText();
+        String ten = txtTen.getText();
+        String gioiTinh = cmbGioiTinh.getSelectedItem() + "";
+        String dienthoai = txtDienThoai.getText();
+        if (NVBUS.themNhanVien(ho, ten, gioiTinh, dienthoai,1)) {
+            NVBUS.docDanhSach();
+            loadDataTblNhanVien();
+        }
+    }
+
+    private void xuLyTimKiemNhanVien() {
+        ArrayList<NhanVien> dsnv = NVBUS.timNhanVien(txtTimKiem.getText());
+        dtmNhanVien.setRowCount(0);
+        for (NhanVien nv : dsnv) {
+            Vector<Object> vec = new Vector<>();
+            vec.add(nv.getMaNV());
+            vec.add(nv.getHo());
+            vec.add(nv.getTen());
+            vec.add(nv.getGioiTinh());
+            vec.add(nv.getDienThoai());
+            dtmNhanVien.addRow(vec);
+        }
+    }
+
+    private void xuLyClickTblNhanVien() {
+        int row = tblNhanVien.getSelectedRow();
+        if (row > -1) {
+            txtMaNV.setText(tblNhanVien.getValueAt(row, 0) + "");
+            txtHodem.setText(tblNhanVien.getValueAt(row, 1) + "");
+            txtTen.setText(tblNhanVien.getValueAt(row, 2) + "");
+            txtDienThoai.setText(tblNhanVien.getValueAt(row, 4) + "");
+
+            if ((tblNhanVien.getValueAt(row, 3) + "").equals("Nam")) {
+                cmbGioiTinh.setSelectedIndex(2);
+            } else {
+                cmbGioiTinh.setSelectedIndex(1);
+            }
+        }
+    }
+
+    private void loadDataTblNhanVien() {
+        dtmNhanVien.setRowCount(0);
+        ArrayList<NhanVien> dsnv = NVBUS.getDanhSachNhanVien();
+
+        for (NhanVien nv : dsnv) {
+            Vector<Object> vec = new Vector<>();
+            vec.add(nv.getMaNV());
+            vec.add(nv.getHo());
+            vec.add(nv.getTen());
+            vec.add(nv.getGioiTinh());
+            vec.add(nv.getDienThoai());
+            if(nv.getTrangThai() == 1){
+                vec.add("Hoạt động");
+            }
+            if(nv.getTrangThai() == 0){
+                vec.add("Khoá");
+            }
+            else {
+                vec.add("Chưa có");
+            }
+            dtmNhanVien.addRow(vec);
+        }
     }
 
     public static void main(String[] args) {
