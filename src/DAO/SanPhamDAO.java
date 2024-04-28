@@ -162,9 +162,7 @@ public class SanPhamDAO {
             pre.setInt(7,sp.getTrangThai());
             pre.setInt(8,sp.getMaSP());
 
-            ketqua = pre.executeUpdate() > 7;
-            return ketqua;
-            
+            ketqua = pre.executeUpdate() > 0;
         }catch(SQLException e){
             e.printStackTrace();
         }
@@ -180,13 +178,29 @@ public class SanPhamDAO {
             PreparedStatement pre = connection.prepareStatement(slq);
             pre.setInt(1,0);
             pre.setInt(2,maSP);
-            ketqua = pre.executeUpdate() > 1;
+            ketqua = pre.executeUpdate() > 0;
             return ketqua;
             
         }catch(SQLException e){
             e.printStackTrace();
         }
         return ketqua;
+    }
+
+    public int layMaSanPhamCuoiCung() {
+        int maSP = -1;
+        try {
+            Connection connection = JDBCUtil.getConnection();
+            String sql = "SELECT TOP 1 maSP FROM sanpham ORDER BY maSP DESC";
+            PreparedStatement pre = connection.prepareStatement(sql);
+            ResultSet rs = pre.executeQuery();
+            if (rs.next()) {
+                maSP = rs.getInt("maSP");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return maSP;
     }
 
     public  boolean themSanPham(SanPham sp){
@@ -196,7 +210,9 @@ public class SanPhamDAO {
 
             String sql = "insert into sanpham(maSP, tenSP, maLoai, donGia, soLuong, donViTinh, hinhAnh, trangThai)  values(?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement pre = connection.prepareStatement(sql);
-            pre.setInt(1,sp.getMaSP());
+
+            int maSP = layMaSanPhamCuoiCung()+1;
+            pre.setInt(1,maSP);
             pre.setString(2, sp.getTenSP());
             pre.setInt(3, sp.getMaLoai());
             pre.setInt(4, sp.getDonGia());
@@ -204,8 +220,7 @@ public class SanPhamDAO {
             pre.setString(6, sp.getDonViTinh());
             pre.setString(7, sp.getHinhAnh());
             pre.setInt(8, sp.getTrangThai());
-            pre.execute();
-            ketqua = pre.executeUpdate() > 7;
+            ketqua = pre.executeUpdate() > 0;
 
         }catch(SQLException e){
             e.printStackTrace();
@@ -228,12 +243,58 @@ public class SanPhamDAO {
         }
     }
 
+    public boolean deletaFKctHoandon_ctPhieuNhap(){
+        try{
+            Connection connection = JDBCUtil.getConnection();
+            String sql = "alter table cthoadon drop constraint FK_maSP_cthoadon;" + 
+            
+                "alter table ctphieunhap drop constraint FK_maSP_ctphieunhap;";
+
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.executeUpdate();
+            return true;
+
+        }catch(SQLException e){
+
+            return false;
+        }
+    }
+
+    public boolean updateFKctHoandon_ctPhieuNhap(){
+        try{
+            Connection connection = JDBCUtil.getConnection();
+            String sql = "alter table cthoadon add constraint FK_maSP_cthoadon foreign key (maSP) references sanpham(maSP);" + 
+            
+            "alter table ctphieunhap add constraint FK_maSP_ctphieunhap foreign key (maSP) references sanpham(maSP);";
+
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.executeUpdate();
+
+            return true;
+        }catch(SQLException e){
+            return false;
+        }
+    }
+
+    public boolean xoaAllInfor(){
+        try{
+            Connection connection = JDBCUtil.getConnection();
+            String sql = "delete from sanpham;";
+
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.executeUpdate();
+
+            return true;
+        }catch(SQLException e){
+            return false;
+        }
+    }
+
     public boolean importSanPhamFromExcel(SanPham sp){
         try{
             Connection connection = JDBCUtil.getConnection();
 
-            String sql = "DELETE FROM sanpham" + 
-                "insert into sanpham(maSP, tenSP, maLoai, donGia, soLuong, donViTinh, hinhAnh, TrangThai ) values(?, ?, ?, ?, ?, ?, ?, ?) ";
+            String sql = "insert into sanpham(maSP, tenSP, maLoai, donGia, soLuong, donViTinh, hinhAnh, trangThai ) values(?, ?, ?, ?, ?, ?, ?, ?) ";
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setInt(1, sp.getMaSP());
             pre.setString(2, sp.getTenSP());
@@ -245,92 +306,12 @@ public class SanPhamDAO {
             pre.setInt(8, sp.getTrangThai());
             pre.executeUpdate();
 
-            int rowsAffected = pre.executeUpdate();
-            return rowsAffected > 0;
+            return true;
 
         }catch(SQLException e){
             e.printStackTrace();
         }
         return false;
     }
-    public ArrayList<SanPham> getDanhSachSanPhamTheoLoai(String tenloai){
-        try{
-            Connection connection = JDBCUtil.getConnection();
-            String slq = "select * from sanpham, loaiSP where sanpham.trangThai=1 and loaiSP.maLoai = sanpham.maLoai and loaiSP.tenLoai = N'"+tenloai+"'";
-            Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery(slq);
-            ArrayList<SanPham> listSP = new ArrayList<>();
-            while (rs.next()) {
-                SanPham sp = new SanPham();
-                sp.setMaSP(rs.getInt(1));
-                sp.setTenSP(rs.getString(2));
-                sp.setMaLoai(rs.getInt(3));
-                sp.setDonGia(rs.getInt(4));
-                sp.setSoLuong(rs.getInt(5));
-                sp.setDonViTinh(rs.getString(6));
-                sp.setHinhAnh(rs.getString(7));
-                sp.setTrangThai(rs.getInt(8));
-                listSP.add(sp);
-            }
-            return listSP;
-        }catch(SQLException e){
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-    public ArrayList<SanPham> getDanhSachSanPhamTheoTimKiem(String tenSP){
-        try{
-            Connection connection = JDBCUtil.getConnection();
-            String slq = "select * from sanpham where sanpham.trangThai=1 and tenSP like N'%"+tenSP+"%'";
-            Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery(slq);
-            ArrayList<SanPham> listSP = new ArrayList<>();
-            while (rs.next()) {
-                SanPham sp = new SanPham();
-                sp.setMaSP(rs.getInt(1));
-                sp.setTenSP(rs.getString(2));
-                sp.setMaLoai(rs.getInt(3));
-                sp.setDonGia(rs.getInt(4));
-                sp.setSoLuong(rs.getInt(5));
-                sp.setDonViTinh(rs.getString(6));
-                sp.setHinhAnh(rs.getString(7));
-                sp.setTrangThai(rs.getInt(8));
-                listSP.add(sp);
-            }
-            return listSP;
-        }catch(SQLException e){
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-    public ArrayList<SanPham> getDanhSachSanPhamTheoLoaivaTimKiem(String tenloai, String tenSP){
-        try{
-            Connection connection = JDBCUtil.getConnection();
-            String slq = "select * from sanpham, loaiSP where sanpham.trangThai=1 and loaiSP.maLoai = sanpham.maLoai and loaiSP.tenLoai = N'"+tenloai+"' and sanpham.tenSP like N'%"+tenSP+"%'";
-            Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery(slq);
-            ArrayList<SanPham> listSP = new ArrayList<>();
-            while (rs.next()) {
-                SanPham sp = new SanPham();
-                sp.setMaSP(rs.getInt(1));
-                sp.setTenSP(rs.getString(2));
-                sp.setMaLoai(rs.getInt(3));
-                sp.setDonGia(rs.getInt(4));
-                sp.setSoLuong(rs.getInt(5));
-                sp.setDonViTinh(rs.getString(6));
-                sp.setHinhAnh(rs.getString(7));
-                sp.setTrangThai(rs.getInt(8));
-                listSP.add(sp);
-            }
-            return listSP;
-        }catch(SQLException e){
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
 
 }
