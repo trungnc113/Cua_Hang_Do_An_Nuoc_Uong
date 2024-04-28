@@ -3,24 +3,35 @@ package DTO;
 public class KhachHang {
 
     private int maKH;
-    private String ho;
     private String ten;
     private String gioiTinh;
     private String dienThoai;
+    private String email;
+    private String diaChi;
     private int tongChiTieu;
     private int trangThai;
+  
 
     public KhachHang() {
     }
 
-    public KhachHang(int maKH, String ho, String ten, String gioiTinh, String dienThoai, int tongChiTieu, int trangThai) {
+    public KhachHang(int maKH, String ten, String diaChi, String gioiTinh, String dienThoai,String email, int tongChiTieu, int trangThai) {
         this.maKH = maKH;
-        this.ho = ho;
         this.ten = ten;
+        this.diaChi = diaChi;
         this.gioiTinh = gioiTinh;
         this.tongChiTieu = tongChiTieu;
         this.dienThoai = dienThoai;
+        this.email=email;
         this.trangThai = trangThai;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getDienThoai() {
@@ -47,12 +58,12 @@ public class KhachHang {
         this.maKH = maKH;
     }
 
-    public String getHo() {
-        return ho;
+    public String getDiaChi() {
+        return diaChi;
     }
 
-    public void setHo(String ho) {
-        this.ho = ho;
+    public void setDiaChi(String diaChi) {
+        this.diaChi = diaChi;
     }
 
     public String getTen() {
