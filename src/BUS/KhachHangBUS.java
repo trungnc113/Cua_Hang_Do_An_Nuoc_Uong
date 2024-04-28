@@ -45,18 +45,18 @@ public class KhachHangBUS {
 
     //KT email
     private boolean CheckEmail(String email, String content) {
-        if (!InputValidator.isValidEmail(email)) {
-            new dialog(content, dialog.ERROR_DIALOG);
-            return false;
-        }
+//        if (!InputValidator.isValidEmail(email)) {
+//            new dialog(content, dialog.ERROR_DIALOG);
+//            return false;
+//        }
         return true;
     }
     // KT tên khách hàng chỉ được nhập kí tự
     private boolean CheckName(String name, String content) {
-        if (!InputValidator.isValidName(name)) {
-            new dialog(content, dialog.ERROR_DIALOG);
-            return false;
-        }
+//        if (!InputValidator.isValidName(name)) {
+//            new dialog(content, dialog.ERROR_DIALOG);
+//            return false;
+//        }
         return true;
     }
 

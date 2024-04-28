@@ -533,10 +533,7 @@ public class PnNhapHang extends javax.swing.JPanel {
             new dialog("Vui lòng chọn nhà cung cấp", dialog.ERROR_DIALOG);
             return;
         }
-        dialog dlgConfirm = new dialog("Xác nhận nhập hàng?", dialog.WARNING_DIALOG);
-        if(dlgConfirm.getAction() == 1){
-            
-        }
+        
     }//GEN-LAST:event_btnNhapActionPerformed
 
 
