@@ -34,6 +34,7 @@ public class CTPhieuNhapDAO {
                 ctpn.setMaSP(rs.getInt("MaSP"));
                 ctpn.setSoLuong(rs.getInt("SoLuong"));
                 ctpn.setDonGia(rs.getInt("DonGia"));
+                ctpn.setThanhTien(rs.getInt("thanhTien")); // đã bổ sung thành tiền
                 dsctpn.add(ctpn);
             }
         } catch (SQLException ex) {
@@ -45,12 +46,19 @@ public class CTPhieuNhapDAO {
     // Phương thức thêm một chi tiết phiếu nhập mới vào cơ sở dữ liệu
     public boolean addCTPhieuNhap(CTPhieuNhap ctpn) {
         try (Connection c = JDBCUtil.getConnection()) {
-            String sql = "INSERT INTO ctphieunhap (MaPN, MaSP, SoLuong, DonGia) VALUES (?, ?, ?, ?)";
+            String sqlUpdateSP = "update sanpham set soLuong = soLuong + ? where maSP = ?"; // cập nhật số lượng sản phẩm
+            PreparedStatement preparedStatement = c.prepareStatement(sqlUpdateSP);
+            preparedStatement.setInt(1, ctpn.getSoLuong());
+            preparedStatement.setInt(2, ctpn.getMaSP());
+            preparedStatement.executeUpdate();
+            
+            String sql = "INSERT INTO ctphieunhap (MaPN, MaSP, SoLuong, DonGia, thanhTien) VALUES (?, ?, ?, ?, ?)"; // đã bổ sung thành tiền
             PreparedStatement stmt =c.prepareStatement(sql);
             stmt.setInt(1, ctpn.getMaPN());
             stmt.setInt(2, ctpn.getMaSP());
             stmt.setInt(3, ctpn.getSoLuong());
             stmt.setInt(4, ctpn.getDonGia());
+            stmt.setInt(5, ctpn.getThanhTien());
             int rowsAffected = stmt.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException ex) {

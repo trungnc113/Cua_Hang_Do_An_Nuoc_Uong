@@ -12,6 +12,7 @@ import Custom.Mytable;
 import Custom.NonEditableTableModel;
 import Custom.ScaleImage;
 import Custom.dialog;
+import DTO.CTPhieuNhap;
 import DTO.NhaCungCap;
 import DTO.NhanVien;
 import DTO.SanPham;
@@ -80,6 +81,9 @@ public class PnNhapHang extends javax.swing.JPanel {
                     return;
                 }
                 int row = tblKhoHang.getSelectedRow();
+                if (row < 0) {
+                    return;
+                }
                 int maSP = Integer.parseInt(tblKhoHang.getValueAt(row, 0) + "");
                 currentSanPham = sanPhamBUS.getById(maSP);
                 ImageIcon imageIcon = ScaleImage.scaleImage("image/products/" + currentSanPham.getHinhAnh(), 200, 200);
@@ -524,6 +528,25 @@ public class PnNhapHang extends javax.swing.JPanel {
         dtmChoNhap.setRowCount(0);
     }//GEN-LAST:event_btnResetChoNhapActionPerformed
 
+    private void XuLyNhap() {
+        int tongTien = 0;
+        ArrayList<CTPhieuNhap> cTPhieuNhaps = new ArrayList<>();
+        for (int i = 0; i < dtmChoNhap.getRowCount(); i++) {
+            int thanhTien = Integer.parseInt(tblChoNhap.getValueAt(i, 4) + "");
+            if (thanhTien > Integer.MAX_VALUE - tongTien) {
+                new dialog("Thành tiền quá lớn!", dialog.ERROR_DIALOG);
+                return;
+            }
+            int maSP = Integer.parseInt(tblChoNhap.getValueAt(i, 0) + "");
+            int soLuong = Integer.parseInt(tblChoNhap.getValueAt(i, 2) + "");
+            int donGia = Integer.parseInt(tblChoNhap.getValueAt(i, 3) + "");
+            cTPhieuNhaps.add(new CTPhieuNhap(0, maSP, soLuong, donGia, thanhTien));
+            tongTien += thanhTien;
+        }
+        XuatPhieuNhapGUI xuatPhieuNhapGUI = new XuatPhieuNhapGUI(currentNhanVien, currentNCC, tongTien, cTPhieuNhaps);
+        loadData();
+    }
+
     private void btnNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNhapActionPerformed
         if (dtmChoNhap.getRowCount() == 0) {
             new dialog("Chưa chọn sản phẩm để nhập", dialog.ERROR_DIALOG);
@@ -533,7 +556,8 @@ public class PnNhapHang extends javax.swing.JPanel {
             new dialog("Vui lòng chọn nhà cung cấp", dialog.ERROR_DIALOG);
             return;
         }
-        
+        XuLyNhap();
+        dtmChoNhap.setRowCount(0);
     }//GEN-LAST:event_btnNhapActionPerformed
 
 

@@ -12,17 +12,17 @@ import java.util.ArrayList;
 import Custom.*;
 import DTO.CTPhieuNhap;
 import DTO.PhieuNhap;
+import java.sql.Statement;
 import java.util.Date;
 
 public class PhieuNhapDAO {
 
     public ArrayList<PhieuNhap> getListPhieuNhap() {
-        
+
         ArrayList<PhieuNhap> dspn = new ArrayList<>();
 
-        
         try {
-            
+
             Connection c = JDBCUtil.getConnection();
             System.out.println("connect");
             String sql = "SELECT * FROM phieunhap";
@@ -42,10 +42,11 @@ public class PhieuNhapDAO {
             return null;
         }
         return dspn;
-        
+
     }
+
     public boolean themPhieuNhap(PhieuNhap pn) {
-        
+
         try {
             Connection c = JDBCUtil.getConnection();
             String sql = "INSERT INTO phieunhap (MaNCC, MaNV, NgayLap, TongTien) VALUES (?, ?, ?, ?)";
@@ -61,8 +62,9 @@ public class PhieuNhapDAO {
             return false;
         }
     }
+
     public boolean capNhatPhieuNhap(PhieuNhap pn) {
-        
+
         try {
             Connection c = JDBCUtil.getConnection();
             String sql = "UPDATE phieunhap SET MaNCC=?, MaNV=?, NgayLap=?, TongTien=? WHERE MaPN=?";
@@ -79,10 +81,11 @@ public class PhieuNhapDAO {
             return false;
         }
     }
+
     public ArrayList<CTPhieuNhap> timkiemtheomaPN(int maPN) {
         ArrayList<CTPhieuNhap> dsctpn = new ArrayList<>();
-        
-        try  {
+
+        try {
             Connection c = JDBCUtil.getConnection();
             String sql = "SELECT * FROM ctphieunhap WHERE MaPN = ?";
             PreparedStatement stmt = c.prepareStatement(sql);
@@ -99,15 +102,24 @@ public class PhieuNhapDAO {
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-        return dsctpn;  
+        return dsctpn;
     }
-    
-    public static void main(String[] args) {
-        PhieuNhapDAO t = new PhieuNhapDAO();
-        Date currentDate = new Date();
-        System.out.println(currentDate.getTime());
-//        System.out.println(t.themPhieuNhap(new PhieuNhap(1,1,0,currentDate,150000)));
+
+    public int getNewId() {
+        int ma = -1;
+        try {
+            Connection c = JDBCUtil.getConnection();
+            String sql = "select max(maPN) as maPN from phieunhap";
+            Statement st = c.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            if (rs.next()) {
+                ma = rs.getInt("maPN");
+            }
+            JDBCUtil.closeConnection(c);
+            return ma;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return ma;
     }
-    
-    
 }
