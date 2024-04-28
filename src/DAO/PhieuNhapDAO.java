@@ -12,12 +12,8 @@ import java.util.ArrayList;
 import Custom.*;
 import DTO.CTPhieuNhap;
 import DTO.PhieuNhap;
+import java.util.Date;
 
-
-/**
- *
- * @author nguye
- */
 public class PhieuNhapDAO {
 
     public ArrayList<PhieuNhap> getListPhieuNhap() {
@@ -103,10 +99,15 @@ public class PhieuNhapDAO {
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-        return dsctpn;
+        return dsctpn;  
     }
     
-    
+    public static void main(String[] args) {
+        PhieuNhapDAO t = new PhieuNhapDAO();
+        Date currentDate = new Date();
+        System.out.println(currentDate.getTime());
+//        System.out.println(t.themPhieuNhap(new PhieuNhap(1,1,0,currentDate,150000)));
+    }
     
     
 }

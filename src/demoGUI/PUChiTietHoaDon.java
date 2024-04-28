@@ -1,4 +1,4 @@
-package demoGUI;
+    package demoGUI;
 
 import javax.swing.*;
 import javax.swing.border.Border;

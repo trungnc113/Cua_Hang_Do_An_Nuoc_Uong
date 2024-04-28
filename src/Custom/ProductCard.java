@@ -75,7 +75,7 @@ public class ProductCard extends JPanel {
                 dialog.setModal(true);
                 dialog.setLocationRelativeTo(null);
                 dialog.setVisible(true);
-
+                
             }
 
             @Override

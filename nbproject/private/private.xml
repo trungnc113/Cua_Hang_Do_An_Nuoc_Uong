@@ -3,15 +3,44 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/nguye/OneDrive/Documents/NetBeansProjects/DoAn_QuanLyBanDoAnNuocUong/src/BUS/PhanQuyenBUS.java</file>
-            <file>file:/C:/Users/nguye/OneDrive/Documents/NetBeansProjects/DoAn_QuanLyBanDoAnNuocUong/src/BUS/NhanVienBUS.java</file>
+            <file>file:/C:/Users/nguye/OneDrive/Documents/NetBeansProjects/DoAn_QuanLyBanDoAnNuocUong/src/BUS/DangNhapBUS.java</file>
+            <file>file:/C:/Users/nguye/OneDrive/Documents/NetBeansProjects/DoAn_QuanLyBanDoAnNuocUong/src/DTO/GiamGia.java</file>
+            <file>file:/C:/Users/nguye/OneDrive/Documents/NetBeansProjects/DoAn_QuanLyBanDoAnNuocUong/src/Custom/dialog.java</file>
+            <file>file:/C:/Users/nguye/OneDrive/Documents/NetBeansProjects/DoAn_QuanLyBanDoAnNuocUong/src/DTO/HoaDon.java</file>
+            <file>file:/C:/Users/nguye/OneDrive/Documents/NetBeansProjects/DoAn_QuanLyBanDoAnNuocUong/src/GUI/PnQuanLySanPhamGUI.java</file>
+            <file>file:/C:/Users/nguye/OneDrive/Documents/NetBeansProjects/DoAn_QuanLyBanDoAnNuocUong/src/BUS/CTPhieuNhapBUS.java</file>
+            <file>file:/C:/Users/nguye/OneDrive/Documents/NetBeansProjects/DoAn_QuanLyBanDoAnNuocUong/src/GUI/PnQuanLyNhapHangGUI.java</file>
+            <file>file:/C:/Users/nguye/OneDrive/Documents/NetBeansProjects/DoAn_QuanLyBanDoAnNuocUong/src/BUS/TaiKhoanBUS.java</file>
+            <file>file:/C:/Users/nguye/OneDrive/Documents/NetBeansProjects/DoAn_QuanLyBanDoAnNuocUong/src/DTO/TaiKhoan.java</file>
+            <file>file:/C:/Users/nguye/OneDrive/Documents/NetBeansProjects/DoAn_QuanLyBanDoAnNuocUong/src/BUS/LoaiSPBUS.java</file>
+            <file>file:/C:/Users/nguye/OneDrive/Documents/NetBeansProjects/DoAn_QuanLyBanDoAnNuocUong/src/Custom/InputValidator.java</file>
+            <file>file:/C:/Users/nguye/OneDrive/Documents/NetBeansProjects/DoAn_QuanLyBanDoAnNuocUong/src/BUS/PhieuNhapBUS.java</file>
             <file>file:/C:/Users/nguye/OneDrive/Documents/NetBeansProjects/DoAn_QuanLyBanDoAnNuocUong/src/GUI/PnThongKe.java</file>
-            <file>file:/C:/Users/nguye/OneDrive/Documents/NetBeansProjects/DoAn_QuanLyBanDoAnNuocUong/src/GUI/MainQuanLyGUI.java</file>
+            <file>file:/C:/Users/nguye/OneDrive/Documents/NetBeansProjects/DoAn_QuanLyBanDoAnNuocUong/src/demoGUI/KhuyenMai_GUI.java</file>
+            <file>file:/C:/Users/nguye/OneDrive/Documents/NetBeansProjects/DoAn_QuanLyBanDoAnNuocUong/src/BUS/GiamGiaBUS.java</file>
             <file>file:/C:/Users/nguye/OneDrive/Documents/NetBeansProjects/DoAn_QuanLyBanDoAnNuocUong/src/DAO/PhanQuyenDAO.java</file>
             <file>file:/C:/Users/nguye/OneDrive/Documents/NetBeansProjects/DoAn_QuanLyBanDoAnNuocUong/src/Main/Main.java</file>
+            <file>file:/C:/Users/nguye/OneDrive/Documents/NetBeansProjects/DoAn_QuanLyBanDoAnNuocUong/src/GUI/PnQuanLyKhuyenMaiGUI.java</file>
             <file>file:/C:/Users/nguye/OneDrive/Documents/NetBeansProjects/DoAn_QuanLyBanDoAnNuocUong/src/GUI/PnBanHang.java</file>
+            <file>file:/C:/Users/nguye/OneDrive/Documents/NetBeansProjects/DoAn_QuanLyBanDoAnNuocUong/src/demoGUI/PUChiTietSP.java</file>
+            <file>file:/C:/Users/nguye/OneDrive/Documents/NetBeansProjects/DoAn_QuanLyBanDoAnNuocUong/src/DAO/GiamGiaDAO.java</file>
             <file>file:/C:/Users/nguye/OneDrive/Documents/NetBeansProjects/DoAn_QuanLyBanDoAnNuocUong/src/Custom/ProductCard.java</file>
+            <file>file:/C:/Users/nguye/OneDrive/Documents/NetBeansProjects/DoAn_QuanLyBanDoAnNuocUong/src/DTO/CTHoaDon.java</file>
             <file>file:/C:/Users/nguye/OneDrive/Documents/NetBeansProjects/DoAn_QuanLyBanDoAnNuocUong/src/BUS/SanPhamBUS.java</file>
+            <file>file:/C:/Users/nguye/OneDrive/Documents/NetBeansProjects/DoAn_QuanLyBanDoAnNuocUong/src/DTO/PhieuNhap.java</file>
+            <file>file:/C:/Users/nguye/OneDrive/Documents/NetBeansProjects/DoAn_QuanLyBanDoAnNuocUong/src/GUI/PnPhanQuyen.java</file>
+            <file>file:/C:/Users/nguye/OneDrive/Documents/NetBeansProjects/DoAn_QuanLyBanDoAnNuocUong/src/BUS/PhanQuyenBUS.java</file>
+            <file>file:/C:/Users/nguye/OneDrive/Documents/NetBeansProjects/DoAn_QuanLyBanDoAnNuocUong/src/DAO/SanPhamDAO.java</file>
+            <file>file:/C:/Users/nguye/OneDrive/Documents/NetBeansProjects/DoAn_QuanLyBanDoAnNuocUong/src/Custom/NonEditableTableModel.java</file>
+            <file>file:/C:/Users/nguye/OneDrive/Documents/NetBeansProjects/DoAn_QuanLyBanDoAnNuocUong/src/BUS/NhanVienBUS.java</file>
+            <file>file:/C:/Users/nguye/OneDrive/Documents/NetBeansProjects/DoAn_QuanLyBanDoAnNuocUong/src/DAO/PhieuNhapDAO.java</file>
+            <file>file:/C:/Users/nguye/OneDrive/Documents/NetBeansProjects/DoAn_QuanLyBanDoAnNuocUong/src/GUI/dlgChonNhaCungCap.java</file>
+            <file>file:/C:/Users/nguye/OneDrive/Documents/NetBeansProjects/DoAn_QuanLyBanDoAnNuocUong/src/Custom/listCard.java</file>
+            <file>file:/C:/Users/nguye/OneDrive/Documents/NetBeansProjects/DoAn_QuanLyBanDoAnNuocUong/src/demoGUI/PUChiTietHoaDon.java</file>
+            <file>file:/C:/Users/nguye/OneDrive/Documents/NetBeansProjects/DoAn_QuanLyBanDoAnNuocUong/src/GUI/MainQuanLyGUI.java</file>
+            <file>file:/C:/Users/nguye/OneDrive/Documents/NetBeansProjects/DoAn_QuanLyBanDoAnNuocUong/src/GUI/dlgThemNhaCungCap.java</file>
+            <file>file:/C:/Users/nguye/OneDrive/Documents/NetBeansProjects/DoAn_QuanLyBanDoAnNuocUong/src/GUI/PnNhapHang.java</file>
+            <file>file:/C:/Users/nguye/OneDrive/Documents/NetBeansProjects/DoAn_QuanLyBanDoAnNuocUong/src/DAO/NhanVienDAO.java</file>
         </group>
     </open-files>
 </project-private>

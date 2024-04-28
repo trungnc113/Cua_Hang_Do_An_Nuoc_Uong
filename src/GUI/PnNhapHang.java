@@ -7,9 +7,11 @@ package GUI;
 import BUS.DangNhapBUS;
 import BUS.NhanVienBUS;
 import BUS.SanPhamBUS;
+import Custom.InputValidator;
 import Custom.Mytable;
 import Custom.NonEditableTableModel;
 import Custom.ScaleImage;
+import Custom.dialog;
 import DTO.NhaCungCap;
 import DTO.NhanVien;
 import DTO.SanPham;
@@ -17,20 +19,16 @@ import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author nguye
- */
 public class PnNhapHang extends javax.swing.JPanel {
 
     private NhaCungCap currentNCC;
-    private SanPham currentSanPham=null;
-    private SanPhamBUS sanPhamBUS =new SanPhamBUS();
-    private NonEditableTableModel dtmNhapHang,dtmChoNhap;
+    private SanPham currentSanPham = null;
+    private SanPhamBUS sanPhamBUS = new SanPhamBUS();
+    private NonEditableTableModel dtmNhapHang, dtmChoNhap;
     private NhanVienBUS nhanVienBUS = new NhanVienBUS();
     private NhanVien currentNhanVien = nhanVienBUS.getById(DangNhapBUS.taiKhoanLogin.getMaNhanVien());
+
     public PnNhapHang() {
         initComponents();
         custom();
@@ -38,49 +36,98 @@ public class PnNhapHang extends javax.swing.JPanel {
         addEvents();
     }
 
-    private void custom(){
+    private void custom() {
         dtmNhapHang = new NonEditableTableModel();
         dtmNhapHang.addColumn("Mã SP");
         dtmNhapHang.addColumn("Tên SP");
         dtmNhapHang.addColumn("Tồn kho");
-        
+
         tblKhoHang.setModel(dtmNhapHang);
-        
+
         tblKhoHang.getColumnModel().getColumn(1).setPreferredWidth(200);
-        
-        dtmChoNhap=new NonEditableTableModel();
+
+        dtmChoNhap = new NonEditableTableModel();
         dtmChoNhap.addColumn("Mã SP");
         dtmChoNhap.addColumn("Tên SP");
         dtmChoNhap.addColumn("Số lượng");
-        
+        dtmChoNhap.addColumn("Đơn giá");
+        dtmChoNhap.addColumn("Thành tiền");
+
         tblChoNhap.setModel(dtmChoNhap);
-        
+
         tblChoNhap.getColumnModel().getColumn(1).setPreferredWidth(200);
     }
-    
-    private void loadData(){
+
+    private void loadData() {
         dtmNhapHang.setRowCount(0);
         ArrayList<SanPham> sanPhams = sanPhamBUS.getList();
-        if(sanPhams == null ) return;
-        for ( SanPham sanPham : sanPhams)
-        {
-            dtmNhapHang.addRow(new Object[]{sanPham.getMaSP(),sanPham.getTenSP(),sanPham.getSoLuong()});
+        if (sanPhams == null) {
+            return;
         }
-        
+        for (SanPham sanPham : sanPhams) {
+            dtmNhapHang.addRow(new Object[]{sanPham.getMaSP(), sanPham.getTenSP(), sanPham.getSoLuong()});
+        }
+
         cmbNhanVien.removeAllItems();
-        cmbNhanVien.addItem(currentNhanVien.getMaNV()+" - "+currentNhanVien.getHo()+" "+currentNhanVien.getTen());
+        cmbNhanVien.addItem(currentNhanVien.getMaNV() + " - " + currentNhanVien.getHo() + " " + currentNhanVien.getTen());
     }
-    
-    private void addEvents(){
-//        tblKhoHang.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
-//            @Override
-//            public void valueChanged(ListSelectionEvent e) {
-//                if(e.getValueIsAdjusting()) return;
-//                
-//            }
-//        });
+
+    private void addEvents() {
+        tblKhoHang.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (e.getValueIsAdjusting()) {
+                    return;
+                }
+                int row = tblKhoHang.getSelectedRow();
+                int maSP = Integer.parseInt(tblKhoHang.getValueAt(row, 0) + "");
+                currentSanPham = sanPhamBUS.getById(maSP);
+                ImageIcon imageIcon = ScaleImage.scaleImage("image/products/" + currentSanPham.getHinhAnh(), 200, 200);
+                lbAnh.setIcon(imageIcon);
+            }
+        });
     }
-    
+
+    private int duplicateSP(SanPham sp) {
+        for (int i = 0; i < dtmChoNhap.getRowCount(); i++) {
+            if (sp.getMaSP() == Integer.parseInt(tblChoNhap.getValueAt(i, 0) + "")) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private void addRowTblChoNhap() {
+        if (currentSanPham == null) {
+            new dialog("Vui lòng chọn sản phẩm", dialog.ERROR_DIALOG);
+            return;
+        }
+        if (InputValidator.IsEmpty(txtSoLuong.getText()) || InputValidator.IsEmpty(txtDonGia.getText()) || !InputValidator.isPositiveNumber(txtSoLuong.getText()) || !InputValidator.isPositiveNumber(txtDonGia.getText())) {
+            new dialog("Vui lòng nhập số", dialog.ERROR_DIALOG);
+            return;
+        }
+        if (InputValidator.OverflowChecker(txtSoLuong.getText()) || InputValidator.OverflowChecker(txtDonGia.getText())) {
+            new dialog("Số lượng hoặc đơn giá quá lớn", dialog.ERROR_DIALOG);
+            return;
+        }
+        int donGia = Integer.parseInt(txtDonGia.getText());
+        int soLuong = Integer.parseInt(txtSoLuong.getText());
+        if (donGia > Integer.MAX_VALUE / soLuong) {
+            new dialog("Thành tiền quá lớn", dialog.ERROR_DIALOG);
+            return;
+        }
+        int DuplicateRow = duplicateSP(currentSanPham); // lấy dòng trùng mã SP
+        //Nếu không trùng
+        if (DuplicateRow < 0) {
+            dtmChoNhap.addRow(new Object[]{currentSanPham.getMaSP(), currentSanPham.getTenSP(), soLuong, donGia, donGia * soLuong});
+            return;
+        }
+        int NewSoLuong = Integer.parseInt(tblChoNhap.getValueAt(DuplicateRow, 2) + "") + soLuong;
+        tblChoNhap.setValueAt(NewSoLuong, DuplicateRow, 2);
+        tblChoNhap.setValueAt(donGia, DuplicateRow, 3);
+        tblChoNhap.setValueAt(NewSoLuong * donGia, DuplicateRow, 4);
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -109,7 +156,7 @@ public class PnNhapHang extends javax.swing.JPanel {
         jLabel22 = new javax.swing.JLabel();
         txtSoLuong = new javax.swing.JTextField();
         jPanel23 = new javax.swing.JPanel();
-        btnReset = new javax.swing.JButton();
+        btnResetTT = new javax.swing.JButton();
         btnXacNhan = new javax.swing.JButton();
         pnAnhSP = new javax.swing.JPanel();
         lbAnh = new javax.swing.JLabel();
@@ -257,16 +304,16 @@ public class PnNhapHang extends javax.swing.JPanel {
 
         jPanel23.setPreferredSize(new java.awt.Dimension(297, 40));
 
-        btnReset.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        btnReset.setForeground(new java.awt.Color(0, 160, 80));
-        btnReset.setText("Reset");
-        btnReset.setPreferredSize(new java.awt.Dimension(141, 41));
-        btnReset.addActionListener(new java.awt.event.ActionListener() {
+        btnResetTT.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btnResetTT.setForeground(new java.awt.Color(0, 160, 80));
+        btnResetTT.setText("Reset");
+        btnResetTT.setPreferredSize(new java.awt.Dimension(141, 41));
+        btnResetTT.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnResetActionPerformed(evt);
+                btnResetTTActionPerformed(evt);
             }
         });
-        jPanel23.add(btnReset);
+        jPanel23.add(btnResetTT);
 
         btnXacNhan.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnXacNhan.setForeground(new java.awt.Color(0, 160, 80));
@@ -402,12 +449,22 @@ public class PnNhapHang extends javax.swing.JPanel {
         btnResetChoNhap.setForeground(new java.awt.Color(0, 160, 80));
         btnResetChoNhap.setText("Reset");
         btnResetChoNhap.setPreferredSize(new java.awt.Dimension(141, 41));
+        btnResetChoNhap.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnResetChoNhapActionPerformed(evt);
+            }
+        });
         jPanel2.add(btnResetChoNhap);
 
         btnNhap.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         btnNhap.setForeground(new java.awt.Color(0, 160, 80));
         btnNhap.setText("Nhập");
         btnNhap.setPreferredSize(new java.awt.Dimension(141, 41));
+        btnNhap.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNhapActionPerformed(evt);
+            }
+        });
         jPanel2.add(btnNhap);
 
         jPanel24.add(jPanel2);
@@ -430,15 +487,10 @@ public class PnNhapHang extends javax.swing.JPanel {
     }//GEN-LAST:event_btnChonNhaCungCapActionPerformed
 
     private void tblKhoHangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblKhoHangMouseClicked
-        int row = tblKhoHang.getSelectedRow();
-        int maSP = Integer.parseInt(tblKhoHang.getValueAt(row, 0)+"");
-        currentSanPham = sanPhamBUS.getById(maSP);
-        ImageIcon imageIcon = ScaleImage.scaleImage("image/products/"+currentSanPham.getHinhAnh(), 200, 200);
-        lbAnh.setIcon(imageIcon);
     }//GEN-LAST:event_tblKhoHangMouseClicked
 
     private void btnResetKhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetKhoActionPerformed
-        // TODO add your handling code here:
+        loadData();
     }//GEN-LAST:event_btnResetKhoActionPerformed
 
     private void txtNhaCungCapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNhaCungCapActionPerformed
@@ -450,25 +502,50 @@ public class PnNhapHang extends javax.swing.JPanel {
     }//GEN-LAST:event_cmbNhanVienActionPerformed
 
     private void btnXacNhanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXacNhanActionPerformed
-
+        addRowTblChoNhap();
     }//GEN-LAST:event_btnXacNhanActionPerformed
 
-    private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
+    private void btnResetTTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetTTActionPerformed
         txtSoLuong.setText("");
         txtDonGia.setText("");
-    }//GEN-LAST:event_btnResetActionPerformed
+    }//GEN-LAST:event_btnResetTTActionPerformed
 
     private void btnXoaChoNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaChoNhapActionPerformed
-        // TODO add your handling code here:
+        int[] rows = tblChoNhap.getSelectedRows();
+        if (rows.length == 0) {
+            new dialog("Vui lòng chọn sản phẩm muốn xóa", dialog.ERROR_DIALOG);
+            return;
+        }
+        for (int i = 0; i < rows.length; i++)
+            dtmChoNhap.removeRow(i);
     }//GEN-LAST:event_btnXoaChoNhapActionPerformed
+
+    private void btnResetChoNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetChoNhapActionPerformed
+        dtmChoNhap.setRowCount(0);
+    }//GEN-LAST:event_btnResetChoNhapActionPerformed
+
+    private void btnNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNhapActionPerformed
+        if (dtmChoNhap.getRowCount() == 0) {
+            new dialog("Chưa chọn sản phẩm để nhập", dialog.ERROR_DIALOG);
+            return;
+        }
+        if (currentNCC == null) {
+            new dialog("Vui lòng chọn nhà cung cấp", dialog.ERROR_DIALOG);
+            return;
+        }
+        dialog dlgConfirm = new dialog("Xác nhận nhập hàng?", dialog.WARNING_DIALOG);
+        if(dlgConfirm.getAction() == 1){
+            
+        }
+    }//GEN-LAST:event_btnNhapActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnChonNhaCungCap;
     private javax.swing.JButton btnNhap;
-    private javax.swing.JButton btnReset;
     private javax.swing.JButton btnResetChoNhap;
     private javax.swing.JButton btnResetKho;
+    private javax.swing.JButton btnResetTT;
     private javax.swing.JButton btnXacNhan;
     private javax.swing.JButton btnXoaChoNhap;
     private javax.swing.JComboBox<String> cmbNhanVien;

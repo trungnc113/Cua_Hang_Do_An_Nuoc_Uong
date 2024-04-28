@@ -34,4 +34,13 @@ public class InputValidator {
         Matcher matcher = regex.matcher(number);
         return matcher.matches();
     }
+    //kiểm tra tràn số
+    public static boolean OverflowChecker(String number){
+        try {
+            int num = Integer.parseInt(number);
+            return false;
+        } catch (NumberFormatException e) {
+            return true;
+        }
+    }
 }
