@@ -22,12 +22,15 @@ public class NhanVienBUS {
         return this.listNV;
     }
 
-    public boolean themNhanVien(String ho, String ten, String gioiTinh, String dienThoai, String trangThai) {
+    public NhanVien getById(int maNV){
+        return nvDAO.getNhanVien(maNV);
+    }
+
+    public boolean themNhanVien(String ho, String ten, String gioiTinh, String dienThoai, int trangThai) {
         ho = ho.trim();
         ten = ten.trim();
         dienThoai = dienThoai.trim();
-        trangThai = trangThai.trim();
-        int tThai = Integer.parseInt(trangThai);
+        int tThai = trangThai;
         if (ten.equals("")) {
             new dialog("Tên không được để trống!", dialog.ERROR_DIALOG);
             return false;
@@ -43,7 +46,7 @@ public class NhanVienBUS {
         nv.setDienThoai(dienThoai);
         nv.setTrangThai(tThai);
         boolean flag = nvDAO.themNhanVien(nv);
-        if (!flag) {
+        if (flag) {
             new dialog("Thêm thất bại!", dialog.ERROR_DIALOG);
         } else {
             new dialog("Thêm thành công!", dialog.SUCCESS_DIALOG);
@@ -51,12 +54,10 @@ public class NhanVienBUS {
         return flag;
     }
 
-    public boolean updateNhanVien(String ma, String ho, String ten, String gioiTinh, String dienThoai, String trangThai) {
+    public boolean updateNhanVien(String ma, String ho, String ten, String gioiTinh, String dienThoai ) {
         int maNV = Integer.parseInt(ma);
         ho = ho.trim();
         ten = ten.trim();
-        trangThai = trangThai.trim();
-        int tThai = Integer.parseInt(trangThai);
         dienThoai = dienThoai.trim();
         if (ten.equals("")) {
             new dialog("Tên không được để trống!", dialog.ERROR_DIALOG);
@@ -72,9 +73,8 @@ public class NhanVienBUS {
         nv.setTen(ten);
         nv.setGioiTinh(gioiTinh);
         nv.setDienThoai(dienThoai);
-        nv.setTrangThai(tThai);
         boolean flag = nvDAO.updateInfoNhanVien(nv);
-        if (!flag) {
+        if (flag) {
             new dialog("Cập nhập thất bại!", dialog.ERROR_DIALOG);
         } else {
             new dialog("Cập nhập thành công!", dialog.SUCCESS_DIALOG);
@@ -114,9 +114,29 @@ public class NhanVienBUS {
         return false;
     }
 
-    public boolean nhapExcel(String ho, String ten, String gioiTinh, String dienThoai, String trangThai) {
-        int tThai = Integer.parseInt(trangThai);
+    public boolean xoaFKHoadon_PhieuNhap_NV(){
+        nvDAO.deletaFKHoandon_PhieuNhap();
+        boolean ketqua = nvDAO.deletaFKHoandon_PhieuNhap();
+        return ketqua;
+    }
+
+    public boolean updateFKHoadon_PhieuNhap_NV(){
+        nvDAO.updateFKHoandon_PhieuNhap();
+        boolean ketqua = nvDAO.updateFKHoandon_PhieuNhap();
+        return ketqua;
+    } 
+    
+    public boolean xoaAllNhanVien(){
+        nvDAO.xoaAllInfor();
+        boolean ketqua = nvDAO.xoaAllInfor();
+        return ketqua;
+    }
+
+    public boolean nhapExcel(String manv, String ho, String ten, String gioiTinh, String dienThoai, int trangThai) {
+        int tThai = trangThai;
+        int maNV = Integer.parseInt(manv);
         NhanVien nv = new NhanVien();
+        nv.setMaNV(maNV);
         nv.setHo(ho);
         nv.setTen(ten);
         nv.setGioiTinh(gioiTinh);
@@ -124,13 +144,5 @@ public class NhanVienBUS {
         nv.setTrangThai(tThai);
         boolean flag = nvDAO.importNhanVienFromExcel(nv);
         return flag;
-    }
-    
-    public ArrayList<NhanVien> getList(){
-        return nvDAO.getDanhSachNhanVien();
-    }
-    
-    public NhanVien getById(int maNV){
-        return nvDAO.getNhanVien(maNV);
     }
 }
