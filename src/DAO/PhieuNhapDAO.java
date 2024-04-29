@@ -6,32 +6,25 @@ package DAO;
 
 import java.sql.Connection;
 import java.util.Date;
-// import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import Custom.*;
-// import DTO.CTPhieuNhap;
 import DTO.PhieuNhap;
-// import demoGUI.phieunhap;
+import java.sql.Statement;
 
-
-/**
- *
- * @author nguye
- */
 public class PhieuNhapDAO {
 
-    public PhieuNhapDAO(){
+    public PhieuNhapDAO() {
 
     }
 
-    public  ArrayList<PhieuNhap> getallPhieuNhap() {
-        
+    public ArrayList<PhieuNhap> getallPhieuNhap() {
+
         ArrayList<PhieuNhap> dspn = new ArrayList<>();
         try {
-            
+
             Connection c = JDBCUtil.getConnection();
             System.out.println("connect");
             String sql = "SELECT * FROM phieunhap";
@@ -51,13 +44,14 @@ public class PhieuNhapDAO {
             return null;
         }
         return dspn;
-        
+
     }
-    public  ArrayList<PhieuNhap> getPhieuNhapbyId(int maPN) {
-        
+
+    public ArrayList<PhieuNhap> getPhieuNhapbyId(int maPN) {
+
         ArrayList<PhieuNhap> dspn = new ArrayList<>();
         try {
-            
+
             Connection c = JDBCUtil.getConnection();
             System.out.println("connect");
             String sql = "SELECT * FROM phieunhap where MaPN = ?";
@@ -79,6 +73,7 @@ public class PhieuNhapDAO {
         }
         return dspn;
     }
+
     public ArrayList<PhieuNhap> getPhieuNhapByNgayLap(Date startDate, Date endDate) {
         ArrayList<PhieuNhap> dspn = new ArrayList<>();
         try {
@@ -104,7 +99,8 @@ public class PhieuNhapDAO {
         }
         return dspn;
     }
-    public ArrayList<PhieuNhap> getPhieuNhapByGia(int minPrice , int maxPrice) {
+
+    public ArrayList<PhieuNhap> getPhieuNhapByGia(int minPrice, int maxPrice) {
         ArrayList<PhieuNhap> dspn = new ArrayList<>();
         try {
             Connection c = JDBCUtil.getConnection();
@@ -112,7 +108,7 @@ public class PhieuNhapDAO {
             String sql = "SELECT * FROM phieunhap WHERE TongTien BETWEEN ? AND ?";
             PreparedStatement stmt = c.prepareStatement(sql);
             stmt.setInt(1, minPrice);
-            stmt.setInt(2,maxPrice);
+            stmt.setInt(2, maxPrice);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 PhieuNhap pn = new PhieuNhap();
@@ -129,8 +125,9 @@ public class PhieuNhapDAO {
         }
         return dspn;
     }
+
     public boolean themPhieuNhap(PhieuNhap pn) {
-        
+
         try {
             Connection c = JDBCUtil.getConnection();
             String sql = "INSERT INTO phieunhap (MaNCC, MaNV, NgayLap, TongTien) VALUES (?, ?, ?, ?)";
@@ -146,8 +143,9 @@ public class PhieuNhapDAO {
             return false;
         }
     }
+
     public boolean capNhatPhieuNhap(PhieuNhap pn) {
-        
+
         try {
             Connection c = JDBCUtil.getConnection();
             String sql = "UPDATE phieunhap SET MaNCC=?, MaNV=?, NgayLap=?, TongTien=? WHERE MaPN=?";
@@ -164,9 +162,23 @@ public class PhieuNhapDAO {
             return false;
         }
     }
-    
-    
-    
-    
-    
+
+    public int getNewId() {
+        int ma = -1;
+        try {
+            Connection c = JDBCUtil.getConnection();
+            String sql = "select max(maPN) as maPN from phieunhap";
+            Statement st = c.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            if (rs.next()) {
+                ma = rs.getInt("maPN");
+            }
+            JDBCUtil.closeConnection(c);
+            return ma;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return ma;
+    }
+
 }
