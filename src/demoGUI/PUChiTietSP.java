@@ -1,12 +1,15 @@
 package demoGUI;
 
 import DTO.SanPham;
+import GUI.PnBanHang;
 
 import javax.swing.*;
 import java.awt.*;
 import javax.swing.border.*;
 
 import static Main.Main.changLNF;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class PUChiTietSP extends JPanel{
     private int W = 400;
@@ -14,11 +17,16 @@ public class PUChiTietSP extends JPanel{
     final Color ClMain = new Color(0, 160, 80); //#00A050
     final Color ClHover = new Color(0, 192, 96);
     final Color ClSelect = new Color(76, 204, 76);
+//    JButton btnadd;
+//    JSpinner spinner;
     Border customBorder = BorderFactory.createLineBorder(ClMain, 2);
     Font FtTitleText = new Font("Montserrat", Font.BOLD, 15);
+//    SanPham sanPham;
     public PUChiTietSP(SanPham Sp){
+//        this.sanPham=Sp;
         changLNF("Windows");
         addGUI(Sp);
+//        addEvents();
     }
     private void addGUI(SanPham Sp){
         this.setPreferredSize(new Dimension(W, H));
@@ -148,7 +156,26 @@ public class PUChiTietSP extends JPanel{
         addtoCart.add(south, BorderLayout.SOUTH);
 
         this.add(addtoCart);
+        addGIohang(btnadd, Sp, spinner);
     }
-
+//    private void addEvents(){   
+//        btnadd.addActionListener(new ActionListener(){
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                int soLuong =Integer.parseInt(spinner.getValue()+"");
+//                PnBanHang.loadtblGioHang(sanPham.getMaSP(), sanPham.getTenSP(), soLuong, sanPham.getDonGia(),soLuong * sanPham.getDonGia());
+//            }
+//        });
+//    }
+    public void addGIohang(JButton btn,SanPham sanPham,JSpinner spinner){
+        btn.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int soLuong =Integer.parseInt(spinner.getValue()+"");
+                PnBanHang.loadtblGioHang(sanPham.getMaSP(), sanPham.getTenSP(), soLuong, sanPham.getDonGia(),soLuong * sanPham.getDonGia());
+            }
+        });
+    }
+    
 }
 

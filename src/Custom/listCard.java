@@ -5,14 +5,18 @@ import DTO.SanPham;
 import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
 
 public class listCard extends JPanel {
 
     private int w = 1000;
     private int h = 350;
+    
     JPanel productList;
     JScrollPane scrollPane;
 
@@ -56,7 +60,7 @@ public class listCard extends JPanel {
             public void componentHidden(ComponentEvent e) {
             }
         });
-    }
+  }
 
     private void updateCols() {
         int width = scrollPane.getViewport().getWidth();

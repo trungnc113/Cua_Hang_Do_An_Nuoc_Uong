@@ -1,13 +1,22 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package BUS;
 
-/**
- *
- * @author nguye
- */
+import Custom.dialog;
+import DAO.CTPhieuNhapDAO;
+import DTO.CTPhieuNhap;
+
 public class CTPhieuNhapBUS {
     
+    CTPhieuNhapDAO cTPhieuNhapDAO = new CTPhieuNhapDAO();
+    
+    public CTPhieuNhapBUS() {
+    }
+    
+    public boolean Insert(CTPhieuNhap ctpn){
+        if(!cTPhieuNhapDAO.addCTPhieuNhap(ctpn))
+        {
+            new dialog("Lỗi thêm chi tiết phiếu nhập!", dialog.ERROR_DIALOG);
+            return false;
+        }
+        return true;
+    }
 }

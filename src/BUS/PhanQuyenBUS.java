@@ -38,9 +38,6 @@ public class PhanQuyenBUS {
             return false;
         }
         int maQuyen = getNextMaQuyen();
-        if (maQuyen < 0) {
-            return false;
-        }
         if (phanQuyenDAO.insert(new PhanQuyen(maQuyen, tenQuyen, 0, 0, 0, 0, 0, 1)) == 0) {
             new dialog("Không thể thêm quyền", dialog.ERROR_DIALOG);
             return false;
@@ -85,7 +82,7 @@ public class PhanQuyenBUS {
         this.currentQuyen = phanQuyenDAO.selectById(phanQuyentmp);
     }
 
-    public int getNextMaQuyen() {
+    private int getNextMaQuyen() {
         return phanQuyenDAO.getNewMa() + 1;
     }
 }

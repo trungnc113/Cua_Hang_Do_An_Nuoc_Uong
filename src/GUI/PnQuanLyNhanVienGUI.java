@@ -30,7 +30,7 @@ public class PnQuanLyNhanVienGUI extends JPanel {
         this.setLayout(new BorderLayout());
         int w = 1030;
         int h = 844;
-      
+    
         JPanel pnTop = new JPanel();
         pnTop.setPreferredSize(new Dimension(w, 41));
         pnTop.setLayout(new GridLayout(1, 2));

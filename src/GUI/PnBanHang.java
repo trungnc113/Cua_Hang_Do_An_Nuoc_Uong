@@ -26,10 +26,7 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author nguye
- */
+
 public class PnBanHang extends JPanel {
 
     final Color ClMain = new Color(0, 160, 80);
@@ -38,9 +35,8 @@ public class PnBanHang extends JPanel {
 
     Font FtTitleText = new Font("Montserrat", Font.BOLD, 20);
     Font font = new Font("", Font.PLAIN, 20);
-
+    public static DefaultTableModel dtmGioHang;
     listCard listCardSP;
-
     public PnBanHang() {
         addControls();
     }
@@ -107,7 +103,7 @@ public class PnBanHang extends JPanel {
 
         JPanel pnTbGioHang = new JPanel(new BorderLayout());//tạo khung chứa giỏ hàng
         String[] columnTable = {"Mã SP", "Tên SP", "Số Lượng", "Đơn Giá", "Thành Tiền"};
-        DefaultTableModel dtmGioHang = new DefaultTableModel(columnTable, 0);
+        dtmGioHang = new DefaultTableModel(columnTable, 0);
         Mytable mtbGioHang = new Mytable(dtmGioHang);
 
         mtbGioHang.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
@@ -176,5 +172,7 @@ public class PnBanHang extends JPanel {
             }
         });
     }
-
+    public static void loadtblGioHang(int maSP,String tenSP,int soLuong,int donGia,int thanhTien){
+        dtmGioHang.addRow(new Object[]{maSP,tenSP,soLuong,donGia,thanhTien});
+    }
 }
