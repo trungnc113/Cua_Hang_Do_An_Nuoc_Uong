@@ -73,6 +73,7 @@ public class PUMaGiam extends JPanel {
     }
     public static void addrow(int tong){
         GiamGiaBUS listGG = new GiamGiaBUS();
+        Date currentDate = new Date();
         for(int i=0; i<listGG.getList().size(); i++) {
             if(tong > listGG.getList().get(i).getDieuKien())
             {
