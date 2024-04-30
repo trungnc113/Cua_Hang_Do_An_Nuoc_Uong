@@ -537,7 +537,6 @@ public class PnQuanLySanPhamGUI extends JPanel{
 
     private void xuLySuaSanPham() {
         String anh = fileAnhSP.getName();
-        // boolean flag = SPBUS.suaThongTinSanPham(txtMa.getText(),
         SPBUS.capNhatThongTinSanPham(txtMa.getText(),
                 txtTen.getText(),
                 cmbLoai.getSelectedItem() + "",
