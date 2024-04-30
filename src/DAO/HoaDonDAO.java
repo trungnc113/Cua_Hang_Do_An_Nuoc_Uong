@@ -47,7 +47,7 @@ public class HoaDonDAO {
             prep.setInt(3, hd.getMaNV());
             prep.setInt(4, hd.getMaGiam());
             prep.setTimestamp(5, new java.sql.Timestamp(new java.util.Date().getTime()));
-            prep.setInt(5, hd.getTongTien());
+            prep.setInt(6, hd.getTongTien());
             result = prep.executeUpdate() > 0;
             JDBCUtil.closeConnection(c);
         } catch (SQLException ex) {
@@ -59,16 +59,15 @@ public class HoaDonDAO {
     public ArrayList<HoaDon> getListHoaDonTheoDateVaTongTien(Date dateMin, Date dateMax, int tongtienMin,int tongtienMax ) { // lấy list dshd theo ngày và tổng tiền
         try {
             Connection c = JDBCUtil.getConnection();
-            String sql = "SELECT * FROM hoadon WHERE (NgayLap BETWEEN CAST('?' AS DATE) AND CAST('?' AS DATE)) and (tongTien between cast('?' as int) and cast('?' as int))";
+            //String sql = "SELECT * FROM hoadon WHERE (NgayLap BETWEEN ? AND ?) AND (tongTien BETWEEN ? AND ?)";
+            String sql = "SELECT * FROM hoadon WHERE (NgayLap BETWEEN ? AND ?) AND (tongTien BETWEEN ? AND ?)";
             PreparedStatement pre = c.prepareStatement(sql);
             pre.setDate(1, dateMin);
             pre.setDate(2, dateMax);
-            pre.setInt(3,tongtienMin);
-            pre.setInt(4,tongtienMax);
+            pre.setInt(3, tongtienMin);
+            pre.setInt(4, tongtienMax);
             ResultSet rs = pre.executeQuery();
-
             ArrayList<HoaDon> dshd = new ArrayList<>();
-
             while (rs.next()) {
                 HoaDon hd = new HoaDon();
                 hd.setMaHD(rs.getInt(1));
@@ -85,12 +84,34 @@ public class HoaDonDAO {
         }
         return null;
     }
-    public ArrayList<HoaDon> getListHoaDonTheoMHD(int maHD) {
-        ArrayList<HoaDon> dshd = new ArrayList<>();
+    public HoaDon getHoaDonTheoMHD(int maHD) {
+        HoaDon HD = new HoaDon();
         try {
             String sql = "SELECT * FROM hoadon where maHD="+maHD;
             Statement stmt = JDBCUtil.getConnection().createStatement();
             ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                HD.setMaHD(rs.getInt(1));
+                HD.setMaKH(rs.getInt(2));
+                HD.setMaNV(rs.getInt(3));
+                HD.setMaGiam(rs.getInt(4));
+                HD.setNgayLap(rs.getDate(5));
+                HD.setTongTien(rs.getInt(6));
+            }
+            return HD;
+        } catch (SQLException ex) {
+        }
+        return null;
+    }
+    public ArrayList<HoaDon> getListHoaDonTheoDate(Date dateMin, Date dateMax ) { // lấy list dshd theo ngày và tổng tiền
+        try {
+            Connection c = JDBCUtil.getConnection();
+            String sql = "SELECT * FROM hoadon WHERE (NgayLap BETWEEN CAST(? AS DATE) AND CAST(? AS DATE))";
+            PreparedStatement pre = c.prepareStatement(sql);
+            pre.setDate(1, dateMin);
+            pre.setDate(2, dateMax);
+            ResultSet rs = pre.executeQuery();
+            ArrayList<HoaDon> dshd = new ArrayList<>();
             while (rs.next()) {
                 HoaDon hd = new HoaDon();
                 hd.setMaHD(rs.getInt(1));
@@ -101,9 +122,10 @@ public class HoaDonDAO {
                 hd.setTongTien(rs.getInt(6));
                 dshd.add(hd);
             }
-        } catch (SQLException ex) {
-            return null;
+            return dshd;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return dshd;
+        return null;
     }
 }

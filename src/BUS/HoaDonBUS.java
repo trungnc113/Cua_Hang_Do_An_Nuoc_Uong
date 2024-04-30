@@ -9,6 +9,7 @@ import Custom.dialog;
 import DAO.HoaDonDAO;
 import DTO.HoaDon;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -33,12 +34,49 @@ public class HoaDonBUS {
         }
         return HDDAO.getListHoaDonTheoDateVaTongTien((java.sql.Date) DateMin, (java.sql.Date) DateMax, TongTienMin, TongTienMax);
     }
-    public ArrayList<HoaDon> getlisttheoMHD(int MHD){
+    public HoaDon getlisttheoMHD(String MHD){
         String temp = ""+MHD;
-        if(!InputValidator.isValidNumber(temp)){
+        temp = temp.trim();
+        if(!InputValidator.isPositiveNumber(temp)){
             return null;
         }
-        return HDDAO.getListHoaDonTheoMHD(MHD);
+        int MHDint = Integer.parseInt(temp);
+        if(HDDAO.getHoaDonTheoMHD(MHDint) == null){
+            return null;
+        }
+        return HDDAO.getHoaDonTheoMHD(MHDint);
     }
-    
+    public ArrayList<HoaDon> getListHD_Price_Date(Date Min, Date Max, String GiaMin, String GiaMax) {
+        GiaMin = GiaMin.trim();
+        GiaMax = GiaMax.trim();
+        java.sql.Date sqlMin = new java.sql.Date(Min.getTime());
+        java.sql.Date sqlMax = new java.sql.Date(Max.getTime());
+        if(!Min.after(Max)){
+            if(InputValidator.IsEmpty(GiaMin) && InputValidator.IsEmpty(GiaMax)){
+                return HDDAO.getListHoaDonTheoDate(sqlMin, sqlMax);
+            }
+            if(InputValidator.IsEmpty(GiaMin) || InputValidator.IsEmpty(GiaMax)){
+                new dialog("Vui lòng nhập đầy đủ ô giá", dialog.ERROR_DIALOG);
+                return null;
+            }
+            if(!InputValidator.IsEmpty(GiaMin) && !InputValidator.IsEmpty(GiaMax)){
+                int PriceMin = Integer.parseInt(GiaMin);
+                int PriceMax = Integer.parseInt(GiaMax);
+                if(PriceMin > PriceMax || PriceMin < 0 || PriceMax < 0){
+                    new dialog("Vui lòng nhập khoảng giá hợp lệ", dialog.ERROR_DIALOG);
+                    return null;
+                }
+                else{
+                    return HDDAO.getListHoaDonTheoDateVaTongTien(sqlMin,sqlMax, PriceMin, PriceMax);
+                }
+            }
+        }
+        else{
+            new dialog("Vui lòng nhập đúng khoảng ngày!", dialog.ERROR_DIALOG);
+            return null;
+        }
+        System.out.println("test");
+        return null;
+        //return HDDAO.getListHoaDonTheoDateVaTongTien(sqlMin,sqlMax, PriceMin, PriceMax);
+    }
 }

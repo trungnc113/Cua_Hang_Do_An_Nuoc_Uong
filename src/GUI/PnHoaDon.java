@@ -5,6 +5,7 @@
 package GUI;
 
 import BUS.HoaDonBUS;
+import Custom.InputValidator;
 import Custom.Mytable;
 import DTO.HoaDon;
 import com.toedter.calendar.JDateChooser;
@@ -14,7 +15,10 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Objects;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -172,7 +176,9 @@ public class PnHoaDon extends JPanel{
         pnTbHoaDon.add(scrmtbHoaDon, BorderLayout.CENTER);
         this.add(pnTbHoaDon);
         addrowTable(dtmHoaDon);
+        TimKiemtheoMHD(btnSearchMaHD, dtmHoaDon, txtSearchMaHD);
         setEventTable(mtbHoaDon);
+        TimKiemTheoGiaTienVaDate(btnSearchDate, dtcStartDate, dtcEndDate,txtStartPrice, txtEndPrice, dtmHoaDon);
     }
     public void addrowTable(DefaultTableModel tble){
         HoaDonBUS list = new HoaDonBUS();
@@ -187,10 +193,10 @@ public class PnHoaDon extends JPanel{
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 if (!e.getValueIsAdjusting()){
-                    int MHD = (int) tble.getSelectedRow();
-                    if(MHD != -1){
-                        System.out.println("test");
-                        PUChiTietHoaDon popup = new PUChiTietHoaDon();
+                    int row = (int) tble.getSelectedRow();
+                    int MHD = (int) tble.getValueAt(tble.getSelectedRow(), 0 );
+                    if(row != -1){
+                        PUChiTietHoaDon popup = new PUChiTietHoaDon(MHD);
                         JDialog dialog = new JDialog();
                         dialog.add(popup);
                         dialog.pack();
@@ -199,6 +205,47 @@ public class PnHoaDon extends JPanel{
                         dialog.setVisible(true);
                     }
                }
+            }
+        });
+    }
+    public void TimKiemtheoMHD(JButton btnTimKiem, DefaultTableModel tble, JTextField txt){
+        HoaDonBUS HD = new HoaDonBUS();
+
+        btnTimKiem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(InputValidator.IsEmpty(txt.getText()))
+                {
+                    tble.setRowCount(0);
+                    addrowTable(tble);
+                }
+                else{
+                    String MHD = txt.getText();
+                    if(HD.getlisttheoMHD(MHD) == null){
+                        tble.setRowCount(0);
+                    }
+                    else{
+                        tble.setRowCount(0);
+                        Object[] data = {HD.getlisttheoMHD(MHD).getMaHD(), HD.getlisttheoMHD(MHD).getMaKH(), HD.getlisttheoMHD(MHD).getMaNV(), HD.getlisttheoMHD(MHD).getMaGiam(), HD.getlisttheoMHD(MHD).getNgayLap(), HD.getlisttheoMHD(MHD).getTongTien()};
+                        tble.addRow(data);
+                    }
+                }
+            }
+        });
+    }
+    public void TimKiemTheoGiaTienVaDate(JButton btnTimKiem,JDateChooser dateMin, JDateChooser dateMax, JTextField priceMin, JTextField priceMax, DefaultTableModel tble ){
+        HoaDonBUS list = new HoaDonBUS();
+        btnTimKiem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tble.setRowCount(0);
+                ArrayList<HoaDon> listHD = list.getListHD_Price_Date(dateMin.getDate(), dateMax.getDate(), priceMin.getText(), priceMax.getText());
+                if(listHD != null){
+                    for(int i = 0; i<listHD.size(); i++){
+                        Object[] newRowData = {listHD.get(i).getMaHD(), listHD.get(i).getMaKH(), listHD.get(i).getMaNV(), listHD.get(i).getMaGiam(), listHD.get(i).getNgayLap(), listHD.get(i).getTongTien()};
+                        tble.addRow(newRowData);
+                    }
+                }
             }
         });
     }

@@ -5,11 +5,12 @@ import GUI.PnBanHang;
 
 import javax.swing.*;
 import java.awt.*;
-import javax.swing.border.*;
-
-import static Main.Main.changLNF;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.border.*;
+import javax.swing.table.DefaultTableModel;
+
+import static Main.Main.changLNF;
 
 public class PUChiTietSP extends JPanel{
     private int W = 400;
@@ -17,16 +18,16 @@ public class PUChiTietSP extends JPanel{
     final Color ClMain = new Color(0, 160, 80); //#00A050
     final Color ClHover = new Color(0, 192, 96);
     final Color ClSelect = new Color(76, 204, 76);
-//    JButton btnadd;
-//    JSpinner spinner;
     Border customBorder = BorderFactory.createLineBorder(ClMain, 2);
     Font FtTitleText = new Font("Montserrat", Font.BOLD, 15);
-//    SanPham sanPham;
+    JButton btnadd;
+    JSpinner spinner;
+    SanPham SP;
     public PUChiTietSP(SanPham Sp){
-//        this.sanPham=Sp;
+        this.SP = Sp;
         changLNF("Windows");
         addGUI(Sp);
-//        addEvents();
+        addEventGioHang();
     }
     private void addGUI(SanPham Sp){
         this.setPreferredSize(new Dimension(W, H));
@@ -131,7 +132,7 @@ public class PUChiTietSP extends JPanel{
         txtChoiceSL.setFont(new java.awt.Font("Segoe UI", 1, 23));
         north.add(txtChoiceSL);
         north.add(Box.createHorizontalStrut(5));
-        JSpinner spinner = new JSpinner(new SpinnerNumberModel(1, 1,Sp.getSoLuong(), 1));
+        spinner = new JSpinner(new SpinnerNumberModel(1, 1,Sp.getSoLuong(), 1));
         spinner.setPreferredSize(new Dimension(70, 25));
         spinner.setEditor(new JSpinner.DefaultEditor(spinner));
         //set size số trong spinner
@@ -145,7 +146,7 @@ public class PUChiTietSP extends JPanel{
 
 
         JPanel south = new JPanel();
-        JButton btnadd = new JButton();// set sự kiện thêm vào giỏ hàng thì lấy cái btnadd này
+        btnadd = new JButton();// set sự kiện thêm vào giỏ hàng thì lấy cái btnadd này
         btnadd.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         btnadd.setForeground(new java.awt.Color(0, 160, 80));
         btnadd.setText("Thêm Vào Giỏ Hàng");
@@ -154,28 +155,17 @@ public class PUChiTietSP extends JPanel{
         btnadd.setPreferredSize(new java.awt.Dimension(260, 40));
         south.add(btnadd);
         addtoCart.add(south, BorderLayout.SOUTH);
-
         this.add(addtoCart);
-        addGIohang(btnadd, Sp, spinner);
     }
-//    private void addEvents(){   
-//        btnadd.addActionListener(new ActionListener(){
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                int soLuong =Integer.parseInt(spinner.getValue()+"");
-//                PnBanHang.loadtblGioHang(sanPham.getMaSP(), sanPham.getTenSP(), soLuong, sanPham.getDonGia(),soLuong * sanPham.getDonGia());
-//            }
-//        });
-//    }
-    public void addGIohang(JButton btn,SanPham sanPham,JSpinner spinner){
-        btn.addActionListener(new ActionListener(){
+    public void addEventGioHang(){
+        this.btnadd.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int soLuong =Integer.parseInt(spinner.getValue()+"");
-                PnBanHang.loadtblGioHang(sanPham.getMaSP(), sanPham.getTenSP(), soLuong, sanPham.getDonGia(),soLuong * sanPham.getDonGia());
+                int SoLuong = (int) spinner.getValue();
+                PnBanHang.addOneRow(SP, SoLuong);
             }
         });
     }
-    
+
 }
 

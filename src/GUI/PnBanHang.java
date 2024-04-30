@@ -4,29 +4,29 @@
  */
 package GUI;
 
+import BUS.LoaiSPBUS;
 import BUS.SanPhamBUS;
 import Custom.Mytable;
 import Custom.listCard;
 import DAO.LoaiSPDAO;
 import DAO.SanPhamDAO;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
+import DTO.SanPham;
+import demoGUI.PUChiTietSP;
+import demoGUI.PUMaGiam;
+
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
+import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-
+/**
+ *
+ * @author nguye
+ */
 public class PnBanHang extends JPanel {
 
     final Color ClMain = new Color(0, 160, 80);
@@ -35,10 +35,18 @@ public class PnBanHang extends JPanel {
 
     Font FtTitleText = new Font("Montserrat", Font.BOLD, 20);
     Font font = new Font("", Font.PLAIN, 20);
-    public static DefaultTableModel dtmGioHang;
+
     listCard listCardSP;
+    JButton btnRemove;
+    Mytable mtbGioHang;
+    JButton btnReset;
+    JButton btnThanhToan;
+    public static DefaultTableModel dtmGioHang;
     public PnBanHang() {
         addControls();
+        XoaPhanTuTrongGioHang();
+        ResetCart();
+        ThanhToan();
     }
 
     private void addControls() {
@@ -104,7 +112,11 @@ public class PnBanHang extends JPanel {
         JPanel pnTbGioHang = new JPanel(new BorderLayout());//tạo khung chứa giỏ hàng
         String[] columnTable = {"Mã SP", "Tên SP", "Số Lượng", "Đơn Giá", "Thành Tiền"};
         dtmGioHang = new DefaultTableModel(columnTable, 0);
-        Mytable mtbGioHang = new Mytable(dtmGioHang);
+        mtbGioHang = new Mytable(dtmGioHang){
+            public boolean isCellEditable(int row, int column) { // không cho phép sửa nội dung trong table
+                return false;
+            }
+        };
 
         mtbGioHang.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
         mtbGioHang.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
@@ -117,20 +129,44 @@ public class PnBanHang extends JPanel {
         mtbGioHang.getColumnModel().getColumn(2).setPreferredWidth(20);
         mtbGioHang.getColumnModel().getColumn(3).setPreferredWidth(20);
         mtbGioHang.getColumnModel().getColumn(4).setPreferredWidth(20);
-
         JScrollPane scrmtbGioHang = new JScrollPane(mtbGioHang);
 
+        JPanel GroupBTN = new JPanel();
+        GroupBTN.setLayout(new BoxLayout(GroupBTN, BoxLayout.Y_AXIS));
+        GroupBTN.setPreferredSize(new Dimension(200, 400));
+        btnThanhToan = new JButton("Thanh Toán");
+        //btnThanhToan.setMinimumSize(new Dimension(180, 100));
+        btnThanhToan.setMaximumSize(new Dimension(180, 70));
+        btnThanhToan.setFont(font);
+        btnRemove = new JButton("Xóa");
+        btnRemove.setMaximumSize(new Dimension(180, 70));
+        btnRemove.setFont(font);
+        btnReset = new JButton("Đặt lại giỏ hàng");
+        btnReset.setMaximumSize(new Dimension(180, 70));
+        btnReset.setFont(font);
+        GroupBTN.add(Box.createVerticalStrut(70));
+        GroupBTN.add(btnThanhToan);
+        GroupBTN.add(Box.createVerticalStrut(20));
+        GroupBTN.add(btnRemove);
+        GroupBTN.add(Box.createVerticalStrut(20));
+        GroupBTN.add(btnReset);
+        btnThanhToan.setAlignmentX(Component.CENTER_ALIGNMENT);
+        btnRemove.setAlignmentX(Component.CENTER_ALIGNMENT);
+        btnReset.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+
+        pnTbGioHang.add(GroupBTN,BorderLayout.EAST);
         pnTbGioHang.add(scrmtbGioHang, BorderLayout.CENTER);
         this.add(pnTbGioHang);
     }
     public JComboBox<String> loaisp() // lấy hết tên loại và gán vào combobox
     {
-        LoaiSPDAO listLoai = new LoaiSPDAO();
+        LoaiSPBUS listLoai = new LoaiSPBUS();
         JComboBox<String> cmbTypeSP = new JComboBox<>();
         cmbTypeSP.addItem("Loại sản phẩm"); // mặc định
-        for(int i = 0; i < listLoai.getLoaiSanPham().size(); i++)
+        for(int i = 0; i < listLoai.getDanhSachLoai().size(); i++)
         {
-            cmbTypeSP.addItem(listLoai.getLoaiSanPham().get(i).getTenLoai());
+            cmbTypeSP.addItem(listLoai.getDanhSachLoai().get(i).getTenLoai());
         }
         cmbTypeSP.setFont(font);
         cmbTypeSP.setFocusable(false);
@@ -172,7 +208,57 @@ public class PnBanHang extends JPanel {
             }
         });
     }
-    public static void loadtblGioHang(int maSP,String tenSP,int soLuong,int donGia,int thanhTien){
-        dtmGioHang.addRow(new Object[]{maSP,tenSP,soLuong,donGia,thanhTien});
+    public static void addOneRow(SanPham SP, int SoLuong) {
+        for (int i = 0; i < dtmGioHang.getRowCount(); i++) {
+            if (SP.getMaSP() == (int) dtmGioHang.getValueAt(i, 0)) {
+                dtmGioHang.setValueAt((int) dtmGioHang.getValueAt(i, 2) + SoLuong, i, 2);
+                dtmGioHang.setValueAt((int)dtmGioHang.getValueAt(i, 2) * (int) dtmGioHang.getValueAt(i,3),i, 4);
+                return;
+            }
+        }
+        Object[] data = new Object[]{SP.getMaSP(), SP.getTenSP(), SoLuong, SP.getDonGia(), SoLuong * SP.getDonGia()};
+        dtmGioHang.addRow(data);
+    }
+    public void XoaPhanTuTrongGioHang(){
+        mtbGioHang.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        btnRemove.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int slRow = (int) mtbGioHang.getSelectedRow();
+                if(slRow != -1){
+                    dtmGioHang.removeRow(slRow);
+                    mtbGioHang.revalidate();
+                }
+            }
+        });
+    }
+    public void ResetCart()
+    {
+        btnReset.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dtmGioHang.setRowCount(0);
+            }
+        });
+    }
+    public void ThanhToan(){
+        btnThanhToan.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                PUMaGiam PU= new PUMaGiam();
+                int sum = 0;
+                for(int i=0; i<dtmGioHang.getRowCount(); i++)
+                {
+                    sum = sum + (int) dtmGioHang.getValueAt(i, 4 );
+                }
+                PUMaGiam.addrow(sum);
+                JDialog dialog = new JDialog();
+                dialog.add(PU);
+                dialog.pack();
+                dialog.setModal(true);
+                dialog.setLocationRelativeTo(null);
+                dialog.setVisible(true);
+            }
+        });
     }
 }

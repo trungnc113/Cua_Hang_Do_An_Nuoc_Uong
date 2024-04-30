@@ -1,7 +1,12 @@
-    package demoGUI;
+package demoGUI;
 
+import BUS.CTHoaDonBUS;
+import BUS.HoaDonBUS;
+import BUS.SanPhamBUS;
 import Custom.Mytable;
+import DAO.CTHoaDonDAO;
 import DTO.CTHoaDon;
+import DTO.CTPhieuNhap;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -10,6 +15,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class PUChiTietHoaDon extends JPanel {
     private int W = 500;
@@ -20,11 +26,11 @@ public class PUChiTietHoaDon extends JPanel {
     Border customBorder = BorderFactory.createLineBorder(ClMain, 2);
     Font FtTitleText = new Font("Montserrat", Font.BOLD, 15);
 
-    public PUChiTietHoaDon(CTHoaDon CTHD) {
-        addGUI(CTHD);
+    public PUChiTietHoaDon(int MHD) {
+        addGUI(MHD);
     }
 
-    private void addGUI(CTHoaDon CTHD) {
+    private void addGUI(int MHD) {
         this.setPreferredSize(new Dimension(W, H));
         this.setBorder(customBorder);
         this.setLayout(null);
@@ -36,7 +42,7 @@ public class PUChiTietHoaDon extends JPanel {
         this.add(TitleCTHD);
 
         // table
-        String NameColume[] = {"IDSP","Tên SP","Đơn Giá","SL","Thành Tiền"};
+        String NameColume[] = {"Mã SP","Tên SP","Đơn Giá","Số Lượng","Thành Tiền"};
         DefaultTableModel model = new DefaultTableModel(NameColume, 0);
         Mytable TB = new Mytable(model);
 
@@ -54,6 +60,7 @@ public class PUChiTietHoaDon extends JPanel {
         TB.getColumnModel().getColumn(3).setPreferredWidth(10);
         TB.getColumnModel().getColumn(4).setPreferredWidth(10);
         TB.getTableHeader().setFont(FtTitleText);
+        addRowtable(model,MHD );
 
         // chỉnh headertable ( chỉnh màu tiêu đề + xóa border tiêu đề)
 //        TableCellRenderer TBHeader = TB.getTableHeader().getDefaultRenderer();
@@ -74,7 +81,8 @@ public class PUChiTietHoaDon extends JPanel {
         JLabel TongTien = new JLabel();
         TongTien.setBounds(250, 430, 100, 30);
         TongTien.setFont(FtTitleText);
-        JLabel KQTongTien = new JLabel("100.000đ");// thay giá trị tổng tiền
+        HoaDonBUS TongTienHD = new HoaDonBUS();
+        JLabel KQTongTien = new JLabel(""+TongTienHD.getlisttheoMHD(MHD+"").getTongTien()+"đ");// thay giá trị tổng tiền
         KQTongTien.setFont(FtTitleText);
         KQTongTien.setBounds(360, 430, 130, 30);
         this.add(KQTongTien);
@@ -86,5 +94,19 @@ public class PUChiTietHoaDon extends JPanel {
 //        txtThanks.setForeground(Color.RED);
 //        txtThanks.setBounds(130, 470, 300, 25);
 //        this.add(txtThanks);
+    }
+    public void addRowtable(DefaultTableModel tble, int MHD){
+        CTHoaDonBUS listBUS = new CTHoaDonBUS();
+        ArrayList<CTHoaDon> listCTHD = new ArrayList<>();
+        listCTHD = listBUS.getlistCTHD();
+        SanPhamBUS temp = new SanPhamBUS();
+        for(int i=0; i<listCTHD.size(); i++)
+        {
+            if(listCTHD.get(i).getMaHD() == MHD){
+                Object[] data = {listCTHD.get(i).getMaSP(), temp.getById(listCTHD.get(i).getMaSP()).getTenSP(), listCTHD.get(i).getDonGia(), listCTHD.get(i).getSoLuong(), listCTHD.get(i).getThanhTien() };
+                tble.addRow(data);
+            }
+        }
+
     }
 }

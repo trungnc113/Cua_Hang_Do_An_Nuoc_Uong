@@ -4,10 +4,19 @@
  */
 package BUS;
 
+import DAO.CTHoaDonDAO;
+import DTO.CTHoaDon;
+
+import java.util.ArrayList;
+
 /**
  *
  * @author nguye
  */
 public class CTHoaDonBUS {
+    CTHoaDonDAO CTHD = new CTHoaDonDAO();
+    public ArrayList<CTHoaDon> getlistCTHD(){
+        return CTHD.getListCTHD();
+    }
     
 }

@@ -402,7 +402,6 @@ public class MainQuanLyGUI extends JFrame {
         }
 
     }
-
     private void minimizeFrame() {
         this.setState(Frame.ICONIFIED);
     }
@@ -411,4 +410,8 @@ public class MainQuanLyGUI extends JFrame {
         this.setLocation(x - xMouse, y - yMouse);
     }
 
+    public static void main(String[] args) {
+        MainQuanLyGUI t = new MainQuanLyGUI();
+        t.setVisible(true);
+    }
 }
