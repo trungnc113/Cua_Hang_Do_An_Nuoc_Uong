@@ -1,14 +1,16 @@
 package GUI;
 
-import BUS.CTPhieuNhapBUS;
-import BUS.PhieuNhapBUS;
+import BUS.CTHoaDonBUS;
+import BUS.HoaDonBUS;
+import BUS.NhanVienBUS;
 import BUS.SanPhamBUS;
 import Custom.Mytable;
 import Custom.NonEditableTableModel;
-import DTO.CTPhieuNhap;
-import DTO.NhaCungCap;
+import DTO.CTHoaDon;
+import DTO.GiamGia;
+import DTO.HoaDon;
+import DTO.KhachHang;
 import DTO.NhanVien;
-import DTO.PhieuNhap;
 import DTO.SanPham;
 import java.awt.print.PrinterException;
 import java.text.DecimalFormat;
@@ -17,21 +19,23 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class XuatPhieuNhapGUI extends javax.swing.JDialog {
+public class XuatHoaDonGUI extends javax.swing.JDialog {
 
-    NonEditableTableModel dtmCTPN;
-    NhanVien nhanVien;
-    NhaCungCap nhaCungCap;
+    NonEditableTableModel dtmCTHD;
     int tongTien;
-    ArrayList<CTPhieuNhap> cTPhieuNhaps;
+    ArrayList<CTHoaDon> cTHoaDons;
+    
     SanPhamBUS sanPhamBUS = new SanPhamBUS();
-    PhieuNhapBUS phieuNhapBUS = new PhieuNhapBUS();
-    CTPhieuNhapBUS cTPhieuNhapBUS = new CTPhieuNhapBUS();
-
-    public XuatPhieuNhapGUI(NhanVien nhanVien, NhaCungCap nhaCungCap, int tongTien, ArrayList<CTPhieuNhap> cTPhieuNhaps) {
-        this.nhanVien = nhanVien;
-        this.nhaCungCap = nhaCungCap;
-        this.cTPhieuNhaps = cTPhieuNhaps;
+    HoaDonBUS hoaDonBUS = new HoaDonBUS();
+    CTHoaDonBUS cTHoaDonBUS = new CTHoaDonBUS();
+    NhanVienBUS nhanVienBUS = new NhanVienBUS();
+    
+    NhanVien nhanVien = nhanVienBUS.getById(0);
+    KhachHang khachHang = new KhachHang();
+    GiamGia giamGia = new GiamGia();
+    
+    public XuatHoaDonGUI( int tongTien, ArrayList<CTHoaDon> cTHoaDons) {
+        this.cTHoaDons = cTHoaDons;
         this.tongTien = tongTien;
         initComponents();
         Custom();
@@ -47,15 +51,15 @@ public class XuatPhieuNhapGUI extends javax.swing.JDialog {
     }
     
     private void Custom() {
-        btnInPhieuNhap.setVisible(false);
+        btnInHoaDon.setVisible(false);
 
-        dtmCTPN = new NonEditableTableModel();
-        dtmCTPN.addColumn("Mã SP");
-        dtmCTPN.addColumn("Tên SP");
-        dtmCTPN.addColumn("Số lượng");
-        dtmCTPN.addColumn("Đơn giá");
-        dtmCTPN.addColumn("Thành tiền");
-        tblCTPN.setModel(dtmCTPN);
+        dtmCTHD = new NonEditableTableModel();
+        dtmCTHD.addColumn("Mã SP");
+        dtmCTHD.addColumn("Tên SP");
+        dtmCTHD.addColumn("Số lượng");
+        dtmCTHD.addColumn("Đơn giá");
+        dtmCTHD.addColumn("Thành tiền");
+        tblCTHD.setModel(dtmCTHD);
     }
 
     private String DinhDangTGHienTai() {
@@ -71,24 +75,27 @@ public class XuatPhieuNhapGUI extends javax.swing.JDialog {
 
     private void loadData() {
         txtNhanVien.setText(nhanVien.getMaNV() + " - " + nhanVien.getHo() + " " + nhanVien.getTen());
-        txtNhaCungCap.setText(nhaCungCap.getMaNCC() + " - " + nhaCungCap.getTenNCC());
         txtNgayLap.setText(DinhDangTGHienTai());
         txtTongTien.setText(DinhDangTongTien(tongTien));
 
-        dtmCTPN.setRowCount(0);
-        for (CTPhieuNhap cTPhieuNhap : cTPhieuNhaps) {
-            SanPham sp = sanPhamBUS.getById(cTPhieuNhap.getMaSP());
-            dtmCTPN.addRow(new Object[]{cTPhieuNhap.getMaSP(), sp.getTenSP(), cTPhieuNhap.getSoLuong(), cTPhieuNhap.getDonGia(), cTPhieuNhap.getThanhTien()});
+        dtmCTHD.setRowCount(0);
+        for (CTHoaDon cTHoaDon : cTHoaDons) {
+            SanPham sp = sanPhamBUS.getById(cTHoaDon.getMaSP());
+            dtmCTHD.addRow(new Object[]{cTHoaDon.getMaSP(), sp.getTenSP(), cTHoaDon.getSoLuong(), cTHoaDon.getDonGia(), cTHoaDon.getThanhTien()});
         }
     }
 
     private void XuLyThanhToan() {
-        PhieuNhap phieuNhap = new PhieuNhap(0, nhaCungCap.getMaNCC(), nhanVien.getMaNV(), new Date(), tongTien);
-        if (!phieuNhapBUS.Insert(phieuNhap)) {
-            return;
-        }
-        int maPN = phieuNhapBUS.getNewMaPN();
-        String htmlCTPN = "<style> "
+        khachHang.setMaKH(0);
+        giamGia.setMaGiam(1);
+        HoaDon hoaDon = new HoaDon(0, khachHang.getMaKH(), nhanVien.getMaNV(), giamGia.getMaGiam(), new Date() ,tongTien);
+//        if (!phieuNhapBUS.Insert(hoaDon)) {
+//            return;
+//        }
+//        int maPN = phieuNhapBUS.getNewMaPN();
+        
+        int maPN = 3;
+        String htmlCTHD = "<style> "
                 + "table {"
                 + "border: 1px solid;"
                 + "border-bottom: none"
@@ -103,52 +110,53 @@ public class XuatPhieuNhapGUI extends javax.swing.JDialog {
                 + "font-size:16pt"
                 + "}"
                 + "</style>";
-        htmlCTPN += "<h1 style='text-align:center;'>CHI TIẾT PHIẾU NHẬP</h1>";
-        htmlCTPN += "Nhân viên: " + nhanVien.getMaNV() + " - " + nhanVien.getHo() + " " + nhanVien.getTen() + "<br/>";
-        htmlCTPN += "Ngày lập: " + DinhDangTGHienTai() + "<br/>";
-        htmlCTPN += "Nhà cung cấp: " + nhaCungCap.getMaNCC() + " - " + nhaCungCap.getTenNCC() + "<br/>";
-        htmlCTPN += "<div style='text-align:center;'>==========================================</div><br/>";
-        htmlCTPN += "<div style='text-align:center'>";
-        htmlCTPN += "<table style='max-width:100%'>";
-        htmlCTPN += "<tr>"
+        htmlCTHD += "<h1 style='text-align:center;'>CHI TIẾT HÓA ĐƠN</h1>";
+        htmlCTHD += "Nhân viên: " + nhanVien.getMaNV() + " - " + nhanVien.getHo() + " " + nhanVien.getTen() + "<br/>";
+        htmlCTHD += "Khách hàng: " + "   "+ "<br/>";
+        htmlCTHD += "Khuyến mãi: " + "   " + "<br/>";
+        htmlCTHD += "Ngày lập: " + DinhDangTGHienTai() + "<br/>";
+        htmlCTHD += "<div style='text-align:center;'>==========================================</div><br/>";
+        htmlCTHD += "<div style='text-align:center'>";
+        htmlCTHD += "<table style='max-width:100%'>";
+        htmlCTHD += "<tr>"
                 + "<th>Mã SP</th>"
                 + "<th>Tên SP</th>"
                 + "<th>Số lượng</th>"
                 + "<th>Đơn giá</th>"
                 + "<th>Thành tiền</th>"
                 + "</tr>";
-        for (CTPhieuNhap ctpn : cTPhieuNhaps) {
-            htmlCTPN += "<tr>";
-            htmlCTPN += "<td style='text-align:center;'>" + ctpn.getMaSP() + "</td>";
-            SanPham sp = sanPhamBUS.getById(ctpn.getMaSP());
-            htmlCTPN += "<td style='text-align:left;'>" + sp.getTenSP() + "</td>";
-            htmlCTPN += "<td style='text-align:center;'>" + ctpn.getSoLuong() + "</td>";
-            htmlCTPN += "<td style='text-align:center;'>" + ctpn.getDonGia() + "</td>";
-            htmlCTPN += "<td style='text-align:center;'>" + ctpn.getThanhTien() + "</td>";
-            htmlCTPN += "</tr>";
+        for (CTHoaDon cTHoaDon : cTHoaDons) {
+            htmlCTHD += "<tr>";
+            htmlCTHD += "<td style='text-align:center;'>" + cTHoaDon.getMaSP() + "</td>";
+            SanPham sp = sanPhamBUS.getById(cTHoaDon.getMaSP());
+            htmlCTHD += "<td style='text-align:left;'>" + sp.getTenSP() + "</td>";
+            htmlCTHD += "<td style='text-align:center;'>" + cTHoaDon.getSoLuong() + "</td>";
+            htmlCTHD += "<td style='text-align:center;'>" + cTHoaDon.getDonGia() + "</td>";
+            htmlCTHD += "<td style='text-align:center;'>" + cTHoaDon.getThanhTien() + "</td>";
+            htmlCTHD += "</tr>";
 
             //===================================================
             //===================LƯU CTPN VÀO DB=================
             //===================================================
-            ctpn.setMaPN(maPN);
-            if (!cTPhieuNhapBUS.Insert(ctpn)) {
-                return;
-            }
+//            ctpn.setMaPN(maPN);
+//            if (!cTPhieuNhapBUS.Insert(ctpn)) {
+//                return;
+//            }
         }
 
-        htmlCTPN += "<tr>";
-        htmlCTPN += "<td style='text-align:center;'>" + "</td>";
-        htmlCTPN += "<td style='text-align:left;'>" + "</td>";
-        htmlCTPN += "<td style='text-align:center;'>" + "</td>";
-        htmlCTPN += "<td style='text-align:center;font-weight:bold'>Thành tiền</td>";
-        htmlCTPN += "<td style='text-align:center;'>" + DinhDangTongTien(tongTien) + "</td>";
-        htmlCTPN += "</tr>";
-        htmlCTPN += "</table>";
-        htmlCTPN += "</div>";
-        htmlCTPN += "<div style='text-align:center;'>==========================================</div><br/>";
+        htmlCTHD += "<tr>";
+        htmlCTHD += "<td style='text-align:center;'>" + "</td>";
+        htmlCTHD += "<td style='text-align:left;'>" + "</td>";
+        htmlCTHD += "<td style='text-align:center;'>" + "</td>";
+        htmlCTHD += "<td style='text-align:center;font-weight:bold'>Thành tiền</td>";
+        htmlCTHD += "<td style='text-align:center;'>" + DinhDangTongTien(tongTien) + "</td>";
+        htmlCTHD += "</tr>";
+        htmlCTHD += "</table>";
+        htmlCTHD += "</div>";
+        htmlCTHD += "<div style='text-align:center;'>==========================================</div><br/>";
 
-        txtCTPN.setContentType("text/html");
-        txtCTPN.setText(htmlCTPN);
+        txtCTHD.setContentType("text/html");
+        txtCTHD.setText(htmlCTHD);
     }
 
     @SuppressWarnings("unchecked")
@@ -160,35 +168,41 @@ public class XuatPhieuNhapGUI extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         pnCTPN = new javax.swing.JPanel();
         scrEdtCTPN = new javax.swing.JScrollPane();
-        txtCTPN = new javax.swing.JEditorPane();
+        txtCTHD = new javax.swing.JEditorPane();
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
-        jPanel8 = new javax.swing.JPanel();
-        jLabel5 = new javax.swing.JLabel();
         jPanel9 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
+        jPanel19 = new javax.swing.JPanel();
+        jLabel8 = new javax.swing.JLabel();
+        jPanel8 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
         jPanel10 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         jPanel11 = new javax.swing.JPanel();
         jPanel12 = new javax.swing.JPanel();
         txtNhanVien = new javax.swing.JLabel();
+        jPanel14 = new javax.swing.JPanel();
+        txtKhachHang = new javax.swing.JTextField();
+        btnChonKhachHang = new javax.swing.JButton();
+        jPanel20 = new javax.swing.JPanel();
+        txtKhuyenMai = new javax.swing.JTextField();
+        btnChonKhuyenMai = new javax.swing.JButton();
         jPanel13 = new javax.swing.JPanel();
         txtNgayLap = new javax.swing.JLabel();
-        jPanel14 = new javax.swing.JPanel();
-        txtNhaCungCap = new javax.swing.JLabel();
         jPanel15 = new javax.swing.JPanel();
         txtTongTien = new javax.swing.JLabel();
         jPanel16 = new javax.swing.JPanel();
         jPanel17 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblCTPN = new Mytable();
+        tblCTHD = new Mytable();
         jPanel18 = new javax.swing.JPanel();
-        btnXacNhanNhap = new javax.swing.JButton();
-        btnInPhieuNhap = new javax.swing.JButton();
+        btnThanhToan = new javax.swing.JButton();
+        btnInHoaDon = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -196,14 +210,14 @@ public class XuatPhieuNhapGUI extends javax.swing.JDialog {
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 160, 80));
-        jLabel1.setText("Thông tin phiếu nhập");
+        jLabel1.setText("Thông tin hóa đơn");
         jPanel2.add(jLabel1);
 
         jPanel1.add(jPanel2, java.awt.BorderLayout.NORTH);
 
         pnCTPN.setLayout(new java.awt.BorderLayout());
 
-        scrEdtCTPN.setViewportView(txtCTPN);
+        scrEdtCTPN.setViewportView(txtCTHD);
 
         pnCTPN.add(scrEdtCTPN, java.awt.BorderLayout.CENTER);
 
@@ -219,6 +233,22 @@ public class XuatPhieuNhapGUI extends javax.swing.JDialog {
 
         jPanel6.add(jPanel7);
 
+        jPanel9.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel6.setText("Khách hàng");
+        jPanel9.add(jLabel6);
+
+        jPanel6.add(jPanel9);
+
+        jPanel19.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel8.setText("Khuyến mãi");
+        jPanel19.add(jLabel8);
+
+        jPanel6.add(jPanel19);
+
         jPanel8.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -226,14 +256,6 @@ public class XuatPhieuNhapGUI extends javax.swing.JDialog {
         jPanel8.add(jLabel5);
 
         jPanel6.add(jPanel8);
-
-        jPanel9.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
-
-        jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel6.setText("Nhà cung cấp");
-        jPanel9.add(jLabel6);
-
-        jPanel6.add(jPanel9);
 
         jPanel10.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
@@ -255,6 +277,34 @@ public class XuatPhieuNhapGUI extends javax.swing.JDialog {
 
         jPanel11.add(jPanel12);
 
+        jPanel14.setPreferredSize(new java.awt.Dimension(300, 30));
+        jPanel14.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        txtKhachHang.setColumns(20);
+        txtKhachHang.setEnabled(false);
+        jPanel14.add(txtKhachHang);
+
+        btnChonKhachHang.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btnChonKhachHang.setText("...");
+        btnChonKhachHang.setPreferredSize(new java.awt.Dimension(29, 20));
+        jPanel14.add(btnChonKhachHang);
+
+        jPanel11.add(jPanel14);
+
+        jPanel20.setPreferredSize(new java.awt.Dimension(300, 30));
+        jPanel20.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        txtKhuyenMai.setColumns(20);
+        txtKhuyenMai.setEnabled(false);
+        jPanel20.add(txtKhuyenMai);
+
+        btnChonKhuyenMai.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btnChonKhuyenMai.setText("...");
+        btnChonKhuyenMai.setPreferredSize(new java.awt.Dimension(29, 20));
+        jPanel20.add(btnChonKhuyenMai);
+
+        jPanel11.add(jPanel20);
+
         jPanel13.setPreferredSize(new java.awt.Dimension(300, 30));
         jPanel13.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
@@ -262,14 +312,6 @@ public class XuatPhieuNhapGUI extends javax.swing.JDialog {
         jPanel13.add(txtNgayLap);
 
         jPanel11.add(jPanel13);
-
-        jPanel14.setPreferredSize(new java.awt.Dimension(300, 30));
-        jPanel14.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
-
-        txtNhaCungCap.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jPanel14.add(txtNhaCungCap);
-
-        jPanel11.add(jPanel14);
 
         jPanel15.setPreferredSize(new java.awt.Dimension(300, 30));
         jPanel15.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
@@ -287,12 +329,12 @@ public class XuatPhieuNhapGUI extends javax.swing.JDialog {
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(0, 160, 80));
-        jLabel2.setText("Chi tiết phiếu nhập");
+        jLabel2.setText("Chi tiết hóa đơn");
         jPanel17.add(jLabel2);
 
         jPanel16.add(jPanel17, java.awt.BorderLayout.NORTH);
 
-        tblCTPN.setModel(new javax.swing.table.DefaultTableModel(
+        tblCTHD.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -303,7 +345,7 @@ public class XuatPhieuNhapGUI extends javax.swing.JDialog {
                 "Mã SP", "Tên SP", "Số lượng", "Đơn giá", "Thành tiền"
             }
         ));
-        jScrollPane1.setViewportView(tblCTPN);
+        jScrollPane1.setViewportView(tblCTHD);
 
         jPanel16.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
@@ -313,25 +355,25 @@ public class XuatPhieuNhapGUI extends javax.swing.JDialog {
 
         jPanel1.add(pnCTPN, java.awt.BorderLayout.CENTER);
 
-        btnXacNhanNhap.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        btnXacNhanNhap.setForeground(new java.awt.Color(0, 160, 80));
-        btnXacNhanNhap.setText("Xác nhận nhập");
-        btnXacNhanNhap.addActionListener(new java.awt.event.ActionListener() {
+        btnThanhToan.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnThanhToan.setForeground(new java.awt.Color(0, 160, 80));
+        btnThanhToan.setText("Thanh toán");
+        btnThanhToan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnXacNhanNhapActionPerformed(evt);
+                btnThanhToanActionPerformed(evt);
             }
         });
-        jPanel18.add(btnXacNhanNhap);
+        jPanel18.add(btnThanhToan);
 
-        btnInPhieuNhap.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        btnInPhieuNhap.setForeground(new java.awt.Color(0, 160, 80));
-        btnInPhieuNhap.setText("In phiếu nhập");
-        btnInPhieuNhap.addActionListener(new java.awt.event.ActionListener() {
+        btnInHoaDon.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnInHoaDon.setForeground(new java.awt.Color(0, 160, 80));
+        btnInHoaDon.setText("In hóa đơn");
+        btnInHoaDon.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnInPhieuNhapActionPerformed(evt);
+                btnInHoaDonActionPerformed(evt);
             }
         });
-        jPanel18.add(btnInPhieuNhap);
+        jPanel18.add(btnInHoaDon);
 
         jPanel1.add(jPanel18, java.awt.BorderLayout.PAGE_END);
 
@@ -349,31 +391,39 @@ public class XuatPhieuNhapGUI extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnXacNhanNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXacNhanNhapActionPerformed
+    private void btnThanhToanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThanhToanActionPerformed
         pnCTPN.removeAll();
         pnCTPN.add(scrEdtCTPN);
-        btnInPhieuNhap.setVisible(true);
-        btnXacNhanNhap.setVisible(false);
+        btnInHoaDon.setVisible(true);
+        btnThanhToan.setVisible(false);
         XuLyThanhToan();
-    }//GEN-LAST:event_btnXacNhanNhapActionPerformed
+    }//GEN-LAST:event_btnThanhToanActionPerformed
 
-    private void btnInPhieuNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInPhieuNhapActionPerformed
+    private void btnInHoaDonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInHoaDonActionPerformed
         try {
-            txtCTPN.print();
+            txtCTHD.print();
         } catch (PrinterException e) {
         }
-    }//GEN-LAST:event_btnInPhieuNhapActionPerformed
-
+    }//GEN-LAST:event_btnInHoaDonActionPerformed
+    
+    public static void main(String[] args) {
+        ArrayList<CTHoaDon> cthds = new ArrayList<>();
+        cthds.add(new CTHoaDon(1, 111, 1, 100000, 100000));
+        XuatHoaDonGUI xhdgui = new XuatHoaDonGUI(100000,cthds);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnInPhieuNhap;
-    private javax.swing.JButton btnXacNhanNhap;
+    private javax.swing.JButton btnChonKhachHang;
+    private javax.swing.JButton btnChonKhuyenMai;
+    private javax.swing.JButton btnInHoaDon;
+    private javax.swing.JButton btnThanhToan;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
@@ -384,7 +434,9 @@ public class XuatPhieuNhapGUI extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel18;
+    private javax.swing.JPanel jPanel19;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel20;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
@@ -394,10 +446,11 @@ public class XuatPhieuNhapGUI extends javax.swing.JDialog {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel pnCTPN;
     private javax.swing.JScrollPane scrEdtCTPN;
-    private javax.swing.JTable tblCTPN;
-    private javax.swing.JEditorPane txtCTPN;
+    private javax.swing.JTable tblCTHD;
+    private javax.swing.JEditorPane txtCTHD;
+    private javax.swing.JTextField txtKhachHang;
+    private javax.swing.JTextField txtKhuyenMai;
     private javax.swing.JLabel txtNgayLap;
-    private javax.swing.JLabel txtNhaCungCap;
     private javax.swing.JLabel txtNhanVien;
     private javax.swing.JLabel txtTongTien;
     // End of variables declaration//GEN-END:variables

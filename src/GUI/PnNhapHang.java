@@ -18,6 +18,8 @@ import DTO.NhanVien;
 import DTO.SanPham;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -73,6 +75,17 @@ public class PnNhapHang extends javax.swing.JPanel {
         cmbNhanVien.addItem(currentNhanVien.getMaNV() + " - " + currentNhanVien.getHo() + " " + currentNhanVien.getTen());
     }
 
+    private void XuLyTimKiem() {
+        dtmNhapHang.setRowCount(0);
+        ArrayList<SanPham> sanPhams = sanPhamBUS.getListSPtheoMavaTen(txtTimKiem.getText());
+        if (sanPhams == null) {
+            return;
+        }
+        for (SanPham sanPham : sanPhams) {
+            dtmNhapHang.addRow(new Object[]{sanPham.getMaSP(), sanPham.getTenSP(), sanPham.getSoLuong()});
+        }
+    }
+
     private void addEvents() {
         tblKhoHang.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
@@ -88,6 +101,22 @@ public class PnNhapHang extends javax.swing.JPanel {
                 currentSanPham = sanPhamBUS.getById(maSP);
                 ImageIcon imageIcon = ScaleImage.scaleImage("image/products/" + currentSanPham.getHinhAnh(), 200, 200);
                 lbAnh.setIcon(imageIcon);
+            }
+        });
+
+        txtTimKiem.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                XuLyTimKiem();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                XuLyTimKiem();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
             }
         });
     }
@@ -142,7 +171,7 @@ public class PnNhapHang extends javax.swing.JPanel {
         btnResetKho = new javax.swing.JButton();
         jPanel16 = new javax.swing.JPanel();
         jLabel13 = new javax.swing.JLabel();
-        txtTimKiem1 = new javax.swing.JTextField();
+        txtTimKiem = new javax.swing.JTextField();
         scrTblKhoHang = new javax.swing.JScrollPane();
         tblKhoHang = new Mytable();
         jPanel1 = new javax.swing.JPanel();
@@ -206,9 +235,9 @@ public class PnNhapHang extends javax.swing.JPanel {
         jLabel13.setText("Tìm kiếm");
         jPanel16.add(jLabel13);
 
-        txtTimKiem1.setColumns(20);
-        txtTimKiem1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jPanel16.add(txtTimKiem1);
+        txtTimKiem.setColumns(20);
+        txtTimKiem.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jPanel16.add(txtTimKiem);
 
         pnTable1.add(jPanel16);
 
@@ -340,7 +369,7 @@ public class PnNhapHang extends javax.swing.JPanel {
         pnAnhSP.setPreferredSize(new java.awt.Dimension(100, 150));
         pnAnhSP.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 0));
 
-        lbAnh.setIcon(new javax.swing.ImageIcon("C:\\Users\\nguye\\OneDrive\\Documents\\NetBeansProjects\\DoAn_QuanLyBanDoAnNuocUong\\image\\products\\default.png")); // NOI18N
+        lbAnh.setIcon(new javax.swing.ImageIcon("C:\\Users\\nguye\\OneDrive\\Documents\\NetBeansProjects\\DoAn_QuanLyBanDoAnNuocUong\\image\\products\\white.png")); // NOI18N
         pnAnhSP.add(lbAnh);
 
         jPanel3.add(pnAnhSP);
@@ -601,6 +630,6 @@ public class PnNhapHang extends javax.swing.JPanel {
     private javax.swing.JTextField txtDonGia;
     private javax.swing.JTextField txtNhaCungCap;
     private javax.swing.JTextField txtSoLuong;
-    private javax.swing.JTextField txtTimKiem1;
+    private javax.swing.JTextField txtTimKiem;
     // End of variables declaration//GEN-END:variables
 }

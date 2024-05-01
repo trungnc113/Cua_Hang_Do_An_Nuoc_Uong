@@ -392,4 +392,33 @@ public class SanPhamDAO {
 
         return null;
     }
+
+    public ArrayList<SanPham> getDanhSachSanPhamTheoMavaTen(String txt) {
+        ArrayList<SanPham> sanPhams = new ArrayList<>();
+        try {
+            Connection c = JDBCUtil.getConnection();
+            String sql = "select * from sanpham where concat(maSP,tenSP) LIKE ? and trangThai = 1";
+            PreparedStatement pst = c.prepareStatement(sql);
+            pst.setString(1, "%" + txt + "%");
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                int maSP = rs.getInt(1);
+                String tenSP = rs.getString(2);
+                int maLoai = rs.getInt(3);
+                int donGia = rs.getInt(4);
+                int soLuong = rs.getInt(5);
+                String donViTinh = rs.getString(6);
+                String hinhAnh = rs.getString(7);
+                int trangThai = rs.getInt(8);
+                SanPham sanPham = new SanPham(maSP, tenSP, maLoai, soLuong, donViTinh, hinhAnh, donGia, trangThai);
+                sanPhams.add(sanPham);
+            }
+            JDBCUtil.closeConnection(c);
+            return sanPhams;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 }
