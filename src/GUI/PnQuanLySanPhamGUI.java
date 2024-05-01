@@ -1,11 +1,8 @@
 package GUI;
 
-import Custom.Mytable;
 import DTO.SanPham;
 import BUS.SanPhamBUS;
 import BUS.LoaiSPBUS;
-import DAO.LoaiSPDAO;
-
 
 import static Main.Main.changLNF;
 
@@ -28,7 +25,6 @@ import java.util.Vector;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -43,17 +39,18 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
-public class PnQuanLySanPhamGUI extends JPanel{
+public class PnQuanLySanPhamGUI extends JPanel {
+
     DefaultTableModel dtmSanPham;
     JTextField txtMa, txtTen, txtsoLuong, txtdonViTinh, txtdonGia, txtTimKiem;
     JComboBox<String> cmbLoai;
     JButton btnThemSP, btnCapNhat, btnXoa, btnTim, btnChonAnh, btnReset, btnXuatExcel, btnNhapExcel;
     JLabel lblAnhSP;
     Mytable tblSanPham;
-    final Color ClHover  = new Color(0,160,80);
+    final Color ClHover = new Color(0, 160, 80);
     final Color colorPanel = new Color(247, 247, 247);
-    
-    public PnQuanLySanPhamGUI(){
+
+    public PnQuanLySanPhamGUI() {
         changLNF("Windows");
         addControlsSanPham();
         addEventsSanPham();
@@ -61,7 +58,7 @@ public class PnQuanLySanPhamGUI extends JPanel{
 
     SanPhamBUS SPBUS = new SanPhamBUS();
     LoaiSPBUS LBUS = new LoaiSPBUS();
-    
+
     private void addControlsSanPham() {
         Font font = new Font("Tahoma", Font.PLAIN, 20);
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
@@ -173,7 +170,7 @@ public class PnQuanLySanPhamGUI extends JPanel{
 
         JPanel pnButtonAnh = new JPanel();
         pnButtonAnh.setPreferredSize(new Dimension(
-        (int) pnChuaAnh.getPreferredSize().getHeight(), 40));
+                (int) pnChuaAnh.getPreferredSize().getHeight(), 40));
         btnChonAnh = new JButton("Chọn ảnh");
         btnChonAnh.setFont(font);
         btnChonAnh.setBackground(colorPanel);
@@ -231,7 +228,7 @@ public class PnQuanLySanPhamGUI extends JPanel{
         btnTim.setPreferredSize(btnSize);
         btnXuatExcel.setPreferredSize(btnSize);
         btnNhapExcel.setPreferredSize(btnSize);
-        
+
         btnThemSP.setFocusable(false);
         btnCapNhat.setFocusable(false);
         btnXoa.setFocusable(false);
@@ -318,7 +315,7 @@ public class PnQuanLySanPhamGUI extends JPanel{
             public void mouseExited(MouseEvent e) {
             }
         });
-    
+
         cmbLoai.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -400,12 +397,12 @@ public class PnQuanLySanPhamGUI extends JPanel{
             String ma = tblSanPham.getValueAt(i, 0) + "";
             String ten = tblSanPham.getValueAt(i, 1) + "";
             String loai = tblSanPham.getValueAt(i, 2) + "";
-            String donGia = tblSanPham.getValueAt(i,3) + "";
+            String donGia = tblSanPham.getValueAt(i, 3) + "";
             String soLuong = tblSanPham.getValueAt(i, 4) + "";
             String donViTinh = tblSanPham.getValueAt(i, 5) + "";
             String anh = tblSanPham.getValueAt(i, 6) + "";
 
-            SPBUS.importSanPhamTuExcel(ma,ten, loai, soLuong, donViTinh, anh, donGia);
+            SPBUS.importSanPhamTuExcel(ma, ten, loai, soLuong, donViTinh, anh, donGia);
         }
         SPBUS.updateFKHoadon_PhieuNhap_NV();
     }
@@ -509,7 +506,7 @@ public class PnQuanLySanPhamGUI extends JPanel{
         cmbLoai.addItem("Khác...");
 
     }
-    
+
     private void xuLyThemLoai() {
         int x = cmbLoai.getSelectedIndex();
         if (x == cmbLoai.getItemCount() - 1) {
@@ -520,7 +517,10 @@ public class PnQuanLySanPhamGUI extends JPanel{
     }
 
     private void xuLyThemSanPham() {
-        String anh = fileAnhSP.getName();
+        String anh = "default.png";// tạo sẵn biến ảnh với ảnh mặc định
+        if (fileAnhSP != null) { // fileAnhSP khác null mới được getName
+            anh = fileAnhSP.getName();
+        }
         SPBUS.themSanPham(txtTen.getText(),
                 cmbLoai.getSelectedItem() + "",
                 txtsoLuong.getText(),
@@ -536,7 +536,14 @@ public class PnQuanLySanPhamGUI extends JPanel{
     File fileAnhSP;
 
     private void xuLySuaSanPham() {
-        String anh = fileAnhSP.getName();
+        int row = tblSanPham.getSelectedRow();
+        String anh = "default.png";
+        if (row > -1) {
+            anh = tblSanPham.getValueAt(row, 6) + ""; // lấy ảnh từ dòng được chọn nếu có
+        }
+        if (fileAnhSP != null) {
+            anh = fileAnhSP.getName();
+        }
         SPBUS.capNhatThongTinSanPham(txtMa.getText(),
                 txtTen.getText(),
                 cmbLoai.getSelectedItem() + "",
@@ -551,11 +558,13 @@ public class PnQuanLySanPhamGUI extends JPanel{
     }
 
     private void luuFileAnh() {
+        if (fileAnhSP == null) { // nếu người dùng không chọn ảnh thì tương đương fileAnhSP = null thì return không làm gì cả
+            return;
+        }
         BufferedImage bImage = null;
         try {
             File initialImage = new File(fileAnhSP.getPath());
             bImage = ImageIO.read(initialImage);
-
             ImageIO.write(bImage, "png", new File("image/products/" + fileAnhSP.getName()));
 
         } catch (IOException e) {
@@ -581,11 +590,11 @@ public class PnQuanLySanPhamGUI extends JPanel{
         //Xử lý ảnh
         ImageIcon imageIcon = new ImageIcon(src);
         Image image = imageIcon.getImage(); // transform it
-        Image newimg = image.getScaledInstance(200, 200,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
+        Image newimg = image.getScaledInstance(200, 200, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
         imageIcon = new ImageIcon(newimg);  // transform it back
         return imageIcon;
     }
-    
+
     public static void main(String[] args) {
         JFrame frame = new JFrame("Quản Lý Sản Phẩm");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
