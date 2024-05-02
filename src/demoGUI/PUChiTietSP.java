@@ -8,7 +8,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.border.*;
-import javax.swing.table.DefaultTableModel;
 
 import static Main.Main.changLNF;
 
@@ -31,12 +30,12 @@ public class PUChiTietSP extends JPanel{
     }
     private void addGUI(SanPham Sp){
         this.setPreferredSize(new Dimension(W, H));
-        this.setLayout(null);
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         // ảnh sp
         JPanel ImagePanel = new JPanel();
-        ImagePanel.setBounds(50, 5, 300, 300);
-        ImagePanel.setLayout(new BoxLayout(ImagePanel, BoxLayout.Y_AXIS));
+//        ImagePanel.setBounds(50, 5, 300, 300);
+        ImagePanel.setLayout(new FlowLayout());
         ImageIcon imageIcon = new ImageIcon("image/products/"+Sp.getHinhAnh());// hình ảnh của sản phẩm vào đây
         Image image = imageIcon.getImage();
         image = image.getScaledInstance(300, 300, Image.SCALE_SMOOTH);
@@ -48,27 +47,21 @@ public class PUChiTietSP extends JPanel{
 
         // id sp
         JPanel idPanel = new JPanel();
-        idPanel.setBounds(10, 315, 350, 20 );
-        idPanel.setLayout(new BoxLayout(idPanel, BoxLayout.X_AXIS));
         JLabel idSanPham = new JLabel("ID Sản Phẩm: ");
         idSanPham.setFont(FtTitleText);
         JLabel txtID = new JLabel(Sp.getMaSP()+""); // Mã của sản phẩm
         txtID.setFont(FtTitleText);
         idPanel.add(idSanPham);
-        idPanel.add(Box.createHorizontalStrut(80));
         idPanel.add(txtID);
         this.add(idPanel);
 
         // tên sp
         JPanel namePanel = new JPanel();
-        namePanel.setBounds(10, 345, 350, 20);
-        namePanel.setLayout(new BoxLayout(namePanel, BoxLayout.X_AXIS));
         JLabel nameSanPham = new JLabel("Tên Sản Phẩm: ");
         nameSanPham.setFont(FtTitleText);
         JLabel txtName = new JLabel(Sp.getTenSP()); // tên sản phẩm
         txtName.setFont(FtTitleText);
         namePanel.add(nameSanPham);
-        namePanel.add(Box.createHorizontalStrut(69));
         namePanel.add(txtName);
         this.add(namePanel);
 
@@ -166,6 +159,15 @@ public class PUChiTietSP extends JPanel{
             }
         });
     }
-
+    public static void main(String[] args) {
+        SanPham sp = new SanPham(1, "tin", 1, 1, "cai", "default.png", 1, 1);
+        PUChiTietSP popup = new PUChiTietSP(sp);
+                JDialog dialog = new JDialog();
+                dialog.add(popup);
+                dialog.pack();
+                dialog.setModal(true);
+                dialog.setLocationRelativeTo(null);
+                dialog.setVisible(true);
+    }
 }
 

@@ -32,19 +32,20 @@ import javax.swing.table.TableColumn;
  *
  * @author nguye
  */
-public class PnHoaDon extends JPanel{
-    
+public class PnHoaDon extends JPanel {
+
     final Color ClMain = new Color(0, 160, 80);
     final Color ClHover = new Color(0, 192, 96);
     final Color ClSelect = new Color(76, 204, 76);
 
     Font FtTitleText = new Font("Montserrat", Font.BOLD, 20);
     Font font = new Font("", Font.PLAIN, 20);
-    
-    public PnHoaDon(){
+
+    public PnHoaDon() {
         addControls();
     }
-    private void addControls(){
+
+    private void addControls() {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         JPanel pnTltHoaDon = new JPanel();
@@ -99,7 +100,7 @@ public class PnHoaDon extends JPanel{
         pnSearchDate.add(pntxtStartDate);
 
         JPanel pntxtEndDate = new JPanel();
-        
+
         JLabel lbtxtEndDate = new JLabel("Đến ngày");
         lbtxtEndDate.setFont(font);
         JDateChooser dtcEndDate = new JDateChooser();
@@ -117,7 +118,7 @@ public class PnHoaDon extends JPanel{
         pntxtStartPrice.add(lbtxtStartPrice);
         pntxtStartPrice.add(txtStartPrice);
         pnSearchDate.add(pntxtStartPrice);
-        
+
         JPanel pntxtEndPrice = new JPanel();
         JLabel lbtxtEndPrice = new JLabel("Đến");
         lbtxtEndPrice.setFont(font);
@@ -127,7 +128,7 @@ public class PnHoaDon extends JPanel{
         pntxtEndPrice.add(lbtxtEndPrice);
         pntxtEndPrice.add(txtEndPrice);
         pnSearchDate.add(pntxtEndPrice);
-        
+
         JButton btnSearchDate = new JButton(new ImageIcon("image/btn/search.png"));
         btnSearchDate.setPreferredSize(new Dimension(40, 40));
         btnSearchDate.setBorder(null);
@@ -138,23 +139,23 @@ public class PnHoaDon extends JPanel{
         lbtxtEndPrice.setPreferredSize(lbtxtEndDate.getPreferredSize());
         lbtxtStartDate.setPreferredSize(lbtxtEndDate.getPreferredSize());
         lbtxtStartDate.setPreferredSize(lbtxtEndDate.getPreferredSize());
-        
+
         pnSearchMaHD.setBorder(BorderFactory.createMatteBorder(1, 0, 1, 1, ClHover));
         pnSearchDate.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 0, ClHover));
 
         pnSearchHoaDon.add(pnSearchMaHD);
         pnSearchHoaDon.add(pnSearchDate);
         this.add(pnSearchHoaDon);
-        
+
         JPanel pnTbHoaDon = new JPanel(new BorderLayout());//tạo khung chứa giỏ hàng
-        String[] coltbHoaDon = {"Mã HD","Mã SP", "Mã NV", "Mã KH", "Ngày tạo", "Tổng tiền"};
+        String[] coltbHoaDon = {"Mã HD", "Mã KH", "Mã NV", "Mã giảm giá", "Ngày tạo", "Tổng tiền"};
         DefaultTableModel dtmHoaDon = new DefaultTableModel(coltbHoaDon, 0);
-        Mytable mtbHoaDon = new Mytable(dtmHoaDon){
+        Mytable mtbHoaDon = new Mytable(dtmHoaDon) {
             public boolean isCellEditable(int row, int column) { // không cho phép sửa nội dung trong table
                 return false;
             }
         };
-        
+
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();//lấy định dạng mặc định của ô
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);//set căn giữa nội dung cho định dạng
 
@@ -178,24 +179,26 @@ public class PnHoaDon extends JPanel{
         addrowTable(dtmHoaDon);
         TimKiemtheoMHD(btnSearchMaHD, dtmHoaDon, txtSearchMaHD);
         setEventTable(mtbHoaDon);
-        TimKiemTheoGiaTienVaDate(btnSearchDate, dtcStartDate, dtcEndDate,txtStartPrice, txtEndPrice, dtmHoaDon);
+        TimKiemTheoGiaTienVaDate(btnSearchDate, dtcStartDate, dtcEndDate, txtStartPrice, txtEndPrice, dtmHoaDon);
     }
-    public void addrowTable(DefaultTableModel tble){
+
+    public void addrowTable(DefaultTableModel tble) {
         HoaDonBUS list = new HoaDonBUS();
         ArrayList<HoaDon> listHD = list.getlistHD();
-        for(int i = 0; i<list.getlistHD().size(); i++){
+        for (int i = 0; i < list.getlistHD().size(); i++) {
             Object[] newRowData = {listHD.get(i).getMaHD(), listHD.get(i).getMaKH(), listHD.get(i).getMaNV(), listHD.get(i).getMaGiam(), listHD.get(i).getNgayLap(), listHD.get(i).getTongTien()};
             tble.addRow(newRowData);
         }
     }
-    public void setEventTable(JTable tble){
+
+    public void setEventTable(JTable tble) {
         tble.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                if (!e.getValueIsAdjusting()){
+                if (!e.getValueIsAdjusting()) {
                     int row = (int) tble.getSelectedRow();
-                    int MHD = (int) tble.getValueAt(tble.getSelectedRow(), 0 );
-                    if(row != -1){
+                    int MHD = (int) tble.getValueAt(tble.getSelectedRow(), 0);
+                    if (row != -1) {
                         PUChiTietHoaDon popup = new PUChiTietHoaDon(MHD);
                         JDialog dialog = new JDialog();
                         dialog.add(popup);
@@ -204,27 +207,25 @@ public class PnHoaDon extends JPanel{
                         dialog.setLocationRelativeTo(null);
                         dialog.setVisible(true);
                     }
-               }
+                }
             }
         });
     }
-    public void TimKiemtheoMHD(JButton btnTimKiem, DefaultTableModel tble, JTextField txt){
+
+    public void TimKiemtheoMHD(JButton btnTimKiem, DefaultTableModel tble, JTextField txt) {
         HoaDonBUS HD = new HoaDonBUS();
 
         btnTimKiem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(InputValidator.IsEmpty(txt.getText()))
-                {
+                if (InputValidator.IsEmpty(txt.getText())) {
                     tble.setRowCount(0);
                     addrowTable(tble);
-                }
-                else{
+                } else {
                     String MHD = txt.getText();
-                    if(HD.getlisttheoMHD(MHD) == null){
+                    if (HD.getlisttheoMHD(MHD) == null) {
                         tble.setRowCount(0);
-                    }
-                    else{
+                    } else {
                         tble.setRowCount(0);
                         Object[] data = {HD.getlisttheoMHD(MHD).getMaHD(), HD.getlisttheoMHD(MHD).getMaKH(), HD.getlisttheoMHD(MHD).getMaNV(), HD.getlisttheoMHD(MHD).getMaGiam(), HD.getlisttheoMHD(MHD).getNgayLap(), HD.getlisttheoMHD(MHD).getTongTien()};
                         tble.addRow(data);
@@ -233,15 +234,16 @@ public class PnHoaDon extends JPanel{
             }
         });
     }
-    public void TimKiemTheoGiaTienVaDate(JButton btnTimKiem,JDateChooser dateMin, JDateChooser dateMax, JTextField priceMin, JTextField priceMax, DefaultTableModel tble ){
+
+    public void TimKiemTheoGiaTienVaDate(JButton btnTimKiem, JDateChooser dateMin, JDateChooser dateMax, JTextField priceMin, JTextField priceMax, DefaultTableModel tble) {
         HoaDonBUS list = new HoaDonBUS();
         btnTimKiem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 tble.setRowCount(0);
                 ArrayList<HoaDon> listHD = list.getListHD_Price_Date(dateMin.getDate(), dateMax.getDate(), priceMin.getText(), priceMax.getText());
-                if(listHD != null){
-                    for(int i = 0; i<listHD.size(); i++){
+                if (listHD != null) {
+                    for (int i = 0; i < listHD.size(); i++) {
                         Object[] newRowData = {listHD.get(i).getMaHD(), listHD.get(i).getMaKH(), listHD.get(i).getMaNV(), listHD.get(i).getMaGiam(), listHD.get(i).getNgayLap(), listHD.get(i).getTongTien()};
                         tble.addRow(newRowData);
                     }

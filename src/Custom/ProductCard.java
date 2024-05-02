@@ -98,7 +98,13 @@ public class ProductCard extends JPanel {
         nameProduct.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                System.out.println(sp.getMaSP());
+                PUChiTietSP popup = new PUChiTietSP(sp);
+                JDialog dialog = new JDialog();
+                dialog.add(popup);
+                dialog.pack();
+                dialog.setModal(true);
+                dialog.setLocationRelativeTo(null);
+                dialog.setVisible(true);
             }
 
             @Override

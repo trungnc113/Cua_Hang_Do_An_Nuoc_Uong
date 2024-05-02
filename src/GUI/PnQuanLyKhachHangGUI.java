@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
 package GUI;
 
 import BUS.KhachHangBUS;
@@ -11,12 +7,10 @@ import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
 import Custom.dialog;
 import javax.swing.RowFilter;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableRowSorter;
 
-/**
- *
- * @author ADMIN
- */
 public class PnQuanLyKhachHangGUI extends javax.swing.JPanel {
 
     DefaultTableModel dtmKhachHang;
@@ -33,6 +27,7 @@ public class PnQuanLyKhachHangGUI extends javax.swing.JPanel {
         tbKhachHang.getTableHeader().setBackground(Color.green);
         custom();
         loadData();
+        addEvents();
     }
 
     //lưu trữ dữ liệu của bảng
@@ -518,53 +513,73 @@ public class PnQuanLyKhachHangGUI extends javax.swing.JPanel {
     }//GEN-LAST:event_resetActionPerformed
 
     private void editActionPerformed1(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editActionPerformed1
-        int row = tbKhachHang.getSelectedRow();
-        if (row == -1) {
-            return; // Nếu không có hàng nào được chọn, thoát khỏi phương thức
+        KhachHang khachHang = new KhachHang();
+        String gioiTinh = "";
+        int trangthai = -1;
+        if (rdbNam.isSelected()) {
+            gioiTinh = rdbNam.getText();
         }
-        //lấy dữ liệu mới
-        int maKH = Integer.parseInt(tbKhachHang.getValueAt(row, 0).toString());
-        String tenKH = tbKhachHang.getValueAt(row, 1).toString();
-        String gioiTinh = tbKhachHang.getValueAt(row, 2).toString();
-        String sdt = tbKhachHang.getValueAt(row, 3).toString();
-        String email = tbKhachHang.getValueAt(row, 4).toString();
-        String diaChi = tbKhachHang.getValueAt(row, 5).toString();
-        int tongChiTieu = Integer.parseInt(tbKhachHang.getValueAt(row, 6).toString());
-        int trangThai = Integer.parseInt(tbKhachHang.getValueAt(row, 7).toString());
-        //cập nhật dữ liệu đã sửa vào bảng
-        tbKhachHang.setValueAt(maKH, row, 0);
-        tbKhachHang.setValueAt(tenKH, row, 1);
-        tbKhachHang.setValueAt(gioiTinh, row, 2);
-        tbKhachHang.setValueAt(sdt, row, 3);
-        tbKhachHang.setValueAt(email, row, 4);
-        tbKhachHang.setValueAt(diaChi, row, 5);
-        tbKhachHang.setValueAt(tongChiTieu, row, 6);
-        tbKhachHang.setValueAt(trangThai, row, 7);
-        // Hiển thị dữ liệu lên các text field tương ứng
-        txtMaKH.setText(String.valueOf(maKH));
-        txtTen.setText(tenKH);
-        txtDT.setText(sdt);
-        txtEmail.setText(email);
-        txtDiaChi.setText(diaChi);
-
-        if (gioiTinh.equals("Nam")) {
-            rdbNam.setSelected(true);
-        } else {
-            rdbNu.setSelected(true);
+        if (rdbNu.isSelected()) {
+            gioiTinh = rdbNu.getText();
         }
-
-        if (trangThai == 1) {
-            rdbOnl.setSelected(true);
-        } else {
-            rdbOff.setSelected(true);
+        if (rdbOnl.isSelected()) {
+            trangthai = 1;
         }
-        if (khachHangBus.Update(selectedKhachHang)) {
+        if (rdbOff.isSelected()) {
+            trangthai = 0;
+        }
+        khachHang.setGioiTinh(gioiTinh);
+        khachHang.setTrangThai(trangthai);
+        khachHang.setMaKH(Integer.parseInt(txtMaKH.getText()));
+        khachHang.setTen(txtTen.getText());
+        khachHang.setDienThoai(txtDT.getText());
+        khachHang.setEmail(txtEmail.getText());
+        khachHang.setDiaChi(txtDiaChi.getText());
+        khachHang.setTrangThai(1);
+        if (khachHangBus.Update(khachHang)) {
             loadData();
-
+        txtMaKH.setText("");
+        txtTen.setText("");
+        txtDT.setText("");
+        txtEmail.setText("");
+        txtDiaChi.setText("");
+        buttonGroup1.clearSelection();
+        buttonGroup2.clearSelection();
         }
 
     }//GEN-LAST:event_editActionPerformed1
+    private void addEvents() {
+        tbKhachHang.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (e.getValueIsAdjusting()) {
+                    return;
+                }
+                int row = tbKhachHang.getSelectedRow();
+                if (row < 0) {
+                    return;
+                }
+                KhachHang khachHang = khachHangBus.getID(Integer.parseInt(tbKhachHang.getValueAt(row, 0) + ""));
+                txtMaKH.setText(khachHang.getMaKH() + "");
+                txtTen.setText(khachHang.getTen());
+                txtDT.setText(khachHang.getDienThoai());
+                txtEmail.setText(khachHang.getEmail());
+                txtDiaChi.setText(khachHang.getDiaChi());
+                if (khachHang.getGioiTinh().equals("Nữ")) {
+                    rdbNu.setSelected(true);
+                } else {
+                    rdbNam.setSelected(true);
+                }
+                if (khachHang.getTrangThai() == 1) {
+                    rdbOnl.setSelected(true);
+                } else {
+                    rdbOff.setSelected(true);
+                }
+            }
 
+        });
+
+    }
     private void searchByName(String keyword) {
         DefaultTableModel model = (DefaultTableModel) tbKhachHang.getModel();
         TableRowSorter sorter = new TableRowSorter(model);

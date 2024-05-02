@@ -43,6 +43,7 @@ public class KhachHangBUS {
         }
         return true;
     }
+
     // KT tên khách hàng chỉ được nhập kí tự
     private boolean CheckName(String name, String content) {
         if (!InputValidator.isValidName(name)) {
@@ -72,9 +73,9 @@ public class KhachHangBUS {
         if (!CheckPhoneNumber(khachHang.getDienThoai(), "Số điện thoại không hợp lệ")) {
             return false;
         }
-        if (checkDuplicateID(khachHang, "ID đã tồn tại")) {
-            return false;
-        }
+//        if (checkDuplicateID(khachHang, "ID đã tồn tại")) {
+//            return false;
+//        }
         if (!CheckEmail(khachHang.getEmail(), "Email không hợp lệ")) {
             return false;
         }
@@ -123,15 +124,20 @@ public class KhachHangBUS {
     public int getNextMaKH() {
         return khachhangDao.getNewMa() + 1;
     }
+
     public ArrayList<KhachHang> searchKhachHang(String keyword) {
-    ArrayList<KhachHang> resultList = new ArrayList<>();
-    ArrayList<KhachHang> khachHangs = khachhangDao.getListKhachHang();
-    for (KhachHang kh : khachHangs) {
-        if (kh.getTen().toLowerCase().contains(keyword.toLowerCase())) {
-            resultList.add(kh);
+        ArrayList<KhachHang> resultList = new ArrayList<>();
+        ArrayList<KhachHang> khachHangs = khachhangDao.getListKhachHang();
+        for (KhachHang kh : khachHangs) {
+            if (kh.getTen().toLowerCase().contains(keyword.toLowerCase())) {
+                resultList.add(kh);
+            }
         }
+        return resultList;
     }
-    return resultList;
-}
+
+    public KhachHang getID(int maKh) {
+        return khachhangDao.getKhachHang(maKh);
+    }
 
 }

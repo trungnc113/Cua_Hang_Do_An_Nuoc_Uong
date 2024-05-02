@@ -6,6 +6,7 @@ import BUS.NhanVienBUS;
 import BUS.SanPhamBUS;
 import Custom.Mytable;
 import Custom.NonEditableTableModel;
+import Custom.dialog;
 import DTO.CTHoaDon;
 import DTO.GiamGia;
 import DTO.HoaDon;
@@ -23,33 +24,35 @@ public class XuatHoaDonGUI extends javax.swing.JDialog {
 
     NonEditableTableModel dtmCTHD;
     int tongTien;
+    int tongTienDaGiam;
     ArrayList<CTHoaDon> cTHoaDons;
-    
+
     SanPhamBUS sanPhamBUS = new SanPhamBUS();
     HoaDonBUS hoaDonBUS = new HoaDonBUS();
     CTHoaDonBUS cTHoaDonBUS = new CTHoaDonBUS();
     NhanVienBUS nhanVienBUS = new NhanVienBUS();
-    
+
     NhanVien nhanVien = nhanVienBUS.getById(0);
     KhachHang khachHang = new KhachHang();
     GiamGia giamGia = new GiamGia();
-    
-    public XuatHoaDonGUI( int tongTien, ArrayList<CTHoaDon> cTHoaDons) {
+
+    public XuatHoaDonGUI(int tongTien, ArrayList<CTHoaDon> cTHoaDons) {
         this.cTHoaDons = cTHoaDons;
         this.tongTien = tongTien;
+        this.tongTienDaGiam = tongTien;
         initComponents();
         Custom();
         loadData();
         showDlg();
     }
-    
-    private void showDlg(){
+
+    private void showDlg() {
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setModal(true);
         this.setVisible(true);
     }
-    
+
     private void Custom() {
         btnInHoaDon.setVisible(false);
 
@@ -76,7 +79,7 @@ public class XuatHoaDonGUI extends javax.swing.JDialog {
     private void loadData() {
         txtNhanVien.setText(nhanVien.getMaNV() + " - " + nhanVien.getHo() + " " + nhanVien.getTen());
         txtNgayLap.setText(DinhDangTGHienTai());
-        txtTongTien.setText(DinhDangTongTien(tongTien));
+        txtTongTien.setText(DinhDangTongTien(tongTienDaGiam));
 
         dtmCTHD.setRowCount(0);
         for (CTHoaDon cTHoaDon : cTHoaDons) {
@@ -86,15 +89,15 @@ public class XuatHoaDonGUI extends javax.swing.JDialog {
     }
 
     private void XuLyThanhToan() {
-        khachHang.setMaKH(0);
-        giamGia.setMaGiam(1);
-        HoaDon hoaDon = new HoaDon(0, khachHang.getMaKH(), nhanVien.getMaNV(), giamGia.getMaGiam(), new Date() ,tongTien);
-//        if (!phieuNhapBUS.Insert(hoaDon)) {
-//            return;
-//        }
-//        int maPN = phieuNhapBUS.getNewMaPN();
-        
-        int maPN = 3;
+        if (khachHang == null || giamGia == null) {
+            new dialog("Chưa chọn đủ thông tin", dialog.ERROR_DIALOG);
+            return;
+        }
+        HoaDon hoaDon = new HoaDon(0, khachHang.getMaKH(), nhanVien.getMaNV(), giamGia.getMaGiam(), new Date(), tongTienDaGiam);
+        if (!hoaDonBUS.Insert(hoaDon)) {
+            return;
+        }
+        int maHD = hoaDonBUS.getNewId();
         String htmlCTHD = "<style> "
                 + "table {"
                 + "border: 1px solid;"
@@ -112,8 +115,8 @@ public class XuatHoaDonGUI extends javax.swing.JDialog {
                 + "</style>";
         htmlCTHD += "<h1 style='text-align:center;'>CHI TIẾT HÓA ĐƠN</h1>";
         htmlCTHD += "Nhân viên: " + nhanVien.getMaNV() + " - " + nhanVien.getHo() + " " + nhanVien.getTen() + "<br/>";
-        htmlCTHD += "Khách hàng: " + "   "+ "<br/>";
-        htmlCTHD += "Khuyến mãi: " + "   " + "<br/>";
+        htmlCTHD += "Khách hàng: " + khachHang.getMaKH() + " - " + khachHang.getTen() + "<br/>";
+        htmlCTHD += "Khuyến mãi: " + giamGia.getMaGiam() + " - " + giamGia.getTenGiamGia() + "<br/>";
         htmlCTHD += "Ngày lập: " + DinhDangTGHienTai() + "<br/>";
         htmlCTHD += "<div style='text-align:center;'>==========================================</div><br/>";
         htmlCTHD += "<div style='text-align:center'>";
@@ -138,18 +141,18 @@ public class XuatHoaDonGUI extends javax.swing.JDialog {
             //===================================================
             //===================LƯU CTPN VÀO DB=================
             //===================================================
-//            ctpn.setMaPN(maPN);
-//            if (!cTPhieuNhapBUS.Insert(ctpn)) {
-//                return;
-//            }
+            cTHoaDon.setMaHD(maHD);
+            if (!cTHoaDonBUS.Insert(cTHoaDon)) {
+                return;
+            }
         }
 
         htmlCTHD += "<tr>";
         htmlCTHD += "<td style='text-align:center;'>" + "</td>";
         htmlCTHD += "<td style='text-align:left;'>" + "</td>";
         htmlCTHD += "<td style='text-align:center;'>" + "</td>";
-        htmlCTHD += "<td style='text-align:center;font-weight:bold'>Thành tiền</td>";
-        htmlCTHD += "<td style='text-align:center;'>" + DinhDangTongTien(tongTien) + "</td>";
+        htmlCTHD += "<td style='text-align:center;font-weight:bold'>Tổng tiền</td>";
+        htmlCTHD += "<td style='text-align:center;'>" + DinhDangTongTien(tongTienDaGiam) + "</td>";
         htmlCTHD += "</tr>";
         htmlCTHD += "</table>";
         htmlCTHD += "</div>";
@@ -287,6 +290,11 @@ public class XuatHoaDonGUI extends javax.swing.JDialog {
         btnChonKhachHang.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnChonKhachHang.setText("...");
         btnChonKhachHang.setPreferredSize(new java.awt.Dimension(29, 20));
+        btnChonKhachHang.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnChonKhachHangActionPerformed(evt);
+            }
+        });
         jPanel14.add(btnChonKhachHang);
 
         jPanel11.add(jPanel14);
@@ -301,6 +309,11 @@ public class XuatHoaDonGUI extends javax.swing.JDialog {
         btnChonKhuyenMai.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnChonKhuyenMai.setText("...");
         btnChonKhuyenMai.setPreferredSize(new java.awt.Dimension(29, 20));
+        btnChonKhuyenMai.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnChonKhuyenMaiActionPerformed(evt);
+            }
+        });
         jPanel20.add(btnChonKhuyenMai);
 
         jPanel11.add(jPanel20);
@@ -405,11 +418,30 @@ public class XuatHoaDonGUI extends javax.swing.JDialog {
         } catch (PrinterException e) {
         }
     }//GEN-LAST:event_btnInHoaDonActionPerformed
-    
-    public static void main(String[] args) {
-        ArrayList<CTHoaDon> cthds = new ArrayList<>();
-        cthds.add(new CTHoaDon(1, 111, 1, 100000, 100000));
-        XuatHoaDonGUI xhdgui = new XuatHoaDonGUI(100000,cthds);
+
+    private void btnChonKhachHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChonKhachHangActionPerformed
+        dlgChonKhachHang dChonKhachHang = new dlgChonKhachHang();
+        khachHang = dChonKhachHang.getKhachHang();
+        if (khachHang == null) {
+            txtKhachHang.setText("");
+            return;
+        }
+        txtKhachHang.setText(khachHang.getMaKH() + " - " + khachHang.getTen());
+    }//GEN-LAST:event_btnChonKhachHangActionPerformed
+
+    private void btnChonKhuyenMaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChonKhuyenMaiActionPerformed
+        dlgChonKhuyenMai dChonKhuyenMai = new dlgChonKhuyenMai(tongTien);
+        giamGia = dChonKhuyenMai.getKhuyenMai();
+        if (giamGia == null) {
+            txtKhuyenMai.setText("");
+            return;
+        }
+        txtKhuyenMai.setText(giamGia.getMaGiam() + " - " + giamGia.getTenGiamGia());
+        tongTienDaGiam = tinhTongTienGiamGia(tongTien, giamGia.getPhanTramGiam());
+        loadData();
+    }//GEN-LAST:event_btnChonKhuyenMaiActionPerformed
+    private int tinhTongTienGiamGia(int tongTien, int phanTramGiam) {
+        return (int) (tongTien * (1.0 - ((phanTramGiam * 1.0) / 100f)));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

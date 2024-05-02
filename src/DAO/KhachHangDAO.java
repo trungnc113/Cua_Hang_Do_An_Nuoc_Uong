@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package DAO;
 
 import Custom.JDBCUtil;
@@ -10,10 +6,6 @@ import DTO.KhachHang;
 import java.sql.*;
 import java.util.ArrayList;
 
-/**
- *
- * @author nguye
- */
 public class KhachHangDAO {
     public ArrayList<KhachHang> getListKhachHang() {
         try {
@@ -105,7 +97,7 @@ public class KhachHangDAO {
         boolean result = false;
         try {
             Connection c = JDBCUtil.getConnection();
-            String sql = "UPDATE khachhang SET Ten=?, GioiTinh=?, DienThoai=?, Email=?, DiaChi=?, TongChiTieu=? trangThai=0  WHERE MaKH=?";
+            String sql = "UPDATE khachhang SET Ten=?, GioiTinh=?, DienThoai=?, Email=?, DiaChi=?, TongChiTieu=?, trangThai=?  WHERE MaKH=?";
             PreparedStatement prep = c.prepareStatement(sql);
             prep.setString(1, kh.getTen());
             prep.setString(2, kh.getGioiTinh());
@@ -113,13 +105,15 @@ public class KhachHangDAO {
             prep.setString(4, kh.getEmail());
             prep.setString(5, kh.getDiaChi());
             prep.setInt(6, kh.getTongChiTieu());
-            prep.setInt(7, kh.getMaKH());
+            prep.setInt(7, kh.getTrangThai());
+            prep.setInt(8, kh.getMaKH());
             result = prep.executeUpdate() > 0;
             JDBCUtil.closeConnection(c);
+            return result;
         } catch (SQLException ex) {
-            return false;
+            ex.printStackTrace();
+            return result;
         }
-        return result;
     }
     public boolean updateTongChiTieu(int maKH, int tongChiTieu) {
         boolean result = false;

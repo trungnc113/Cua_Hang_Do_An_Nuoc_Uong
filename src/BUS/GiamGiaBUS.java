@@ -21,22 +21,24 @@ public class GiamGiaBUS {
     }
 
     public boolean Insert(GiamGia giamGia) {
-        if(checkDuplicateName(giamGia.getTenGiamGia()))
-        {
+        if (Insert_checkDuplicateName(giamGia.getTenGiamGia())) {
             return false;
         }
         giamGia.setMaGiam(getNextMaGiam());
-        if(giamGiaDAO.addGiamGia(giamGia)){
+        if (giamGiaDAO.addGiamGia(giamGia)) {
             new dialog("Thêm giảm giá thành công", dialog.SUCCESS_DIALOG);
             return true;
         }
         new dialog("Không thể thêm giảm giá", dialog.ERROR_DIALOG);
         return false;
     }
-    
-    public boolean Edit(GiamGia giamGia){
-        if(giamGiaDAO.updateGiamGia(0, giamGia))
+
+    public boolean Edit(GiamGia giamGia) {
+        if(Edit_checkDuplicateName(giamGia.getTenGiamGia(), giamGia.getMaGiam()))
         {
+            return false;
+        }
+        if (giamGiaDAO.updateGiamGia(0, giamGia)) {
             new dialog("Sửa giảm giá thành công", dialog.SUCCESS_DIALOG);
             return true;
         }
@@ -44,21 +46,34 @@ public class GiamGiaBUS {
         return false;
     }
 
-    public boolean Delete(int maGiamGia){
-        if(giamGiaDAO.deleteGiamGia(maGiamGia))
-        {
+    public boolean Delete(int maGiamGia) {
+        if (giamGiaDAO.deleteGiamGia(maGiamGia)) {
             return true;
         }
         return false;
     }
-    
+
     private int getNextMaGiam() {
         return giamGiaDAO.getNewMa() + 1;
     }
-    
-    private boolean checkDuplicateName(String tenGiamGia) {
+
+    private boolean Insert_checkDuplicateName(String tenGiamGia) {
         ArrayList<GiamGia> giamGias = giamGiaDAO.getListGiamGia();
-        for (GiamGia giamGia:giamGias) {
+        for (GiamGia giamGia : giamGias) {
+            if (giamGia.getTenGiamGia().equals(tenGiamGia.strip())) {
+                new dialog("Tên giảm giá đã tồn tại", dialog.ERROR_DIALOG);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean Edit_checkDuplicateName(String tenGiamGia, int maGiamGia) {
+        ArrayList<GiamGia> giamGias = giamGiaDAO.getListGiamGia();
+        for (GiamGia giamGia : giamGias) {
+            if (giamGia.getMaGiam() == maGiamGia) {
+                continue;
+            }
             if (giamGia.getTenGiamGia().equals(tenGiamGia.strip())) {
                 new dialog("Tên giảm giá đã tồn tại", dialog.ERROR_DIALOG);
                 return true;

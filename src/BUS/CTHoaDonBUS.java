@@ -1,22 +1,24 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package BUS;
 
+import Custom.dialog;
 import DAO.CTHoaDonDAO;
 import DTO.CTHoaDon;
 
 import java.util.ArrayList;
 
-/**
- *
- * @author nguye
- */
 public class CTHoaDonBUS {
+
     CTHoaDonDAO CTHD = new CTHoaDonDAO();
-    public ArrayList<CTHoaDon> getlistCTHD(){
+
+    public ArrayList<CTHoaDon> getlistCTHD() {
         return CTHD.getListCTHD();
     }
-    
+
+    public boolean Insert(CTHoaDon cTHoaDon) {
+        if (!CTHD.addCTHoaDon(cTHoaDon)) {
+            new dialog("Lỗi thêm chi tiết hóa đơn!", dialog.ERROR_DIALOG);
+            return false;
+        }
+        return true;
+    }
 }

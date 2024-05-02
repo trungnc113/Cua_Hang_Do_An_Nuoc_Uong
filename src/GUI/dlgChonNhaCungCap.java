@@ -7,10 +7,6 @@ import Custom.dialog;
 import DTO.NhaCungCap;
 import java.util.ArrayList;
 
-/**
- *
- * @author nguye
- */
 public class dlgChonNhaCungCap extends javax.swing.JDialog {
 
     NonEditableTableModel dtmNhaCungCap;

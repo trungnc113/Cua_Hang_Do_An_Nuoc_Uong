@@ -315,7 +315,7 @@ public class SanPhamBUS {
     }
     
     public ArrayList<SanPham> getListSPtheoMavaTen(String txt){
-        String output=txt.replaceAll("\\s+", "");
+        String output=txt.trim();
         return spDAO.getDanhSachSanPhamTheoMavaTen(output);
     }
 }
