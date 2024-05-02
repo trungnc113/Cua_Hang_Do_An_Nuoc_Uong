@@ -16,8 +16,11 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Vector;
 import DTO.NhanVien;
+import DTO.TaiKhoan;
 import BUS.NhanVienBUS;
 import BUS.TaiKhoanBUS;
+import DAO.PhanQuyenDAO;
+import DAO.TaiKhoanDAO;
 
 
 public class PnNhanVien extends JPanel {
@@ -29,7 +32,7 @@ public class PnNhanVien extends JPanel {
         
     }
     private NhanVienBUS NVBUS = new NhanVienBUS();
-    TaiKhoanBUS taiKhoanBUS = new TaiKhoanBUS();
+    
 
     final Color colorPanel = new Color(247, 247, 247);
     final Color ClHover  = new Color(0,160,80);
@@ -219,6 +222,7 @@ public class PnNhanVien extends JPanel {
         dtmNhanVien.addColumn("Tên");
         dtmNhanVien.addColumn("Giới tính");
         dtmNhanVien.addColumn("Điện thoại");
+        dtmNhanVien.addColumn("Chức vụ");
         dtmNhanVien.addColumn("Tài khoản");
         tblNhanVien = new Mytable(dtmNhanVien); // sử dụng MyTable mình tạo sẵn
 
@@ -367,6 +371,13 @@ public class PnNhanVien extends JPanel {
 
     private void xuLyResetMatKhau() {
         String maNV = txtMaNV.getText();
+        TaiKhoanDAO tkDAO = new TaiKhoanDAO();
+        tkDAO.selectAll();
+        int manv = Integer.parseInt(maNV);
+        // if(tkDAO.layQuyenTheoMa(manv).toString() == null ){
+        //     new dialog("Chưa có tài khoản", dialog.ERROR_DIALOG);
+        //     return;
+        // }
         if (maNV.trim().equals("")) {
             new dialog("Bạn chưa chọn nhân viên!", dialog.ERROR_DIALOG);
             return;
@@ -464,6 +475,17 @@ public class PnNhanVien extends JPanel {
             vec.add(nv.getTen());
             vec.add(nv.getGioiTinh());
             vec.add(nv.getDienThoai());
+            vec.add(nv.getChucVu());
+            int trangThai = taiKhoanBUS.getTrangThai(nv.getMaNV() + "");
+            if(trangThai == 1){
+                vec.add("Hoạt động");
+            }
+            if(trangThai == 0){
+                vec.add("Khoá");
+            }
+            else {
+                vec.add("Chưa có");
+            }
             dtmNhanVien.addRow(vec);
         }
     }
@@ -485,8 +507,9 @@ public class PnNhanVien extends JPanel {
     }
 
     private void loadDataTblNhanVien() {
+        NVBUS.docDanhSach();
         dtmNhanVien.setRowCount(0);
-        ArrayList<NhanVien> dsnv = NVBUS.getDanhSachNhanVien();
+        ArrayList<NhanVien> dsnv = NVBUS.getlistNV();
 
         for (NhanVien nv : dsnv) {
             Vector<Object> vec = new Vector<>();
@@ -495,10 +518,13 @@ public class PnNhanVien extends JPanel {
             vec.add(nv.getTen());
             vec.add(nv.getGioiTinh());
             vec.add(nv.getDienThoai());
-            if(nv.getTrangThai() == 1){
+            vec.add(nv.getChucVu());
+            System.out.println(nv.getChucVu());
+            int trangThai = taiKhoanBUS.getTrangThai(nv.getMaNV() + "");
+            if(trangThai == 1){
                 vec.add("Hoạt động");
             }
-            if(nv.getTrangThai() == 0){
+            if(trangThai == 0){
                 vec.add("Khoá");
             }
             else {
@@ -507,6 +533,7 @@ public class PnNhanVien extends JPanel {
             dtmNhanVien.addRow(vec);
         }
     }
+    TaiKhoanBUS taiKhoanBUS = new TaiKhoanBUS();
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("Quản lí nhân viên");
