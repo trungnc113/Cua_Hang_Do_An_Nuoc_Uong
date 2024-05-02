@@ -13,13 +13,14 @@ public class NhanVienBUS {
     }
 
     public void docDanhSach() {
-        this.listNV = nvDAO.getDanhSachNhanVien();
+        listNV = nvDAO.getDanhSachNhanVien();
     }
 
-    public ArrayList<NhanVien> getDanhSachNhanVien() {
-        if (this.listNV == null)
+    public ArrayList<NhanVien> getlistNV() {
+        if (listNV == null){
             docDanhSach();
-        return this.listNV;
+        }
+        return listNV;
     }
 
     public NhanVien getById(int maNV){
