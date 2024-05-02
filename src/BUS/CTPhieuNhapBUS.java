@@ -1,7 +1,10 @@
 package BUS;
 
+import java.util.ArrayList;
+
 import Custom.dialog;
 import DAO.CTPhieuNhapDAO;
+import DTO.CTHoaDon;
 import DTO.CTPhieuNhap;
 
 public class CTPhieuNhapBUS {
@@ -10,7 +13,9 @@ public class CTPhieuNhapBUS {
     
     public CTPhieuNhapBUS() {
     }
-    
+    public ArrayList<CTPhieuNhap> getlistPhieuNhaps(){
+        return cTPhieuNhapDAO.getListCTPhieuNhapByMaPN();
+    }
     public boolean Insert(CTPhieuNhap ctpn){
         if(!cTPhieuNhapDAO.addCTPhieuNhap(ctpn))
         {

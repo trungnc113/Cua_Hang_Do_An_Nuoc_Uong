@@ -6,12 +6,20 @@ package GUI;
 
 import Custom.Mytable;
 import Custom.dialog;
+import DTO.CTHoaDon;
+import DTO.CTPhieuNhap;
+import DTO.HoaDon;
 import DTO.PhieuNhap;
+import demoGUI.PUChiTietHoaDon;
 import demoGUI.phieunhap;
 
 import com.toedter.calendar.JDateChooser;
 
+import BUS.CTHoaDonBUS;
+import BUS.HoaDonBUS;
 import BUS.PhieuNhapBUS;
+import DAO.CTPhieuNhapDAO;
+import BUS.SanPhamBUS;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -30,11 +38,15 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.WindowConstants;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
@@ -191,8 +203,11 @@ public class PnPhieuNhap extends JPanel {
     JPanel pnTbPhieuNhap = new JPanel(new BorderLayout());// tạo khung chứa table
     String[] coltbPhieuNhap = { "Mã PN", "Mã NCC", "Mã Nv", "Ngày tạo", "Tổng tiền" };
     dtmPhieuNhap = new DefaultTableModel(coltbPhieuNhap, 0);
-    Mytable mtbPhieuNhap = new Mytable(dtmPhieuNhap);
-
+    Mytable mtbPhieuNhap = new Mytable(dtmPhieuNhap){
+      public boolean isCellEditable(int row, int column) { // không cho phép sửa nội dung trong table
+          return false;
+      }
+    };
     JScrollPane scrmtbPhieuNhap = new JScrollPane(mtbPhieuNhap);
     pnTbPhieuNhap.add(scrmtbPhieuNhap, BorderLayout.CENTER);
     this.add(pnTbPhieuNhap);
@@ -212,6 +227,7 @@ public class PnPhieuNhap extends JPanel {
     mtbPhieuNhap.getColumnModel().getColumn(3).setPreferredWidth(10);
     mtbPhieuNhap.getColumnModel().getColumn(4).setPreferredWidth(10);
     loaddata();
+    setEventTable(mtbPhieuNhap);
 
   }
 
@@ -222,7 +238,27 @@ public class PnPhieuNhap extends JPanel {
     }
     updateTableData(phieuNhaps);
   }
-
+  
+  public void setEventTable(JTable tble){
+        tble.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting()){
+                    int row = (int) tble.getSelectedRow();
+                    int MPN = (int) tble.getValueAt(tble.getSelectedRow(), 0 );
+                    if(row != -1){
+                        PUCTPN popup = new PUCTPN(MPN);
+                        JDialog dialog = new JDialog();
+                        dialog.add(popup);
+                        dialog.pack();
+                        dialog.setModal(true);
+                        dialog.setLocationRelativeTo(null);
+                        dialog.setVisible(true);
+                    }
+               }
+            }
+        });
+    }
   private void addEvents() {
     btnSearchDate.addActionListener(new ActionListener() {
 
@@ -327,5 +363,15 @@ public class PnPhieuNhap extends JPanel {
           .addRow(new Object[] { pn.getMaPN(), pn.getMaNCC(), pn.getMaNV(), pn.getNgayLap(), pn.getTongTien() });
     }
   }
+  public static void main(String[] args) {
+        JFrame myFrame = new JFrame();
+        PnPhieuNhap test = new PnPhieuNhap();
+        myFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        myFrame.add(test);
 
+        myFrame.pack();
+//        myFrame.setResizable(false);
+        myFrame.setLocationRelativeTo(null);
+        myFrame.setVisible(true);
+    }
 }
