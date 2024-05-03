@@ -41,7 +41,7 @@ public class TaiKhoanBUS {
         return taiKhoanDAO.kiemTraTrungTenDangNhap(tenDangNhap);
     }
 
-    public boolean themTaiKhoan(String ma, String tenDangNhap, String quyen) {
+    public boolean themTaiKhoan(String ma, String tenDangNhap, int maquyen) {
         int maNV = Integer.parseInt(ma);
         if (tenDangNhap.trim().equals("")) {
             new dialog("Không được để trống Tên đăng nhập!", dialog.ERROR_DIALOG);
@@ -55,7 +55,7 @@ public class TaiKhoanBUS {
             }
             return false;
         }
-        TaiKhoan tk = new TaiKhoan(maNV, maNV, tenDangNhap,tenDangNhap, 1);
+        TaiKhoan tk = new TaiKhoan(maNV,maquyen , tenDangNhap,tenDangNhap, 1);
         boolean flag = taiKhoanDAO.insert(tk);
         if (flag) {
             new dialog("Cấp tài khoản thành công! Mật khẩu là " + tenDangNhap, dialog.SUCCESS_DIALOG);
