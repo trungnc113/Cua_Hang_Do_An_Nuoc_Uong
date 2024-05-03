@@ -2,11 +2,13 @@ package GUI;
 
 import BUS.PhanQuyenBUS;
 import BUS.TaiKhoanBUS;
+import DAO.NhanVienDAO;
 import DTO.PhanQuyen;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.util.ArrayList;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
+import DTO.NhanVien;
 
 public class dlgCapTaiKhoan extends javax.swing.JDialog {
 
@@ -152,11 +154,17 @@ public class dlgCapTaiKhoan extends javax.swing.JDialog {
 
     private TaiKhoanBUS taiKhoanBUS = new TaiKhoanBUS();
     private PhanQuyenBUS phanQuyenBUS = new PhanQuyenBUS();
+    private NhanVienDAO NVDAO = new NhanVienDAO(); 
 
     private void btnTaoTaiKhoanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTaoTaiKhoanActionPerformed
         taiKhoanBUS.themTaiKhoan(txtMaNV.getText(),
                 txtTenDangNhap.getText(),
-                (String) cmbQuyen.getSelectedItem());
+                cmbQuyen.getSelectedIndex());
+                NhanVien nv = new NhanVien();
+                int manv = Integer.parseInt(txtMaNV.getText());
+                nv.setMaNV(manv);
+                nv.setChucVu((String) cmbQuyen.getSelectedItem());
+                NVDAO.capNhatChucVu(nv);
     }//GEN-LAST:event_btnTaoTaiKhoanActionPerformed
 
     private void txtTenDangNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTenDangNhapActionPerformed
