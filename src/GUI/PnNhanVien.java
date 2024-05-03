@@ -374,10 +374,7 @@ public class PnNhanVien extends JPanel {
         TaiKhoanDAO tkDAO = new TaiKhoanDAO();
         tkDAO.selectAll();
         int manv = Integer.parseInt(maNV);
-        // if(tkDAO.layQuyenTheoMa(manv).toString() == null ){
-        //     new dialog("Chưa có tài khoản", dialog.ERROR_DIALOG);
-        //     return;
-        // }
+
         if (maNV.trim().equals("")) {
             new dialog("Bạn chưa chọn nhân viên!", dialog.ERROR_DIALOG);
             return;
@@ -519,7 +516,6 @@ public class PnNhanVien extends JPanel {
             vec.add(nv.getGioiTinh());
             vec.add(nv.getDienThoai());
             vec.add(nv.getChucVu());
-            System.out.println(nv.getChucVu());
             int trangThai = taiKhoanBUS.getTrangThai(nv.getMaNV() + "");
             if(trangThai == 1){
                 vec.add("Hoạt động");
