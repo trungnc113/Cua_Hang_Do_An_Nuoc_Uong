@@ -314,8 +314,11 @@ public class SanPhamBUS {
         return spDAO.getDanhSachSanPham();
     }
     
-    public ArrayList<SanPham> getListSPtheoMavaTen(String txt){
-        String output=txt.trim();
-        return spDAO.getDanhSachSanPhamTheoMavaTen(output);
+    public ArrayList<SanPham> TimKiemSPnhapHang(String txt){
+        return spDAO.TimKiemSPnhapHang(txt.trim());
+    }
+    
+    public ArrayList<SanPham> getListSPConHang(){
+        return spDAO.getListSPConHang();
     }
 }

@@ -53,19 +53,6 @@ public class KhachHangBUS {
         return true;
     }
 
-    //KT mã khách hàng có bị trùng không
-    private boolean checkDuplicateID(KhachHang khachHang, String content) {
-        ArrayList<KhachHang> khachHangs = khachhangDao.getListKhachHang();
-
-        for (KhachHang kh : khachHangs) {
-            if (khachHang.getMaKH() == kh.getMaKH()) {
-                new dialog(content, dialog.ERROR_DIALOG);
-                return true;
-            }
-        }
-        return false;
-    }
-
     private boolean checkInfors(KhachHang khachHang) {
         if (CheckEmpty(khachHang, "Không được để trống thông tin")) {
             return false;
@@ -73,9 +60,6 @@ public class KhachHangBUS {
         if (!CheckPhoneNumber(khachHang.getDienThoai(), "Số điện thoại không hợp lệ")) {
             return false;
         }
-//        if (checkDuplicateID(khachHang, "ID đã tồn tại")) {
-//            return false;
-//        }
         if (!CheckEmail(khachHang.getEmail(), "Email không hợp lệ")) {
             return false;
         }
@@ -99,6 +83,7 @@ public class KhachHangBUS {
     }
 
     public boolean Insert(KhachHang khachHang) {
+        khachHang.setMaKH(getNextMaKH());
         if (!checkInfors(khachHang)) { //kiểm tra dữ liệu đầu vào 
             return false;
         }
@@ -140,4 +125,7 @@ public class KhachHangBUS {
         return khachhangDao.getKhachHang(maKh);
     }
 
+    public ArrayList<KhachHang> TimKiemKHtheoMavaTen(String keyword) {
+        return khachhangDao.searchKhachHang(keyword.trim());
+    }
 }

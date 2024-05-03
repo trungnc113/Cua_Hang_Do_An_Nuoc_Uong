@@ -19,14 +19,15 @@ import java.util.Date;
 
 public class XuatPhieuNhapGUI extends javax.swing.JDialog {
 
-    NonEditableTableModel dtmCTPN;
-    NhanVien nhanVien;
-    NhaCungCap nhaCungCap;
-    int tongTien;
-    ArrayList<CTPhieuNhap> cTPhieuNhaps;
-    SanPhamBUS sanPhamBUS = new SanPhamBUS();
-    PhieuNhapBUS phieuNhapBUS = new PhieuNhapBUS();
-    CTPhieuNhapBUS cTPhieuNhapBUS = new CTPhieuNhapBUS();
+    private NonEditableTableModel dtmCTPN;
+    private NhanVien nhanVien;
+    private NhaCungCap nhaCungCap;
+    private int tongTien;
+    private ArrayList<CTPhieuNhap> cTPhieuNhaps;
+    private SanPhamBUS sanPhamBUS = new SanPhamBUS();
+    private PhieuNhapBUS phieuNhapBUS = new PhieuNhapBUS();
+    private CTPhieuNhapBUS cTPhieuNhapBUS = new CTPhieuNhapBUS();
+    private boolean isSuccess = false;
 
     public XuatPhieuNhapGUI(NhanVien nhanVien, NhaCungCap nhaCungCap, int tongTien, ArrayList<CTPhieuNhap> cTPhieuNhaps) {
         this.nhanVien = nhanVien;
@@ -38,14 +39,14 @@ public class XuatPhieuNhapGUI extends javax.swing.JDialog {
         loadData();
         showDlg();
     }
-    
-    private void showDlg(){
+
+    private void showDlg() {
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setModal(true);
         this.setVisible(true);
     }
-    
+
     private void Custom() {
         btnInPhieuNhap.setVisible(false);
 
@@ -149,6 +150,7 @@ public class XuatPhieuNhapGUI extends javax.swing.JDialog {
 
         txtCTPN.setContentType("text/html");
         txtCTPN.setText(htmlCTPN);
+        isSuccess = true;
     }
 
     @SuppressWarnings("unchecked")
@@ -363,7 +365,9 @@ public class XuatPhieuNhapGUI extends javax.swing.JDialog {
         } catch (PrinterException e) {
         }
     }//GEN-LAST:event_btnInPhieuNhapActionPerformed
-
+    public boolean getIsSuccess() {
+        return isSuccess;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnInPhieuNhap;

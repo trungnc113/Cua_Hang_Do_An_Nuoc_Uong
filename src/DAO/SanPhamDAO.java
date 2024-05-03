@@ -315,7 +315,7 @@ public class SanPhamDAO {
     public ArrayList<SanPham> getDanhSachSanPhamTheoLoaivaTimKiem(String tenloai, String tenSP) {
         try {
             Connection connection = JDBCUtil.getConnection();
-            String slq = "select * from sanpham, loaiSP where sanpham.trangThai=1 and loaiSP.maLoai = sanpham.maLoai and loaiSP.tenLoai = N'" + tenloai + "' and sanpham.tenSP like N'%" + tenSP + "%'";
+            String slq = "select * from sanpham, loaiSP where sanpham.trangThai=1 and loaiSP.maLoai = sanpham.maLoai and soLuong > 0 and loaiSP.tenLoai = N'" + tenloai + "' and sanpham.tenSP like N'%" + tenSP + "%'";
             Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery(slq);
             ArrayList<SanPham> listSP = new ArrayList<>();
@@ -342,7 +342,7 @@ public class SanPhamDAO {
     public ArrayList<SanPham> getDanhSachSanPhamTheoLoai(String tenloai) {
         try {
             Connection connection = JDBCUtil.getConnection();
-            String slq = "select * from sanpham, loaiSP where sanpham.trangThai=1 and loaiSP.maLoai = sanpham.maLoai and loaiSP.tenLoai = N'" + tenloai + "'";
+            String slq = "select * from sanpham, loaiSP where sanpham.trangThai=1 and loaiSP.maLoai = sanpham.maLoai and soLuong > 0 and loaiSP.tenLoai = N'" + tenloai + "'";
             Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery(slq);
             ArrayList<SanPham> listSP = new ArrayList<>();
@@ -369,7 +369,7 @@ public class SanPhamDAO {
     public ArrayList<SanPham> getDanhSachSanPhamTheoTimKiem(String tenSP) {
         try {
             Connection connection = JDBCUtil.getConnection();
-            String slq = "select * from sanpham where sanpham.trangThai=1 and tenSP like N'%" + tenSP + "%'";
+            String slq = "select * from sanpham where sanpham.trangThai=1 and soLuong > 0 and tenSP like N'%" + tenSP + "%'";
             Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery(slq);
             ArrayList<SanPham> listSP = new ArrayList<>();
@@ -393,7 +393,7 @@ public class SanPhamDAO {
         return null;
     }
 
-    public ArrayList<SanPham> getDanhSachSanPhamTheoMavaTen(String txt) {
+    public ArrayList<SanPham> TimKiemSPnhapHang(String txt) {
         ArrayList<SanPham> sanPhams = new ArrayList<>();
         try {
             Connection c = JDBCUtil.getConnection();
@@ -420,5 +420,30 @@ public class SanPhamDAO {
             return null;
         }
     }
-
+    public ArrayList<SanPham> getListSPConHang() {
+        ArrayList<SanPham> sanPhams = new ArrayList<>();
+        try {
+            Connection c = JDBCUtil.getConnection();
+            String sql = "select * from sanpham where soLuong > 0 and trangThai = 1";
+            Statement statement = c.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+            while (rs.next()) {
+                int maSP = rs.getInt(1);
+                String tenSP = rs.getString(2);
+                int maLoai = rs.getInt(3);
+                int donGia = rs.getInt(4);
+                int soLuong = rs.getInt(5);
+                String donViTinh = rs.getString(6);
+                String hinhAnh = rs.getString(7);
+                int trangThai = rs.getInt(8);
+                SanPham sanPham = new SanPham(maSP, tenSP, maLoai, soLuong, donViTinh, hinhAnh, donGia, trangThai);
+                sanPhams.add(sanPham);
+            }
+            JDBCUtil.closeConnection(c);
+            return sanPhams;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

@@ -1,7 +1,7 @@
 package Custom;
 
 import DTO.SanPham;
-import demoGUI.PUChiTietSP;
+import GUI.PnChiTietSP;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -68,7 +68,7 @@ public class ProductCard extends JPanel {
         this.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                PUChiTietSP popup = new PUChiTietSP(sp);
+                PnChiTietSP popup = new PnChiTietSP(sp);
                 JDialog dialog = new JDialog();
                 dialog.add(popup);
                 dialog.pack();
@@ -98,7 +98,7 @@ public class ProductCard extends JPanel {
         nameProduct.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                PUChiTietSP popup = new PUChiTietSP(sp);
+                PnChiTietSP popup = new PnChiTietSP(sp);
                 JDialog dialog = new JDialog();
                 dialog.add(popup);
                 dialog.pack();

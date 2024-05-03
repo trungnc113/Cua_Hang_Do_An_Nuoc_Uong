@@ -9,7 +9,6 @@ import Custom.InputValidator;
 import Custom.Mytable;
 import DTO.HoaDon;
 import com.toedter.calendar.JDateChooser;
-import demoGUI.PUChiTietHoaDon;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -17,21 +16,13 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Objects;
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumn;
 
-/**
- *
- * @author nguye
- */
 public class PnHoaDon extends JPanel {
 
     final Color ClMain = new Color(0, 160, 80);
@@ -192,23 +183,23 @@ public class PnHoaDon extends JPanel {
     }
 
     public void setEventTable(JTable tble) {
-        tble.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+        tble.addMouseListener(new MouseAdapter() {
             @Override
-            public void valueChanged(ListSelectionEvent e) {
-                if (!e.getValueIsAdjusting()) {
-                    int row = (int) tble.getSelectedRow();
-                    int MHD = (int) tble.getValueAt(tble.getSelectedRow(), 0);
-                    if (row != -1) {
-                        PUChiTietHoaDon popup = new PUChiTietHoaDon(MHD);
-                        JDialog dialog = new JDialog();
-                        dialog.add(popup);
-                        dialog.pack();
-                        dialog.setModal(true);
-                        dialog.setLocationRelativeTo(null);
-                        dialog.setVisible(true);
-                    }
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                int row = (int) tble.getSelectedRow();
+                int MHD = (int) tble.getValueAt(tble.getSelectedRow(), 0);
+                if (row != -1) {
+                    PnChiTietHoaDon popup = new PnChiTietHoaDon(MHD);
+                    JDialog dialog = new JDialog();
+                    dialog.add(popup);
+                    dialog.pack();
+                    dialog.setModal(true);
+                    dialog.setLocationRelativeTo(null);
+                    dialog.setVisible(true);
                 }
             }
+
         });
     }
 

@@ -1,6 +1,7 @@
 package GUI;
 
 import BUS.CTHoaDonBUS;
+import BUS.DangNhapBUS;
 import BUS.HoaDonBUS;
 import BUS.NhanVienBUS;
 import BUS.SanPhamBUS;
@@ -27,14 +28,15 @@ public class XuatHoaDonGUI extends javax.swing.JDialog {
     int tongTienDaGiam;
     ArrayList<CTHoaDon> cTHoaDons;
 
-    SanPhamBUS sanPhamBUS = new SanPhamBUS();
-    HoaDonBUS hoaDonBUS = new HoaDonBUS();
-    CTHoaDonBUS cTHoaDonBUS = new CTHoaDonBUS();
-    NhanVienBUS nhanVienBUS = new NhanVienBUS();
+    private SanPhamBUS sanPhamBUS = new SanPhamBUS();
+    private HoaDonBUS hoaDonBUS = new HoaDonBUS();
+    private CTHoaDonBUS cTHoaDonBUS = new CTHoaDonBUS();
+    private NhanVienBUS nhanVienBUS = new NhanVienBUS();
 
-    NhanVien nhanVien = nhanVienBUS.getById(0);
-    KhachHang khachHang = new KhachHang();
-    GiamGia giamGia = new GiamGia();
+    private NhanVien nhanVien = nhanVienBUS.getById(DangNhapBUS.taiKhoanLogin.getMaNhanVien());
+    private KhachHang khachHang = null;
+    private GiamGia giamGia = null;
+    private boolean isSuccess = false;
 
     public XuatHoaDonGUI(int tongTien, ArrayList<CTHoaDon> cTHoaDons) {
         this.cTHoaDons = cTHoaDons;
@@ -97,6 +99,10 @@ public class XuatHoaDonGUI extends javax.swing.JDialog {
         if (!hoaDonBUS.Insert(hoaDon)) {
             return;
         }
+        pnCTPN.removeAll();
+        pnCTPN.add(scrEdtCTPN);
+        btnInHoaDon.setVisible(true);
+        btnThanhToan.setVisible(false);
         int maHD = hoaDonBUS.getNewId();
         String htmlCTHD = "<style> "
                 + "table {"
@@ -160,6 +166,7 @@ public class XuatHoaDonGUI extends javax.swing.JDialog {
 
         txtCTHD.setContentType("text/html");
         txtCTHD.setText(htmlCTHD);
+        isSuccess = true;
     }
 
     @SuppressWarnings("unchecked")
@@ -405,10 +412,7 @@ public class XuatHoaDonGUI extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnThanhToanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThanhToanActionPerformed
-        pnCTPN.removeAll();
-        pnCTPN.add(scrEdtCTPN);
-        btnInHoaDon.setVisible(true);
-        btnThanhToan.setVisible(false);
+
         XuLyThanhToan();
     }//GEN-LAST:event_btnThanhToanActionPerformed
 
@@ -442,6 +446,10 @@ public class XuatHoaDonGUI extends javax.swing.JDialog {
     }//GEN-LAST:event_btnChonKhuyenMaiActionPerformed
     private int tinhTongTienGiamGia(int tongTien, int phanTramGiam) {
         return (int) (tongTien * (1.0 - ((phanTramGiam * 1.0) / 100f)));
+    }
+
+    public boolean getIsSuccess() {
+        return isSuccess;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

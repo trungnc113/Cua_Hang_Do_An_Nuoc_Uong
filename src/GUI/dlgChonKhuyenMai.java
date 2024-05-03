@@ -1,11 +1,14 @@
 package GUI;
 
 import BUS.GiamGiaBUS;
+import Custom.Mytable;
 import Custom.NonEditableTableModel;
 import Custom.dialog;
 import DTO.GiamGia;
 import java.util.ArrayList;
 import java.util.Date;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 public class dlgChonKhuyenMai extends javax.swing.JDialog {
 
@@ -18,6 +21,7 @@ public class dlgChonKhuyenMai extends javax.swing.JDialog {
         this.tongTien = tongTien;
         initComponents();
         Custom();
+        addEvents();    
         showDlg();
     }
 
@@ -79,6 +83,7 @@ public class dlgChonKhuyenMai extends javax.swing.JDialog {
         GiamGia giamGia = giamGiaBUS.getById(maGiam);
         if (giamGia != null) {
             if (giamGia.getDieuKien() >= tongTien) {
+                new dialog("Không đủ điều kiện", dialog.ERROR_DIALOG);
                 return null;
             }
         }
@@ -97,7 +102,7 @@ public class dlgChonKhuyenMai extends javax.swing.JDialog {
         jLabel2 = new javax.swing.JLabel();
         txtTimKiem = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tbKhuyenMai = new javax.swing.JTable();
+        tbKhuyenMai = new Mytable();
         jPanel5 = new javax.swing.JPanel();
         btnChon = new javax.swing.JButton();
         btnThoat = new javax.swing.JButton();
@@ -119,7 +124,7 @@ public class dlgChonKhuyenMai extends javax.swing.JDialog {
         jLabel2.setText("Tìm kiếm");
         jPanel4.add(jLabel2);
 
-        txtTimKiem.setColumns(15);
+        txtTimKiem.setColumns(25);
         jPanel4.add(txtTimKiem);
 
         jPanel3.add(jPanel4, java.awt.BorderLayout.NORTH);
@@ -198,7 +203,39 @@ public class dlgChonKhuyenMai extends javax.swing.JDialog {
     private void btnThoatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThoatActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnThoatActionPerformed
+    private void XuLyTimKiem() {
+        dtmKhuyenMai.setRowCount(0);
+        ArrayList<GiamGia> giamGias = giamGiaBUS.searchGiamGias(txtTimKiem.getText());
+        if (giamGias == null) {
+            return;
+        }
+        Date currentDate = new Date();
+        for (GiamGia giamGia : giamGias) {
+            String trangThai = "Hết hiệu lực";
+            if ((giamGia.getNgayBD() == null && giamGia.getNgayKT() == null) || (currentDate.after(giamGia.getNgayBD()) && currentDate.before(giamGia.getNgayKT()))) {
+                trangThai = "Có hiệu lực";
+            }
+            dtmKhuyenMai.addRow(new Object[]{giamGia.getMaGiam(), giamGia.getTenGiamGia(), giamGia.getPhanTramGiam(), "> " + giamGia.getDieuKien(), giamGia.getNgayBD(), giamGia.getNgayKT(), trangThai});
+        }
+    }
 
+    private void addEvents() {
+        txtTimKiem.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                XuLyTimKiem();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                XuLyTimKiem();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+            }
+        });
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnChon;
     private javax.swing.JButton btnThoat;

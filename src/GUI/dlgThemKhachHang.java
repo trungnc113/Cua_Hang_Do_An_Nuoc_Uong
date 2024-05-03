@@ -181,7 +181,6 @@ public class dlgThemKhachHang extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    //nút reset
 
     private void loadCmbGioiTinh() {
         cmbGioiTinh.removeAllItems();
@@ -200,6 +199,7 @@ public class dlgThemKhachHang extends javax.swing.JDialog {
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
         KhachHang khachHang = new KhachHang();
         khachHang.setMaKH(0);
+        khachHang.setTen(txtTenKH.getText());
         khachHang.setDiaChi(txtDiaChi.getText());
         khachHang.setDienThoai(txtDienThoai.getText());
         khachHang.setEmail(txtEmail.getText());
@@ -209,6 +209,7 @@ public class dlgThemKhachHang extends javax.swing.JDialog {
         }
         khachHang.setGioiTinh(gioiTinh);
         khachHang.setTrangThai(1);
+        khachHang.setTongChiTieu(0);
         if (khachHangBUS.Insert(khachHang))
             this.dispose();
     }//GEN-LAST:event_btnThemActionPerformed

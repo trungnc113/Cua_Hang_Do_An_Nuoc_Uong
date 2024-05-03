@@ -40,7 +40,7 @@ public class Mytable extends JTable {
     public Mytable(DefaultTableModel dtm) {
         this();
         this.setModel(dtm);
-        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(dtm);
-        this.setRowSorter(sorter);
+//        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(dtm);
+//        this.setRowSorter(sorter);
     }
 }

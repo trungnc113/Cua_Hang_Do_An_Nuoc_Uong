@@ -7,6 +7,7 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class KhachHangDAO {
+
     public ArrayList<KhachHang> getListKhachHang() {
         try {
             String sql = "SELECT * FROM KhachHang WHERE trangThai=1";
@@ -31,6 +32,7 @@ public class KhachHangDAO {
         }
         return null;
     }
+
     public KhachHang getKhachHang(int maKH) { // kt mã khách hàng có trùng hay không
         KhachHang kh = null; //khởi tạo cho nó rỗng lúc ban đầu
         try {
@@ -56,6 +58,7 @@ public class KhachHangDAO {
         }
         return kh;
     }
+
     public boolean addKhachHang(KhachHang kh) {
         boolean result = false;
         try {
@@ -78,22 +81,24 @@ public class KhachHangDAO {
         }
         return result;
     }
+
     public int deleteKhachHang(int maKH) {
-        int result=0;
+        int result = 0;
         try {
             Connection c = JDBCUtil.getConnection();
             String sql = "UPDATE khachhang SET trangThai=0 WHERE MaKH=?";
             PreparedStatement prep = c.prepareStatement(sql);
             prep.setInt(1, maKH);
-            result = prep.executeUpdate() ;
+            result = prep.executeUpdate();
             JDBCUtil.closeConnection(c);
-            
+
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
         return result;
     }
-    public boolean updateKhachHang( KhachHang kh) {
+
+    public boolean updateKhachHang(KhachHang kh) {
         boolean result = false;
         try {
             Connection c = JDBCUtil.getConnection();
@@ -115,6 +120,7 @@ public class KhachHangDAO {
             return result;
         }
     }
+
     public boolean updateTongChiTieu(int maKH, int tongChiTieu) {
         boolean result = false;
         try {
@@ -145,32 +151,33 @@ public class KhachHangDAO {
         }
         return ma;
     }
-public ArrayList<KhachHang> searchKhachHang(String keyword) {
-    ArrayList<KhachHang> resultList = new ArrayList<>();
-    try {
-        Connection c = JDBCUtil.getConnection();
-        String sql = "SELECT * FROM khachhang WHERE Ten LIKE ? AND trangThai=1";
-        PreparedStatement prep = c.prepareStatement(sql);
-        // Sử dụng toán tử % để tìm kiếm các từ bắt đầu hoặc kết thúc bằng từ khóa
-        prep.setString(1, "%" + keyword + "%");
-        ResultSet rs = prep.executeQuery();
-        while (rs.next()) {
-            KhachHang kh = new KhachHang();
-            kh.setMaKH(rs.getInt(1));
-            kh.setTen(rs.getString(2));
-            kh.setGioiTinh(rs.getString(3));
-            kh.setDienThoai(rs.getString(4));
-            kh.setEmail(rs.getString(5));
-            kh.setDiaChi(rs.getString(6));
-            kh.setTongChiTieu(rs.getInt(7));
-            kh.setTrangThai(rs.getInt(8));
-            resultList.add(kh);
+
+    public ArrayList<KhachHang> searchKhachHang(String keyword) {
+        ArrayList<KhachHang> resultList = new ArrayList<>();
+        try {
+            Connection c = JDBCUtil.getConnection();
+            String sql = "SELECT * FROM khachhang WHERE concat(maKH,ten) LIKE ? AND trangThai=1";
+            PreparedStatement prep = c.prepareStatement(sql);
+            prep.setString(1, "%" + keyword + "%");
+            ResultSet rs = prep.executeQuery();
+            while (rs.next()) {
+                KhachHang kh = new KhachHang();
+                kh.setMaKH(rs.getInt(1));
+                kh.setTen(rs.getString(2));
+                kh.setGioiTinh(rs.getString(3));
+                kh.setDienThoai(rs.getString(4));
+                kh.setEmail(rs.getString(5));
+                kh.setDiaChi(rs.getString(6));
+                kh.setTongChiTieu(rs.getInt(7));
+                kh.setTrangThai(rs.getInt(8));
+                resultList.add(kh);
+            }
+            JDBCUtil.closeConnection(c);
+            return resultList;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return null;
         }
-        JDBCUtil.closeConnection(c);
-    } catch (SQLException ex) {
-        ex.printStackTrace();
     }
-    return resultList;
-}
-   
+
 }

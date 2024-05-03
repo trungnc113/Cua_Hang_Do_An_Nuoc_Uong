@@ -1,19 +1,24 @@
 package GUI;
 
 import BUS.KhachHangBUS;
+import Custom.Mytable;
 import Custom.NonEditableTableModel;
 import Custom.dialog;
 import DTO.KhachHang;
 import java.util.ArrayList;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 public class dlgChonKhachHang extends javax.swing.JDialog {
 
     NonEditableTableModel dtmKhachHang;
     KhachHangBUS khachHangBUS = new KhachHangBUS();
     KhachHang selectedKhachHang = null;
+
     public dlgChonKhachHang() {
         initComponents();
         Custom();
+        addEvents();
         showDlg();
     }
 
@@ -49,6 +54,7 @@ public class dlgChonKhachHang extends javax.swing.JDialog {
         this.setModal(true);
         this.setVisible(true);
     }
+
     private int checkSelectRow() {
         if (tbKhachHang.getSelectedRows().length > 1) {
             new dialog("Chỉ chọn 1 khách hàng", dialog.ERROR_DIALOG);
@@ -60,11 +66,13 @@ public class dlgChonKhachHang extends javax.swing.JDialog {
         }
         return row;
     }
+
     //lấy dữ liệu từ hàng người dùng chọn
     private KhachHang selectedRow(int row) {
         int maKH = Integer.parseInt("" + tbKhachHang.getValueAt(row, 0));
         return khachHangBUS.getID(maKH);
     }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -77,7 +85,7 @@ public class dlgChonKhachHang extends javax.swing.JDialog {
         jLabel2 = new javax.swing.JLabel();
         txtTimKiem = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tbKhachHang = new javax.swing.JTable();
+        tbKhachHang = new Mytable();
         jPanel5 = new javax.swing.JPanel();
         btnChon = new javax.swing.JButton();
         btnThem = new javax.swing.JButton();
@@ -99,7 +107,7 @@ public class dlgChonKhachHang extends javax.swing.JDialog {
         jLabel2.setText("Tìm kiếm");
         jPanel4.add(jLabel2);
 
-        txtTimKiem.setColumns(15);
+        txtTimKiem.setColumns(25);
         jPanel4.add(txtTimKiem);
 
         jPanel3.add(jPanel4, java.awt.BorderLayout.NORTH);
@@ -169,14 +177,42 @@ public class dlgChonKhachHang extends javax.swing.JDialog {
         selectedKhachHang = selectedRow(row);
         this.dispose();
     }//GEN-LAST:event_btnChonActionPerformed
-    public KhachHang getKhachHang(){
+    public KhachHang getKhachHang() {
         return selectedKhachHang;
     }
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
         dlgThemKhachHang dThemKhachHang = new dlgThemKhachHang();
         loadData();
     }//GEN-LAST:event_btnThemActionPerformed
+    private void XuLyTimKiem() {
+        dtmKhachHang.setRowCount(0);
+        ArrayList<KhachHang> khachHangs = khachHangBUS.TimKiemKHtheoMavaTen(txtTimKiem.getText());
+        if (khachHangs == null) {
+            return;
+        }
+        for (KhachHang khachHang : khachHangs) {
+            dtmKhachHang.addRow(new Object[]{khachHang.getMaKH(), khachHang.getTen(),
+                khachHang.getGioiTinh(), khachHang.getDienThoai(), khachHang.getEmail(), khachHang.getDiaChi(),
+                khachHang.getTongChiTieu()});
+        }
+    }
+    private void addEvents(){
+        txtTimKiem.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                XuLyTimKiem();
+            }
 
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                XuLyTimKiem();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+            }
+        });
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnChon;
     private javax.swing.JButton btnThem;

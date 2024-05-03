@@ -21,10 +21,10 @@ public class GiamGiaBUS {
     }
 
     public boolean Insert(GiamGia giamGia) {
-        if (Insert_checkDuplicateName(giamGia.getTenGiamGia())) {
+        giamGia.setMaGiam(getNextMaGiam());
+        if (checkDuplicateName(giamGia.getTenGiamGia(), giamGia.getMaGiam())) {
             return false;
         }
-        giamGia.setMaGiam(getNextMaGiam());
         if (giamGiaDAO.addGiamGia(giamGia)) {
             new dialog("Thêm giảm giá thành công", dialog.SUCCESS_DIALOG);
             return true;
@@ -34,8 +34,7 @@ public class GiamGiaBUS {
     }
 
     public boolean Edit(GiamGia giamGia) {
-        if(Edit_checkDuplicateName(giamGia.getTenGiamGia(), giamGia.getMaGiam()))
-        {
+        if (checkDuplicateName(giamGia.getTenGiamGia(), giamGia.getMaGiam())) {
             return false;
         }
         if (giamGiaDAO.updateGiamGia(0, giamGia)) {
@@ -57,18 +56,7 @@ public class GiamGiaBUS {
         return giamGiaDAO.getNewMa() + 1;
     }
 
-    private boolean Insert_checkDuplicateName(String tenGiamGia) {
-        ArrayList<GiamGia> giamGias = giamGiaDAO.getListGiamGia();
-        for (GiamGia giamGia : giamGias) {
-            if (giamGia.getTenGiamGia().equals(tenGiamGia.strip())) {
-                new dialog("Tên giảm giá đã tồn tại", dialog.ERROR_DIALOG);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean Edit_checkDuplicateName(String tenGiamGia, int maGiamGia) {
+    private boolean checkDuplicateName(String tenGiamGia, int maGiamGia) {
         ArrayList<GiamGia> giamGias = giamGiaDAO.getListGiamGia();
         for (GiamGia giamGia : giamGias) {
             if (giamGia.getMaGiam() == maGiamGia) {
@@ -80,5 +68,8 @@ public class GiamGiaBUS {
             }
         }
         return false;
+    }
+    public ArrayList<GiamGia> searchGiamGias (String keyword){
+        return giamGiaDAO.searchGiamGias(keyword.trim());
     }
 }

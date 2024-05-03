@@ -40,6 +40,7 @@ public class PnBanHang extends JPanel {
         XoaPhanTuTrongGioHang();
         ResetCart();
         ThanhToan();
+        loadData();
     }
 
     private void addControls() {
@@ -87,8 +88,7 @@ public class PnBanHang extends JPanel {
         pnSearchSP.add(pnFindSP);
 
         this.add(pnSearchSP);
-        SanPhamDAO list = new SanPhamDAO(); // list này để lấy sản list sp ở lớp dao
-        listCardSP = new listCard(list.getDanhSachSanPham());
+        listCardSP = new listCard();
         this.add(listCardSP);
         eventCombobox(cmbTypeSP);
         eventBTN(btnFindSP, textFind, cmbTypeSP);
@@ -162,13 +162,12 @@ public class PnBanHang extends JPanel {
     }
 
     private void eventCombobox(JComboBox CBB) { // set sự kiện của combobox phaan loai
-
         CBB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (CBB.getSelectedIndex() == 0) {
                     listCardSP.removeAll();
-                    listCardSP.addCards(list.getListSP());
+                    listCardSP.addCards(list.getListSPConHang());
                 } else {
                     listCardSP.removeAll();
                     listCardSP.addCards(list.listSPtheoLoai("" + CBB.getSelectedItem()));
@@ -180,7 +179,6 @@ public class PnBanHang extends JPanel {
     }
 
     private void eventBTN(JButton BTN, JTextField TF, JComboBox CBB) {
-
         BTN.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -198,12 +196,14 @@ public class PnBanHang extends JPanel {
     }
 
     private void loadData() {
-        ArrayList<SanPham> sanPhams = list.getList();
+        ArrayList<SanPham> sanPhams = list.getListSPConHang();
         if (sanPhams == null) {
             return;
         }
         listCardSP.removeAll();
         listCardSP.addCards(sanPhams);
+        listCardSP.revalidate(); // cập nhật lại danh sách
+        listCardSP.repaint();
     }
 
     public static void addOneRow(SanPham SP, int SoLuong) {
@@ -223,11 +223,13 @@ public class PnBanHang extends JPanel {
         btnRemove.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int slRow = (int) mtbGioHang.getSelectedRow();
-                if (slRow != -1) {
-                    dtmGioHang.removeRow(slRow);
-                    mtbGioHang.revalidate();
+                int slRow = mtbGioHang.getSelectedRow();
+                if (slRow == -1) {
+                    new dialog("Vui lòng chọn sản phẩm muốn xóa!", dialog.ERROR_DIALOG);
+                    return;
                 }
+                dtmGioHang.removeRow(slRow);
+                mtbGioHang.revalidate();
             }
         });
     }
@@ -270,6 +272,9 @@ public class PnBanHang extends JPanel {
             cTHoaDons.add(new CTHoaDon(0, maSP, soLuong, donGia, thanhTien));
         }
         XuatHoaDonGUI xuatHoaDonGUI = new XuatHoaDonGUI(tongTien, cTHoaDons);
+        if (!xuatHoaDonGUI.getIsSuccess()) {
+            return;
+        }
         dtmGioHang.setRowCount(0);
         loadData();
     }
