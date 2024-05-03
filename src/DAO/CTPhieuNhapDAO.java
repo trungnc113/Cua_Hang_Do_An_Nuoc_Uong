@@ -20,13 +20,12 @@ import DTO.CTPhieuNhap;
 public class CTPhieuNhapDAO {
      
     // Phương thức lấy danh sách chi tiết phiếu nhập dựa trên mã phiếu nhập
-    public ArrayList<CTPhieuNhap> getListCTPhieuNhapByMaPN(int maPN) {
+    public ArrayList<CTPhieuNhap> getListCTPhieuNhapByMaPN() {
         ArrayList<CTPhieuNhap> dsctpn = new ArrayList<>();
         // Thực hiện kết nối cơ sở dữ liệu và truy vấn dữ liệu
         try (Connection c = JDBCUtil.getConnection()) {
-            String sql = "SELECT * FROM ctphieunhap WHERE MaPN = ?";
+            String sql = "SELECT * FROM ctphieunhap";
             PreparedStatement stmt =c.prepareStatement(sql);
-            stmt.setInt(1, maPN);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 CTPhieuNhap ctpn = new CTPhieuNhap();
