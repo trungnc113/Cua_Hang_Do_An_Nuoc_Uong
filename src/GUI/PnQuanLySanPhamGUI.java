@@ -284,6 +284,7 @@ public class PnQuanLySanPhamGUI extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 loadAnh("");
                 loadDataLenBangSanPham();
+                loadDataCmbLoai();
                 txtMa.setText("");
                 txtTen.setText("");
                 txtdonGia.setText("");
@@ -500,11 +501,14 @@ public class PnQuanLySanPhamGUI extends JPanel {
 
     private void loadDataCmbLoai() {
         cmbLoai.removeAllItems();
+        LBUS.docDanhSachLoai();
+        ArrayList<LoaiSP> dsl = LBUS.getDanhSachLoai();
         cmbLoai.addItem("0 - Chọn loại");
-        cmbLoai.addItem("1");
-        cmbLoai.addItem("2");
+        for (LoaiSP loai : dsl) {
+            if (loai.getTrangThai() != 0)
+                cmbLoai.addItem(loai.getMaLoai() + " - " + loai.getTenLoai());
+        }
         cmbLoai.addItem("Khác...");
-
     }
 
     private void xuLyThemLoai() {

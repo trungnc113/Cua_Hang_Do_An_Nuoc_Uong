@@ -30,8 +30,11 @@ public class dlgQuanLyLoaiSP extends javax.swing.JDialog {
         if (dsl != null) {
             for (LoaiSP loai : dsl) {
                 Vector<Object> vec = new Vector<>();
-                vec.add(loai.getMaLoai());
-                vec.add(loai.getTenLoai());
+                // if (loai.getTrangThai() != 0){
+                    vec.add(loai.getMaLoai());
+                    vec.add(loai.getTenLoai());
+                    vec.add(loai.getTrangThai());
+                // }
                 dtmLoai.addRow(vec);
             }
         }
