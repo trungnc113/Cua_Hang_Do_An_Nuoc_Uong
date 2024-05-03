@@ -249,4 +249,15 @@ public class PnHoaDon extends JPanel{
             }
         });
     }
+    public static void main(String[] args) {
+        JFrame myFrame = new JFrame();
+        PnHoaDon test = new PnHoaDon();
+        myFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        myFrame.add(test);
+
+        myFrame.pack();
+//        myFrame.setResizable(false);
+        myFrame.setLocationRelativeTo(null);
+        myFrame.setVisible(true);
+    }
 }

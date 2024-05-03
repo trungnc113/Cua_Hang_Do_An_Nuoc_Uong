@@ -180,5 +180,32 @@ public class PhieuNhapDAO {
         }
         return ma;
     }
+    public ArrayList<PhieuNhap> getPhieuNhapByNgayLapVaGia(Date startDate, Date endDate, int minPrice, int maxPrice) {
+        ArrayList<PhieuNhap> dspn = new ArrayList<>();
+        try {
+            Connection c = JDBCUtil.getConnection();
+            System.out.println("connect");
+            String sql = "SELECT * FROM phieunhap WHERE ngayLap BETWEEN ? AND ? AND TongTien BETWEEN ? AND ?";
+            PreparedStatement stmt = c.prepareStatement(sql);
+            stmt.setDate(1, (java.sql.Date) startDate);
+            stmt.setDate(2, (java.sql.Date) endDate);
+            stmt.setInt(3, minPrice);
+            stmt.setInt(4, maxPrice);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                PhieuNhap pn = new PhieuNhap();
+                pn.setMaPN(rs.getInt(1));
+                pn.setMaNCC(rs.getInt(2));
+                pn.setMaNV(rs.getInt(3));
+                pn.setNgayLap(rs.getDate(4));
+                pn.setTongTien(rs.getInt(5));
+                dspn.add(pn);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace(); // Xử lý lỗi tùy ý, có thể log hoặc throw ngoại lệ.
+            return null;
+        }
+        return dspn;
+    }
 
 }
