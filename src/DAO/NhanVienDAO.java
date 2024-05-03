@@ -70,7 +70,7 @@ public class NhanVienDAO {
 
             pre.setString(1, nv.getChucVu());
             pre.setInt(2,nv.getMaNV());
-            ketqua = pre.executeUpdate() > 1;
+            ketqua = pre.executeUpdate() > 0;
 
         }catch(SQLException e){
             e.printStackTrace();

@@ -115,7 +115,7 @@ public class PnQuanLyKhachHangGUI extends javax.swing.JPanel {
         txtDiaChi = new javax.swing.JTextField();
         jPanel19 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
+        txtTongChiTieu = new javax.swing.JTextField();
         jPanel20 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         jPanel23 = new javax.swing.JPanel();
@@ -362,8 +362,8 @@ public class PnQuanLyKhachHangGUI extends javax.swing.JPanel {
         jLabel10.setPreferredSize(new java.awt.Dimension(150, 16));
         jPanel19.add(jLabel10, java.awt.BorderLayout.LINE_START);
 
-        jTextField6.setEnabled(false);
-        jPanel19.add(jTextField6, java.awt.BorderLayout.CENTER);
+        txtTongChiTieu.setEnabled(false);
+        jPanel19.add(txtTongChiTieu, java.awt.BorderLayout.CENTER);
 
         jPanel4.add(jPanel19);
 
@@ -501,6 +501,7 @@ public class PnQuanLyKhachHangGUI extends javax.swing.JPanel {
         txtDT.setText("");
         txtEmail.setText("");
         txtDiaChi.setText("");
+        txtTongChiTieu.setText("0");
         buttonGroup1.clearSelection();
         buttonGroup2.clearSelection();
     }//GEN-LAST:event_resetActionPerformed
@@ -560,6 +561,7 @@ public class PnQuanLyKhachHangGUI extends javax.swing.JPanel {
                 txtDT.setText(khachHang.getDienThoai());
                 txtEmail.setText(khachHang.getEmail());
                 txtDiaChi.setText(khachHang.getDiaChi());
+                txtTongChiTieu.setText(khachHang.getTongChiTieu()+"");
                 if (!khachHang.getGioiTinh().equals("Nam")) {
                     rdbNu.setSelected(true);
                 } else {
@@ -696,7 +698,6 @@ public class PnQuanLyKhachHangGUI extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField6;
     private javax.swing.JRadioButton rdbNam;
     private javax.swing.JRadioButton rdbNu;
     private javax.swing.JRadioButton rdbOff;
@@ -708,6 +709,7 @@ public class PnQuanLyKhachHangGUI extends javax.swing.JPanel {
     private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtMaKH;
     private javax.swing.JTextField txtTen;
+    private javax.swing.JTextField txtTongChiTieu;
     // End of variables declaration//GEN-END:variables
 
 }

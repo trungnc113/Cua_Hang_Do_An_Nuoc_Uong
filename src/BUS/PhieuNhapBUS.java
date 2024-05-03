@@ -55,4 +55,7 @@ public class PhieuNhapBUS {
     public int getNewMaPN() {
         return PhieuNhapDAO.getNewId();
     }
+    public PhieuNhap getById(int maPN){
+        return PhieuNhapDAO.getById(maPN);
+    }
 }

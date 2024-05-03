@@ -63,7 +63,7 @@ public class KhachHangBUS {
         if (!CheckEmail(khachHang.getEmail(), "Email không hợp lệ")) {
             return false;
         }
-        if (!CheckName(khachHang.getTen(), "Tên khách hàng phải là kí tự")) {
+        if (!CheckName(khachHang.getTen(), "Tên khách hàng không hợp lệ")) {
             return false;
         }
         return true;

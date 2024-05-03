@@ -104,7 +104,6 @@ public class PhieuNhapDAO {
         ArrayList<PhieuNhap> dspn = new ArrayList<>();
         try {
             Connection c = JDBCUtil.getConnection();
-            System.out.println("connect");
             String sql = "SELECT * FROM phieunhap WHERE TongTien BETWEEN ? AND ?";
             PreparedStatement stmt = c.prepareStatement(sql);
             stmt.setInt(1, minPrice);
@@ -181,4 +180,27 @@ public class PhieuNhapDAO {
         return ma;
     }
 
+    public PhieuNhap getById(int maPN) {
+        PhieuNhap pn = null;
+        try {
+            Connection c = JDBCUtil.getConnection();
+            String sql = "SELECT * FROM phieunhap WHERE maPN = ?";
+            PreparedStatement stmt = c.prepareStatement(sql);
+            stmt.setInt(1, maPN);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                pn = new PhieuNhap();
+                pn.setMaPN(rs.getInt(1));
+                pn.setMaNCC(rs.getInt(2));
+                pn.setMaNV(rs.getInt(3));
+                pn.setNgayLap(rs.getDate(4));
+                pn.setTongTien(rs.getInt(5));
+            }
+            JDBCUtil.closeConnection(c);
+            return pn;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
 }

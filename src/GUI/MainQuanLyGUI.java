@@ -114,7 +114,7 @@ public class MainQuanLyGUI extends JFrame {
 
         for (JLabel opt : listMenuLeft) {
             opt.setVisible(false);
-            opt.setPreferredSize(new Dimension(250, 65));
+//            opt.setPreferredSize(new Dimension(250, 65));
             opt.setOpaque(false);
             opt.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             pnMenuLeft.add(opt);

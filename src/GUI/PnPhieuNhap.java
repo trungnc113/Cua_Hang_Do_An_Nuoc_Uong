@@ -6,12 +6,7 @@ package GUI;
 
 import Custom.Mytable;
 import Custom.dialog;
-import DTO.CTHoaDon;
-import DTO.CTPhieuNhap;
-import DTO.HoaDon;
 import DTO.PhieuNhap;
-import demoGUI.PUChiTietHoaDon;
-import demoGUI.phieunhap;
 
 import com.toedter.calendar.JDateChooser;
 
@@ -247,7 +242,7 @@ public class PnPhieuNhap extends JPanel {
                     int row = (int) tble.getSelectedRow();
                     int MPN = (int) tble.getValueAt(tble.getSelectedRow(), 0 );
                     if(row != -1){
-                        PUCTPN popup = new PUCTPN(MPN);
+                        PnChiTietPhieuNhap popup = new PnChiTietPhieuNhap(MPN);
                         JDialog dialog = new JDialog();
                         dialog.add(popup);
                         dialog.pack();

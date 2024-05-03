@@ -41,7 +41,7 @@ public class ThongKeDAO {
 
     public ArrayList<KhachHang> getListTopChiTieuKhachHang() {
         try {
-            String sql = "select top 10 * from khachhang order by tongChiTieu desc";
+            String sql = "select top 10 * from khachhang where trangThai = 1 order by tongChiTieu desc";
             Connection c = JDBCUtil.getConnection();
             Statement pre = c.createStatement();
             ResultSet rs = pre.executeQuery(sql);

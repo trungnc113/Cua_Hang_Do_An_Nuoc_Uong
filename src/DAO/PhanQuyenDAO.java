@@ -9,10 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-/**
- *
- * @author nguye
- */
 public class PhanQuyenDAO {
 
     public PhanQuyenDAO() {
@@ -94,7 +90,7 @@ public class PhanQuyenDAO {
                 String tenQuyen = rs.getString("tenQuyen");
                 int nhapHang = rs.getInt("nhapHang");
                 int qlSanPham = rs.getInt("qlSanPham");
-                int qlNhanVien=rs.getInt("qlNhanVien");
+                int qlNhanVien = rs.getInt("qlNhanVien");
                 int qlKhachHang = rs.getInt("qlKhachHang");
                 int thongke = rs.getInt("thongKe");
                 int trangThai = rs.getInt("trangThai");
@@ -121,7 +117,7 @@ public class PhanQuyenDAO {
                 String tenQuyen = rs.getString("tenQuyen");
                 int nhapHang = rs.getInt("nhapHang");
                 int qlSanPham = rs.getInt("qlSanPham");
-                int qlNhanVien=rs.getInt("qlNhanVien");
+                int qlNhanVien = rs.getInt("qlNhanVien");
                 int qlKhachHang = rs.getInt("qlKhachHang");
                 int thongke = rs.getInt("thongKe");
                 int trangThai = rs.getInt("trangThai");
@@ -139,14 +135,14 @@ public class PhanQuyenDAO {
         try {
             Connection c = JDBCUtil.getConnection();
             String sql = "select * from phanquyen where " + condition;
-            PreparedStatement pst = c.prepareStatement(sql);
-            ResultSet rs = pst.executeQuery();
+            Statement statement = c.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
             while (rs.next()) {
                 int maQuyen = rs.getInt("maQuyen");
                 String tenQuyen = rs.getString("tenQuyen");
                 int nhapHang = rs.getInt("nhapHang");
                 int qlSanPham = rs.getInt("qlSanPham");
-                int qlNhanVien=rs.getInt("qlNhanVien");
+                int qlNhanVien = rs.getInt("qlNhanVien");
                 int qlKhachHang = rs.getInt("qlKhachHang");
                 int thongke = rs.getInt("thongKe");
                 int trangThai = rs.getInt("trangThai");
@@ -167,6 +163,25 @@ public class PhanQuyenDAO {
             String sql = "select max(maQuyen) as maQuyen from phanquyen";
             Statement st = c.createStatement();
             ResultSet rs = st.executeQuery(sql);
+            if (rs.next()) {
+                ma = rs.getInt("maQuyen");
+            }
+            JDBCUtil.closeConnection(c);
+            return ma;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return ma;
+    }
+
+    public int getIdByName(String name) {
+        int ma = -1;
+        try {
+            Connection c = JDBCUtil.getConnection();
+            String sql = "select * from phanquyen where tenQuyen = ? and trangThai = 1";
+            PreparedStatement preparedStatement = c.prepareStatement(sql);
+            preparedStatement.setString(1, name);
+            ResultSet rs = preparedStatement.executeQuery();
             if (rs.next()) {
                 ma = rs.getInt("maQuyen");
             }
