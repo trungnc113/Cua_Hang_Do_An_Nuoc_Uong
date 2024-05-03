@@ -57,5 +57,11 @@ public class InputValidator {
         Matcher matcher = regex.matcher(name);
         return matcher.matches();
     }
-
+    //kiểm tra mật khẩu
+    public static boolean isValidPass(String pass) {
+        String pattern = "^[^!@#$%^&*()_+=\\[\\]{};':\"\\\\|,.<>/?]*$";
+        Pattern regex = Pattern.compile(pattern);
+        Matcher matcher = regex.matcher(pass);
+        return matcher.matches();
+    }
 }

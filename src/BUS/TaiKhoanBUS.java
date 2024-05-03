@@ -1,5 +1,6 @@
 package BUS;
 
+import Custom.InputValidator;
 import DAO.TaiKhoanDAO;
 import DTO.TaiKhoan;
 import Custom.dialog;
@@ -18,6 +19,7 @@ public class TaiKhoanBUS {
     public int getQuyenTheoMa(int ma) {
         return taiKhoanDAO.layQuyenTheoMa(ma);
     }
+
     public void datLaiMatKhau(String ma, String tenDangNhap) {
         int maNV = Integer.parseInt(ma);
         boolean flag = taiKhoanDAO.datLaiMatKhau(maNV, tenDangNhap);
@@ -72,6 +74,10 @@ public class TaiKhoanBUS {
         int maNV = Integer.parseInt(ma);
         if (tenDangNhap.trim().equals("")) {
             new dialog("Không được để trống Tên đăng nhập!", dialog.ERROR_DIALOG);
+            return false;
+        }
+        if (!InputValidator.isValidPass(tenDangNhap.strip())) { // kiểm tra ký tự
+            new dialog("Tên đăng nhập không được có ký tự", dialog.ERROR_DIALOG);
             return false;
         }
         if (kiemTraTrungTenDangNhap(tenDangNhap)) {

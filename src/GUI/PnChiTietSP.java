@@ -160,15 +160,4 @@ public class PnChiTietSP extends JPanel {
             }
         });
     }
-
-    public static void main(String[] args) {
-        SanPham sp = new SanPham(1, "tin", 1, 1, "cai", "default.png", 1, 1);
-        PnChiTietSP popup = new PnChiTietSP(sp);
-        JDialog dialog = new JDialog();
-        dialog.add(popup);
-        dialog.pack();
-        dialog.setModal(true);
-        dialog.setLocationRelativeTo(null);
-        dialog.setVisible(true);
-    }
 }

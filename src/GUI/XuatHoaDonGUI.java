@@ -91,9 +91,12 @@ public class XuatHoaDonGUI extends javax.swing.JDialog {
     }
 
     private void XuLyThanhToan() {
-        if (khachHang == null || giamGia == null) {
-            new dialog("Chưa chọn đủ thông tin", dialog.ERROR_DIALOG);
+        if (khachHang == null) {
+            new dialog("Chưa chọn khách hàng", dialog.ERROR_DIALOG);
             return;
+        }
+        if (giamGia == null) {
+            giamGia = new GiamGia(0, "Không giảm giá", 0, 0, null, null, 0);
         }
         HoaDon hoaDon = new HoaDon(0, khachHang.getMaKH(), nhanVien.getMaNV(), giamGia.getMaGiam(), new Date(), tongTienDaGiam);
         if (!hoaDonBUS.Insert(hoaDon)) {

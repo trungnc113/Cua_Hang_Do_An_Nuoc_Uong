@@ -18,7 +18,6 @@ import java.util.Vector;
 import DTO.NhanVien;
 import BUS.NhanVienBUS;
 import BUS.TaiKhoanBUS;
-import DTO.TaiKhoan;
 
 public class PnNhanVien extends JPanel {
 
@@ -98,6 +97,13 @@ public class PnNhanVien extends JPanel {
         pnHoDem.add(txtHodem);
         pnTextField.add(pnHoDem);
 
+        JPanel pnTen = new JPanel();
+        lblTen.setFont(font);
+        txtTen.setFont(font);
+        pnTen.add(lblTen);
+        pnTen.add(txtTen);
+        pnTextField.add(pnTen);
+
         JPanel pnGioiTinh = new JPanel();
         lblGioiTinh.setFont(font);
         cmbGioiTinh.setFont(font);
@@ -106,13 +112,6 @@ public class PnNhanVien extends JPanel {
         pnGioiTinh.add(lblGioiTinh);
         pnGioiTinh.add(cmbGioiTinh);
         pnTextField.add(pnGioiTinh);
-
-        JPanel pnTen = new JPanel();
-        lblTen.setFont(font);
-        txtTen.setFont(font);
-        pnTen.add(lblTen);
-        pnTen.add(txtTen);
-        pnTextField.add(pnTen);
 
         JPanel pnChucVu = new JPanel();
         lblDienThoai.setFont(font);
@@ -220,7 +219,11 @@ public class PnNhanVien extends JPanel {
         dtmNhanVien.addColumn("Điện thoại");
         dtmNhanVien.addColumn("Chức vụ");
         dtmNhanVien.addColumn("Tài khoản");
-        tblNhanVien = new Mytable(dtmNhanVien); // sử dụng MyTable mình tạo sẵn
+        tblNhanVien = new Mytable(dtmNhanVien) {
+            public boolean isCellEditable(int row, int column) { // không cho phép sửa nội dung trong table
+                return false;
+            }
+        };;
 
         TableColumnModel columnModelBanHang = tblNhanVien.getColumnModel();
         columnModelBanHang.getColumn(0).setPreferredWidth(20);
@@ -422,13 +425,8 @@ public class PnNhanVien extends JPanel {
         if (flag) {
             NVBUS.docDanhSach();
             loadDataTblNhanVien();
-            //reset lại form tránh việc lấy mã nv đã bị xóa trên form
+            //reset lại txtMaNV tránh việc lấy mã nv đã bị xóa trên form
             txtMaNV.setText("");
-            txtHodem.setText("");
-            txtTen.setText("");
-            txtDienThoai.setText("");
-            txtTimKiem.setText("");
-            cmbGioiTinh.setSelectedIndex(0);
         }
     }
 
@@ -527,17 +525,5 @@ public class PnNhanVien extends JPanel {
             }
             dtmNhanVien.addRow(vec);
         }
-    }
-
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Quản lí nhân viên");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        PnNhanVien panel = new PnNhanVien();
-        frame.getContentPane().add(panel);
-
-        frame.pack();
-        frame.setSize(1200, 720);
-        frame.setVisible(true);
     }
 }

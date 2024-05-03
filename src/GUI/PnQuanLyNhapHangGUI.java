@@ -11,10 +11,8 @@ import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.BorderFactory;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.WindowConstants;
 
 public class PnQuanLyNhapHangGUI extends JPanel {
 
@@ -134,17 +132,5 @@ public class PnQuanLyNhapHangGUI extends JPanel {
             public void mouseExited(MouseEvent e) {
             }
         });
-    }
-
-    public static void main(String[] args) {
-        JFrame myFrame = new JFrame();
-        PnQuanLyNhapHangGUI test = new PnQuanLyNhapHangGUI();
-        myFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        myFrame.add(test);
-
-        myFrame.pack();
-        myFrame.setResizable(false);
-        myFrame.setLocationRelativeTo(null);
-        myFrame.setVisible(true);
     }
 }

@@ -84,14 +84,4 @@ public class PnChiTietPhieuNhap extends JPanel {
             }
         }
     }
-
-    public static void main(String[] args) {
-        PnChiTietPhieuNhap popup = new PnChiTietPhieuNhap(1);
-        JDialog dialog = new JDialog();
-        dialog.add(popup);
-        dialog.pack();
-        dialog.setModal(true);
-        dialog.setLocationRelativeTo(null);
-        dialog.setVisible(true);
-    }
 }

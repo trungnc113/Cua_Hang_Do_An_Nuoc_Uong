@@ -110,7 +110,8 @@ public class SanPhamBUS {
         }
 
         try {
-            int maLoai = Integer.parseInt(loai);
+            String[] loaiTmp = loai.split(" - ");
+            int maLoai = Integer.parseInt(loaiTmp[0]);
             int soLuongSP = Integer.parseInt(soLuong);
             donGia = donGia.replace(",", "");
             int donGiaSP = Integer.parseInt(donGia);

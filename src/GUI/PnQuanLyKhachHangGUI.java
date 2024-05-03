@@ -1,6 +1,8 @@
 package GUI;
 
 import BUS.KhachHangBUS;
+import Custom.Mytable;
+import Custom.NonEditableTableModel;
 import DTO.KhachHang;
 import java.awt.Color;
 import javax.swing.table.DefaultTableModel;
@@ -13,7 +15,7 @@ import javax.swing.table.TableRowSorter;
 
 public class PnQuanLyKhachHangGUI extends javax.swing.JPanel {
 
-    DefaultTableModel dtmKhachHang;
+    NonEditableTableModel dtmKhachHang; // dtm này không cho người dùng sửa bảng
     KhachHangBUS khachHangBus = new KhachHangBUS();
     private KhachHang selectedKhachHang = null;
 
@@ -32,7 +34,7 @@ public class PnQuanLyKhachHangGUI extends javax.swing.JPanel {
 
     //lưu trữ dữ liệu của bảng
     public void custom() {
-        dtmKhachHang = new DefaultTableModel();
+        dtmKhachHang = new NonEditableTableModel();
 
         dtmKhachHang.addColumn("Mã khác hàng");
         dtmKhachHang.addColumn("Tên khách hàng");
@@ -125,7 +127,7 @@ public class PnQuanLyKhachHangGUI extends javax.swing.JPanel {
         jTextField1 = new javax.swing.JTextField();
         jPanel24 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        tbKhachHang = new javax.swing.JTable();
+        tbKhachHang = new Mytable();
 
         setLayout(new java.awt.BorderLayout());
 

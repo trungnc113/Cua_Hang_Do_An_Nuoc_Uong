@@ -1,37 +1,21 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package GUI;
 
-import Custom.Mytable;
-import Custom.listCard;
-import DTO.SanPham;
+
 import static Main.Main.changLNF;
-import com.toedter.calendar.JDateChooser;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 import javax.swing.WindowConstants;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
 
 public class PnQuanLyBanHangGUI extends JPanel {
 
@@ -153,17 +137,5 @@ public class PnQuanLyBanHangGUI extends JPanel {
             }
         });
 
-    }
-
-    public static void main(String[] args) {
-        JFrame myFrame = new JFrame();
-        PnQuanLyBanHangGUI test = new PnQuanLyBanHangGUI();
-        myFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        myFrame.add(test);
-
-        myFrame.pack();
-//        myFrame.setResizable(false);
-        myFrame.setLocationRelativeTo(null);
-        myFrame.setVisible(true);
     }
 }

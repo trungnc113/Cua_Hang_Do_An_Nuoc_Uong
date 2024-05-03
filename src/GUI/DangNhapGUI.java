@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package GUI;
 
 import BUS.DangNhapBUS;
@@ -10,13 +6,13 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -24,10 +20,6 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
-/**
- *
- * @author nguye
- */
 public class DangNhapGUI extends JFrame {
 
     Font font = new Font("Montserrat", Font.BOLD, 20);
@@ -39,9 +31,10 @@ public class DangNhapGUI extends JFrame {
     JTextField txtUsername;
     JPasswordField txtPassword;
     JButton btnLogin;
+    JCheckBox ckbNhoMatKhau;
+    DangNhapBUS dangNhapBUS = new DangNhapBUS();
 
     public DangNhapGUI() {
-//        Main.changLNF("Nimbus");
         addControls();
         addEvents();
         this.setTitle("Đăng nhập");
@@ -50,6 +43,7 @@ public class DangNhapGUI extends JFrame {
         this.pack();
         this.setLocationRelativeTo(null);
         this.getRootPane().setDefaultButton(btnLogin);
+        layTkDaGhiNho();
     }
 
     private void addControls() {
@@ -67,9 +61,11 @@ public class DangNhapGUI extends JFrame {
         pnMain.add(pnIcon);
 
         JPanel pnLogin = new JPanel();
+        pnLogin.setLayout(new BoxLayout(pnLogin, BoxLayout.Y_AXIS));
         pnLogin.setBackground(Color.white);
 
-        JPanel pnUsername = new JPanel(new GridLayout(0, 1));
+        JPanel pnUsername = new JPanel();
+        pnUsername.setBackground(Color.white);
         JPanel pnlbUsername = new JPanel();
         pnlbUsername.setBackground(Color.white);
         JLabel lbUsername = new JLabel("Tên đăng nhập");
@@ -86,7 +82,8 @@ public class DangNhapGUI extends JFrame {
         pnUsername.add(pnlbUsername);
         pnUsername.add(txtUsername);
 
-        JPanel pnPasswd = new JPanel(new GridLayout(0, 1));
+        JPanel pnPasswd = new JPanel();
+        pnPasswd.setBackground(Color.white);
         JPanel pnlbPasswd = new JPanel();
         pnlbPasswd.setBackground(Color.white);
         JLabel lbPasswd = new JLabel("Mật khẩu");
@@ -113,8 +110,18 @@ public class DangNhapGUI extends JFrame {
         btnLogin.setPreferredSize(new Dimension(txtPassword.getPreferredSize().width, 40));
         pnBtn.add(btnLogin);
 
+        JPanel pnckbNhoMk = new JPanel();
+        pnckbNhoMk.setBackground(Color.white);
+        ckbNhoMatKhau = new JCheckBox("Nhớ mật khẩu");
+        ckbNhoMatKhau.setFont(font);
+        ckbNhoMatKhau.setForeground(ClMain);
+        ckbNhoMatKhau.setBackground(Color.WHITE);
+        ckbNhoMatKhau.setFocusable(false);
+        pnckbNhoMk.add(ckbNhoMatKhau);
+
         pnLogin.add(pnUsername);
         pnLogin.add(pnPasswd);
+        pnLogin.add(pnckbNhoMk);
 
         pnMain.add(pnLogin);
         pnMain.add(pnBtn);
@@ -133,11 +140,27 @@ public class DangNhapGUI extends JFrame {
     }
 
     private void xulydangnhap() {
-        DangNhapBUS dangNhapBUS = new DangNhapBUS();
         dangNhapBUS.login(txtUsername.getText(), new String(txtPassword.getPassword()));
-        if(DangNhapBUS.taiKhoanLogin==null) return ;
+        if (DangNhapBUS.taiKhoanLogin == null) {
+            return;
+        }
+        dangNhapBUS.GhiNhoTK(txtUsername.getText(), new String(txtPassword.getPassword()), ckbNhoMatKhau.isSelected());
         MainQuanLyGUI mainQuanLyGUI = new MainQuanLyGUI();
         mainQuanLyGUI.setVisible(true);
         this.dispose();
+    }
+
+    private void layTkDaGhiNho() {
+        String line = dangNhapBUS.layTkdaghinho();
+        try {
+            String[] tk = line.split("[|]");
+            txtUsername.setText(tk[0]);
+            txtPassword.setText(tk[1]);
+            txtUsername.requestFocus();
+            ckbNhoMatKhau.setSelected(true);
+        } catch (Exception e) {
+            txtUsername.setText("");
+            txtPassword.setText("");
+        }
     }
 }
