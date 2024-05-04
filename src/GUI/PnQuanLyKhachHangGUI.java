@@ -475,7 +475,6 @@ public class PnQuanLyKhachHangGUI extends javax.swing.JPanel {
         khachHang.setTrangThai(1);
         if (khachHangBus.Insert(khachHang)) {
             loadData();
-            addCurrentInfo();
         }
     }//GEN-LAST:event_btnAddActionPerformed
 
@@ -649,10 +648,6 @@ public class PnQuanLyKhachHangGUI extends javax.swing.JPanel {
         }
         int trangThai = 1;
         return new KhachHang(maKH, tenKH, gioiTinh, sdt, email.trim(), diaChi, tongChiTieu, trangThai);
-    }
-
-    private void addCurrentInfo() {
-        txtMaKH.setText("" + khachHangBus.getNextMaKH());
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

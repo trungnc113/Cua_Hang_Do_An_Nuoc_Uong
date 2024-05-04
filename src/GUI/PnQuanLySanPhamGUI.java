@@ -250,7 +250,7 @@ public class PnQuanLySanPhamGUI extends JPanel {
         dtmSanPham.addColumn("Số lượng");
         dtmSanPham.addColumn("Đơn vị tính");
         dtmSanPham.addColumn("Ảnh");
-        tblSanPham = new Mytable(dtmSanPham){
+        tblSanPham = new Mytable(dtmSanPham) {
             public boolean isCellEditable(int row, int column) { // không cho phép sửa nội dung trong table
                 return false;
             }
@@ -511,15 +511,16 @@ public class PnQuanLySanPhamGUI extends JPanel {
         ArrayList<LoaiSP> dsl = LBUS.getDanhSachLoai();
         cmbLoai.addItem("0 - Chọn loại");
         for (LoaiSP loai : dsl) {
-            if (loai.getTrangThai() != 0)
+            if (loai.getTrangThai() != 0) {
                 cmbLoai.addItem(loai.getMaLoai() + " - " + loai.getTenLoai());
+            }
         }
         cmbLoai.addItem("Khác...");
     }
 
     private void xuLyThemLoai() {
-        int x = cmbLoai.getSelectedIndex();
-        if (x == cmbLoai.getItemCount() - 1) {
+        String x = "Khác...";
+        if (x.equals(cmbLoai.getSelectedItem())) { //sử dụng so sánh chuỗi tránh bug
             dlgQuanLyLoaiSP loaiGUI = new dlgQuanLyLoaiSP();
             loaiGUI.setVisible(true);
             loadDataCmbLoai();

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package DAO;
 
 import Custom.JDBCUtil;
@@ -10,11 +6,8 @@ import DTO.HoaDon;
 import java.sql.*;
 import java.util.ArrayList;
 
-/**
- *
- * @author nguye
- */
 public class HoaDonDAO {
+
     public ArrayList<HoaDon> getListHoaDon() {
         ArrayList<HoaDon> dshd = new ArrayList<>();
         try {
@@ -36,6 +29,7 @@ public class HoaDonDAO {
         }
         return dshd;
     }
+
     public boolean addHoaDon(HoaDon hd) {
         boolean result = false;
         try {
@@ -45,7 +39,7 @@ public class HoaDonDAO {
             preparedStatement.setInt(1, hd.getTongTien());
             preparedStatement.setInt(2, hd.getMaKH());
             preparedStatement.executeUpdate();
-            
+
             String sql = "INSERT INTO hoadon(MaHD, MaKH, MaNV, MaGiam, NgayLap, TongTien) VALUES(?,?, ?, ?, ?, ?)";
             PreparedStatement prep = c.prepareStatement(sql);
             prep.setInt(1, hd.getMaHD());
@@ -62,7 +56,8 @@ public class HoaDonDAO {
         }
         return result;
     }
-    public ArrayList<HoaDon> getListHoaDonTheoDateVaTongTien(Date dateMin, Date dateMax, int tongtienMin,int tongtienMax ) { // lấy list dshd theo ngày và tổng tiền
+
+    public ArrayList<HoaDon> getListHoaDonTheoDateVaTongTien(Date dateMin, Date dateMax, int tongtienMin, int tongtienMax) { // lấy list dshd theo ngày và tổng tiền
         try {
             Connection c = JDBCUtil.getConnection();
             //String sql = "SELECT * FROM hoadon WHERE (NgayLap BETWEEN ? AND ?) AND (tongTien BETWEEN ? AND ?)";
@@ -90,13 +85,15 @@ public class HoaDonDAO {
         }
         return null;
     }
+
     public HoaDon getHoaDonTheoMHD(int maHD) {
-        HoaDon HD = new HoaDon();
+        HoaDon HD = null;
         try {
-            String sql = "SELECT * FROM hoadon where maHD="+maHD;
+            String sql = "SELECT * FROM hoadon where maHD=" + maHD;
             Statement stmt = JDBCUtil.getConnection().createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {
+                HD = new HoaDon();
                 HD.setMaHD(rs.getInt(1));
                 HD.setMaKH(rs.getInt(2));
                 HD.setMaNV(rs.getInt(3));
@@ -109,7 +106,8 @@ public class HoaDonDAO {
         }
         return null;
     }
-    public ArrayList<HoaDon> getListHoaDonTheoDate(Date dateMin, Date dateMax ) { // lấy list dshd theo ngày và tổng tiền
+
+    public ArrayList<HoaDon> getListHoaDonTheoDate(Date dateMin, Date dateMax) { // lấy list dshd theo ngày và tổng tiền
         try {
             Connection c = JDBCUtil.getConnection();
             String sql = "SELECT * FROM hoadon WHERE (NgayLap BETWEEN CAST(? AS DATE) AND CAST(? AS DATE))";
@@ -134,9 +132,9 @@ public class HoaDonDAO {
         }
         return null;
     }
-    
-    public int getNewId(){
-        int ma =-1;
+
+    public int getNewId() {
+        int ma = -1;
         try {
             Connection c = JDBCUtil.getConnection();
             String sql = "select max(maHD) as maHD from hoadon";
