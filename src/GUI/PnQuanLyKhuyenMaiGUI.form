@@ -143,15 +143,12 @@
                             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                               <Font name="Segoe UI" size="14" style="1"/>
                             </Property>
-                            <Property name="text" type="java.lang.String" value="M&#xe3; khuy&#x1ebf;n m&#xe3;i:"/>
+                            <Property name="text" type="java.lang.String" value="T&#x1ea1;o m&#xe3; khuy&#x1ebf;n m&#xe3;i:"/>
                           </Properties>
                         </Component>
                       </SubComponents>
                     </Container>
-                    <Component class="javax.swing.JTextField" name="txtmaKM">
-                      <Properties>
-                        <Property name="enabled" type="boolean" value="false"/>
-                      </Properties>
+                    <Component class="javax.swing.JTextField" name="jTextField1">
                     </Component>
                   </SubComponents>
                 </Container>
@@ -196,12 +193,12 @@
                             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                               <Font name="Segoe UI" size="14" style="1"/>
                             </Property>
-                            <Property name="text" type="java.lang.String" value="T&#xea;n ch&#x1b0;&#x1a1;ng tr&#xec;nh khuy&#x1ebf;n m&#xe3;i:"/>
+                            <Property name="text" type="java.lang.String" value="T&#x1ea1;o ch&#x1b0;&#x1a1;ng tr&#xec;nh khuy&#x1ebf;n m&#xe3;i:"/>
                           </Properties>
                         </Component>
                       </SubComponents>
                     </Container>
-                    <Component class="javax.swing.JTextField" name="txttenKM">
+                    <Component class="javax.swing.JTextField" name="jTextField3">
                     </Component>
                   </SubComponents>
                 </Container>
@@ -251,7 +248,7 @@
                         </Component>
                       </SubComponents>
                     </Container>
-                    <Component class="javax.swing.JTextField" name="txtmucGiamGia">
+                    <Component class="javax.swing.JTextField" name="jTextField2">
                     </Component>
                   </SubComponents>
                 </Container>
@@ -405,7 +402,7 @@
                                     </Constraint>
                                   </Constraints>
                                 </Component>
-                                <Component class="com.toedter.calendar.JDateChooser" name="ngayBD">
+                                <Component class="com.toedter.calendar.JDateChooser" name="jDateChooser1">
                                   <Constraints>
                                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
                                       <BorderConstraints direction="Center"/>
@@ -441,7 +438,7 @@
                                     </Constraint>
                                   </Constraints>
                                 </Component>
-                                <Component class="com.toedter.calendar.JDateChooser" name="ngayKT">
+                                <Component class="com.toedter.calendar.JDateChooser" name="jDateChooser2">
                                   <Constraints>
                                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
                                       <BorderConstraints direction="Center"/>
@@ -468,7 +465,7 @@
                                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                                   <Font name="Segoe UI" size="14" style="1"/>
                                 </Property>
-                                <Property name="text" type="java.lang.String" value="&#x110;i&#x1ec1;u ki&#x1ec7;n ( &gt; X )"/>
+                                <Property name="text" type="java.lang.String" value="M&#xf4; t&#x1ea3;"/>
                                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                                   <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
                                     <EmptyBorder bottom="5" left="1" right="1" top="1"/>
@@ -481,7 +478,7 @@
                                 </Constraint>
                               </Constraints>
                             </Component>
-                            <Component class="javax.swing.JSpinner" name="spnDieuKien">
+                            <Component class="javax.swing.JSpinner" name="jSpinner1">
                               <Constraints>
                                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
                                   <BorderConstraints direction="Center"/>
@@ -513,7 +510,7 @@
                     <Property name="rows" type="int" value="2"/>
                   </Layout>
                   <SubComponents>
-                    <Component class="javax.swing.JButton" name="btnAdd">
+                    <Component class="javax.swing.JButton" name="jButton1">
                       <Properties>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Segoe UI Black" size="18" style="1"/>
@@ -521,13 +518,10 @@
                         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="50" green="a0" red="0" type="rgb"/>
                         </Property>
-                        <Property name="text" type="java.lang.String" value="ADD"/>
+                        <Property name="text" type="java.lang.String" value="SAVE"/>
                       </Properties>
-                      <Events>
-                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAddActionPerformed"/>
-                      </Events>
                     </Component>
-                    <Component class="javax.swing.JButton" name="btnDelete">
+                    <Component class="javax.swing.JButton" name="jButton3">
                       <Properties>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Segoe UI Black" size="18" style="1"/>
@@ -537,11 +531,8 @@
                         </Property>
                         <Property name="text" type="java.lang.String" value="DELETE"/>
                       </Properties>
-                      <Events>
-                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDeleteActionPerformed"/>
-                      </Events>
                     </Component>
-                    <Component class="javax.swing.JButton" name="btnEdit">
+                    <Component class="javax.swing.JButton" name="jButton2">
                       <Properties>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Segoe UI Black" size="18" style="1"/>
@@ -551,11 +542,8 @@
                         </Property>
                         <Property name="text" type="java.lang.String" value="EDIT"/>
                       </Properties>
-                      <Events>
-                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEditActionPerformed"/>
-                      </Events>
                     </Component>
-                    <Component class="javax.swing.JButton" name="btnReset">
+                    <Component class="javax.swing.JButton" name="jButton4">
                       <Properties>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Segoe UI Black" size="18" style="1"/>
@@ -565,9 +553,6 @@
                         </Property>
                         <Property name="text" type="java.lang.String" value="RESET"/>
                       </Properties>
-                      <Events>
-                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnResetActionPerformed"/>
-                      </Events>
                     </Component>
                   </SubComponents>
                 </Container>
@@ -657,7 +642,7 @@
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                   <SubComponents>
-                    <Component class="javax.swing.JTable" name="tblGiamGia">
+                    <Component class="javax.swing.JTable" name="jTable1">
                       <Properties>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Segoe UI" size="14" style="0"/>
@@ -722,9 +707,6 @@
                           <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
                         </Property>
                       </Properties>
-                      <AuxValues>
-                        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new Mytable()"/>
-                      </AuxValues>
                     </Component>
                   </SubComponents>
                 </Container>
