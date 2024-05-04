@@ -1,4 +1,0 @@
-localhost
-quanlythucannhanh
-sa
-123456
