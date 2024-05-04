@@ -220,42 +220,21 @@ public class PnPhieuNhap extends JPanel {
         btnSearchDate.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Check if both dates are selected
-                if (dtcStartDate.getDate() == null || dtcEndDate.getDate() == null) {
-                    new dialog("Vui lòng chọn cả ngày bắt đầu và ngày kết thúc!", dialog.ERROR_DIALOG);
-                    return;
-                }
-                if (txtStartPrice.getText() == "" || txtEndPrice.getText() == "") {
-                    new dialog("ô nhập giá không được để trống", dialog.ERROR_DIALOG);
-                }
-                try {
-                    int minprice = Integer.parseInt(txtStartPrice.getText());
-                    int maxPrice = Integer.parseInt(txtEndPrice.getText());
-                    java.util.Date startDate = dtcStartDate.getDate();
-                    java.util.Date endDate = dtcEndDate.getDate();
-                    // Chuyển đổi ngày bắt đầu sang kiểu java.sql.Date
-                    java.sql.Date sqlStartDate = new java.sql.Date(startDate.getTime());
-                    // Chuyển đổi ngày kết thúc sang kiểu java.sql.Date
-                    java.sql.Date sqlEndDate = new java.sql.Date(endDate.getTime());
-                    // Ensure start date is before or equal to end date
-                    if (startDate.after(endDate)) {
-                        new dialog("Ngày bắt đầu phải trước hoặc bằng ngày kết thúc!", dialog.ERROR_DIALOG);
-                        return;
-                    }
-                    if (minprice > maxPrice) {
-                        new dialog("giá nhỏ nhất không được lớn hơn giá lớn nhất!!", dialog.ERROR_DIALOG);
-                    }
 
-                    // Call PhieuNhapBUS method to search by date range
-                    ArrayList<PhieuNhap> searchResults = phieuNhapBUS.findPNByRange(sqlStartDate, sqlEndDate, minprice, maxPrice);
-                    if (searchResults.size() == 0) {
-                        new dialog("không tìm thấy dữ liệu yêu cầu", dialog.ERROR_DIALOG);
-                    }
-                    // Update the table with search results
-                    updateTableData(searchResults);
-                } catch (NumberFormatException ex) {
-                    new dialog("không được để trống hoặc nhập khác kiểu số ở ô giá tiền!!", dialog.ERROR_DIALOG);
+                // Convert JDateChooser dates to java.util.Date objects
+                java.util.Date startDate = dtcStartDate.getDate();
+                java.util.Date endDate = dtcEndDate.getDate();
+
+                java.sql.Date sqlStartDate = new java.sql.Date(startDate.getTime());
+
+                java.sql.Date sqlEndDate = new java.sql.Date(endDate.getTime());
+
+                ArrayList<PhieuNhap> searchResults = phieuNhapBUS.findPNByRange(sqlStartDate, sqlEndDate, txtStartPrice.getText(), txtEndPrice.getText());
+                if (searchResults.size() == 0) {
+                    new dialog("không tìm thấy dữ liệu yêu cầu", dialog.INFO_DIALOG);
                 }
+                // Update the table with search results
+                updateTableData(searchResults);
 
             }
         });

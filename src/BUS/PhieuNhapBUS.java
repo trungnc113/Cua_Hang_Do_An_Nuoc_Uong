@@ -1,5 +1,6 @@
 package BUS;
 
+import Custom.InputValidator;
 import Custom.dialog;
 import java.util.ArrayList;
 import java.sql.*;
@@ -18,30 +19,47 @@ public class PhieuNhapBUS {
     public ArrayList<PhieuNhap> getList() {
         return PhieuNhapDAO.getallPhieuNhap();
     }
-
+    public ArrayList<PhieuNhap> findPNBydate(Date startdate, Date enddate){
+        return PhieuNhapDAO.getPhieuNhapByNgayLap(startdate, enddate);
+    }
     public ArrayList<PhieuNhap> FindPNByPNid(int MaPN) {
         return PhieuNhapDAO.getPhieuNhapbyId(MaPN);
     }
 
-    public ArrayList<PhieuNhap> findPNByRange(Date startDate, Date endDate, int minPrice, int maxPrice) {
-        ArrayList<PhieuNhap> dspn = new ArrayList<>();
-        if (startDate != null && endDate != null) {
-            dspn = PhieuNhapDAO.getPhieuNhapByNgayLap(startDate, endDate);
-        }
+    public ArrayList<PhieuNhap> findPNByRange(Date startDate, Date endDate, String minPrice, String maxPrice) {
 
-        // Filter by price range only if results are retrieved from date range search
-        if (!dspn.isEmpty()) {
-            ArrayList<PhieuNhap> tempList = new ArrayList<>();
-            for (PhieuNhap pn : dspn) {
-                if (pn.getTongTien() >= minPrice && pn.getTongTien() <= maxPrice) {
-                    tempList.add(pn);
-                }
+        minPrice = minPrice.trim();
+        maxPrice = maxPrice.trim();
+    
+        if (!startDate.after(endDate)) {
+            if (InputValidator.IsEmpty(minPrice) && InputValidator.IsEmpty(maxPrice)) {
+                return PhieuNhapDAO.getPhieuNhapByNgayLap(startDate, endDate);
+            } else if (InputValidator.IsEmpty(minPrice) || InputValidator.IsEmpty(maxPrice)) {
+                new dialog("vui lòng nhập đầy đủ ô giá", dialog.ERROR_DIALOG);
+                return null;
             }
-            dspn = tempList;
+    
+            try {
+                int min = Integer.parseInt(minPrice);
+                int max = Integer.parseInt(maxPrice);
+    
+                if (min > max || min < 0 || max < 0) {
+                    new dialog("Vui lòng nhập khoảng giá hợp lệ", dialog.ERROR_DIALOG);
+                    return null;
+                } else {
+                    return PhieuNhapDAO.getPhieuNhapByNgayLapVaGia(startDate, endDate, min, max);
+                }
+            } catch (NumberFormatException e) {
+                new dialog("Giá nhập vào không hợp lệ", dialog.ERROR_DIALOG);
+                return null;
+            }
+        } else {
+            new dialog("Vui lòng nhập đúng khoảng ngày!", dialog.ERROR_DIALOG);
+            return null;
         }
-
-        return dspn;
     }
+    
+
 
     public boolean Insert(PhieuNhap phieuNhap) {
         if (PhieuNhapDAO.themPhieuNhap(phieuNhap)) {
@@ -59,3 +77,4 @@ public class PhieuNhapBUS {
         return PhieuNhapDAO.getById(maPN);
     }
 }
+
