@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import Custom.dialog;
 import DAO.CTPhieuNhapDAO;
-import DTO.CTHoaDon;
 import DTO.CTPhieuNhap;
 
 public class CTPhieuNhapBUS {
