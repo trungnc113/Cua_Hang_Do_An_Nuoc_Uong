@@ -110,8 +110,7 @@ public class SanPhamBUS {
         }
 
         try {
-            String[] loaiTmp = loai.split(" - ");
-            int maLoai = Integer.parseInt(loaiTmp[0]);
+            int maLoai = Integer.parseInt(loai);
             int soLuongSP = Integer.parseInt(soLuong);
             donGia = donGia.replace(",", "");
             int donGiaSP = Integer.parseInt(donGia);
@@ -315,11 +314,8 @@ public class SanPhamBUS {
         return spDAO.getDanhSachSanPham();
     }
     
-    public ArrayList<SanPham> TimKiemSPnhapHang(String txt){
-        return spDAO.TimKiemSPnhapHang(txt.trim());
-    }
-    
-    public ArrayList<SanPham> getListSPConHang(){
-        return spDAO.getListSPConHang();
+    public ArrayList<SanPham> getListSPtheoMavaTen(String txt){
+        String output=txt.replaceAll("\\s+", "");
+        return spDAO.getDanhSachSanPhamTheoMavaTen(output);
     }
 }

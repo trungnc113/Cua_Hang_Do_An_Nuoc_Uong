@@ -3,6 +3,10 @@ package GUI;
 import BUS.NhaCungCapBUS;
 import DTO.NhaCungCap;
 
+/**
+ *
+ * @author nguye
+ */
 public class dlgThemNhaCungCap extends javax.swing.JDialog {
 
     NhaCungCapBUS nhaCungCapBUS = new NhaCungCapBUS();
@@ -156,11 +160,11 @@ public class dlgThemNhaCungCap extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 799, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 467, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();

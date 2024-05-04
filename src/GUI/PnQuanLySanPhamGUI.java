@@ -10,7 +10,6 @@ import Custom.XuLyFileExcel;
 import Custom.dialog;
 import Custom.MyFileChooser;
 import Custom.Mytable;
-import DTO.LoaiSP;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -250,11 +249,8 @@ public class PnQuanLySanPhamGUI extends JPanel {
         dtmSanPham.addColumn("Số lượng");
         dtmSanPham.addColumn("Đơn vị tính");
         dtmSanPham.addColumn("Ảnh");
-        tblSanPham = new Mytable(dtmSanPham){
-            public boolean isCellEditable(int row, int column) { // không cho phép sửa nội dung trong table
-                return false;
-            }
-        };
+        tblSanPham = new Mytable(dtmSanPham);
+//        tblSanPham.getTableHeader().setDefaultRenderer(new QuanLySanPham.HeaderRenderer());
 
         tblSanPham.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
         tblSanPham.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
@@ -288,7 +284,6 @@ public class PnQuanLySanPhamGUI extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 loadAnh("");
                 loadDataLenBangSanPham();
-                loadDataCmbLoai();
                 txtMa.setText("");
                 txtTen.setText("");
                 txtdonGia.setText("");
@@ -444,8 +439,6 @@ public class PnQuanLySanPhamGUI extends JPanel {
             boolean flag = SPBUS.xoaSanPham(txtMa.getText());
             if (flag) {
                 loadDataLenBangSanPham();
-                //reset txtMa tránh việc lấy lại mã sp đã xóa 
-                txtMa.setText("");
             }
         }
     }
@@ -507,14 +500,11 @@ public class PnQuanLySanPhamGUI extends JPanel {
 
     private void loadDataCmbLoai() {
         cmbLoai.removeAllItems();
-        LBUS.docDanhSachLoai();
-        ArrayList<LoaiSP> dsl = LBUS.getDanhSachLoai();
         cmbLoai.addItem("0 - Chọn loại");
-        for (LoaiSP loai : dsl) {
-            if (loai.getTrangThai() != 0)
-                cmbLoai.addItem(loai.getMaLoai() + " - " + loai.getTenLoai());
-        }
+        cmbLoai.addItem("1");
+        cmbLoai.addItem("2");
         cmbLoai.addItem("Khác...");
+
     }
 
     private void xuLyThemLoai() {
@@ -603,5 +593,17 @@ public class PnQuanLySanPhamGUI extends JPanel {
         Image newimg = image.getScaledInstance(200, 200, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
         imageIcon = new ImageIcon(newimg);  // transform it back
         return imageIcon;
+    }
+
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Quản Lý Sản Phẩm");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        PnQuanLySanPhamGUI panel = new PnQuanLySanPhamGUI();
+        frame.getContentPane().add(panel);
+
+        frame.pack();
+        frame.setSize(1200, 720);
+        frame.setVisible(true);
     }
 }

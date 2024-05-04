@@ -5,6 +5,7 @@ import BUS.SanPhamBUS;
 import Custom.Mytable;
 import Custom.dialog;
 import Custom.listCard;
+import DAO.SanPhamDAO;
 import DTO.CTHoaDon;
 import DTO.SanPham;
 import java.awt.*;
@@ -29,9 +30,6 @@ public class PnBanHang extends JPanel {
     Mytable mtbGioHang;
     JButton btnReset;
     JButton btnThanhToan;
-
-    SanPhamBUS list = new SanPhamBUS();
-
     public static DefaultTableModel dtmGioHang;
 
     public PnBanHang() {
@@ -39,7 +37,6 @@ public class PnBanHang extends JPanel {
         XoaPhanTuTrongGioHang();
         ResetCart();
         ThanhToan();
-        loadData();
     }
 
     private void addControls() {
@@ -87,7 +84,8 @@ public class PnBanHang extends JPanel {
         pnSearchSP.add(pnFindSP);
 
         this.add(pnSearchSP);
-        listCardSP = new listCard();
+        SanPhamDAO list = new SanPhamDAO(); // list này để lấy sản list sp ở lớp dao
+        listCardSP = new listCard(list.getDanhSachSanPham());
         this.add(listCardSP);
         eventCombobox(cmbTypeSP);
         eventBTN(btnFindSP, textFind, cmbTypeSP);
@@ -161,12 +159,13 @@ public class PnBanHang extends JPanel {
     }
 
     private void eventCombobox(JComboBox CBB) { // set sự kiện của combobox phaan loai
+        SanPhamBUS list = new SanPhamBUS();
         CBB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (CBB.getSelectedIndex() == 0) {
                     listCardSP.removeAll();
-                    listCardSP.addCards(list.getListSPConHang());
+                    listCardSP.addCards(list.getListSP());
                 } else {
                     listCardSP.removeAll();
                     listCardSP.addCards(list.listSPtheoLoai("" + CBB.getSelectedItem()));
@@ -178,6 +177,7 @@ public class PnBanHang extends JPanel {
     }
 
     private void eventBTN(JButton BTN, JTextField TF, JComboBox CBB) {
+        SanPhamBUS list = new SanPhamBUS();
         BTN.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -192,17 +192,6 @@ public class PnBanHang extends JPanel {
                 listCardSP.repaint();
             }
         });
-    }
-
-    private void loadData() {
-        ArrayList<SanPham> sanPhams = list.getListSPConHang();
-        if (sanPhams == null) {
-            return;
-        }
-        listCardSP.removeAll();
-        listCardSP.addCards(sanPhams);
-        listCardSP.revalidate(); // cập nhật lại danh sách
-        listCardSP.repaint();
     }
 
     public static void addOneRow(SanPham SP, int SoLuong) {
@@ -222,13 +211,11 @@ public class PnBanHang extends JPanel {
         btnRemove.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int slRow = mtbGioHang.getSelectedRow();
-                if (slRow == -1) {
-                    new dialog("Vui lòng chọn sản phẩm muốn xóa!", dialog.ERROR_DIALOG);
-                    return;
+                int slRow = (int) mtbGioHang.getSelectedRow();
+                if (slRow != -1) {
+                    dtmGioHang.removeRow(slRow);
+                    mtbGioHang.revalidate();
                 }
-                dtmGioHang.removeRow(slRow);
-                mtbGioHang.revalidate();
             }
         });
     }
@@ -246,7 +233,7 @@ public class PnBanHang extends JPanel {
         btnThanhToan.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                XyLyThanhToan();
+
             }
         });
     }
@@ -256,25 +243,20 @@ public class PnBanHang extends JPanel {
             new dialog("Giỏ hàng trống!", dialog.ERROR_DIALOG);
             return;
         }
-        int tongTien = 0;
+        int tongTien=0;
         ArrayList<CTHoaDon> cTHoaDons = new ArrayList<>();
         for (int i = 0; i < mtbGioHang.getRowCount(); i++) {
-            int thanhTien = Integer.parseInt(mtbGioHang.getValueAt(i, 4) + "");
-            if (thanhTien > Integer.MAX_VALUE - tongTien) {
+            int thanhTien=Integer.parseInt(mtbGioHang.getValueAt(i, 4)+"");
+            if( thanhTien> Integer.MAX_VALUE - tongTien){
                 new dialog("Tổng tiền quá lớn", dialog.ERROR_DIALOG);
                 return;
             }
-            tongTien += thanhTien;
-            int maSP = Integer.parseInt(mtbGioHang.getValueAt(i, 0) + "");
-            int soLuong = Integer.parseInt(mtbGioHang.getValueAt(i, 2) + "");
-            int donGia = Integer.parseInt(mtbGioHang.getValueAt(i, 3) + "");
-            cTHoaDons.add(new CTHoaDon(0, maSP, soLuong, donGia, thanhTien));
+            tongTien+=thanhTien;
+            int maSP=Integer.parseInt(mtbGioHang.getValueAt(i, 0)+"");
+            int soLuong=Integer.parseInt(mtbGioHang.getValueAt(i, 2)+"");
+            int donGia=Integer.parseInt(mtbGioHang.getValueAt(i, 3)+"");
+            cTHoaDons.add(new CTHoaDon(0,maSP,soLuong,donGia,thanhTien));
         }
         XuatHoaDonGUI xuatHoaDonGUI = new XuatHoaDonGUI(tongTien, cTHoaDons);
-        if (!xuatHoaDonGUI.getIsSuccess()) {
-            return;
-        }
-        dtmGioHang.setRowCount(0);
-        loadData();
     }
 }

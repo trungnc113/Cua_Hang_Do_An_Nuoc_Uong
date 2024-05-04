@@ -1,13 +1,10 @@
 package BUS;
-
-import Custom.InputValidator;
 import DAO.NhanVienDAO;
 import DTO.NhanVien;
 import Custom.dialog;
 import java.util.ArrayList;
 
 public class NhanVienBUS {
-
     private ArrayList<NhanVien> listNV = null;
     private NhanVienDAO nvDAO = new NhanVienDAO();
 
@@ -16,17 +13,16 @@ public class NhanVienBUS {
     }
 
     public void docDanhSach() {
-        listNV = nvDAO.getDanhSachNhanVien();
+        this.listNV = nvDAO.getDanhSachNhanVien();
     }
 
-    public ArrayList<NhanVien> getlistNV() {
-        if (listNV == null) {
+    public ArrayList<NhanVien> getDanhSachNhanVien() {
+        if (this.listNV == null)
             docDanhSach();
-        }
-        return listNV;
+        return this.listNV;
     }
 
-    public NhanVien getById(int maNV) {
+    public NhanVien getById(int maNV){
         return nvDAO.getNhanVien(maNV);
     }
 
@@ -39,16 +35,8 @@ public class NhanVienBUS {
             new dialog("Tên không được để trống!", dialog.ERROR_DIALOG);
             return false;
         }
-        if (!InputValidator.isValidName(ho) || !InputValidator.isValidName(ten)) {
-            new dialog("Họ hoặc tên không hợp lệ", dialog.ERROR_DIALOG);
-            return false;
-        }
         if (dienThoai.equals("")) {
             new dialog("Điện thoại không được để trống!", dialog.ERROR_DIALOG);
-            return false;
-        }
-        if (!InputValidator.isValidPhoneNumber(dienThoai)) {
-            new dialog("Số điện thoại không hợp lệ", dialog.ERROR_DIALOG);
             return false;
         }
         NhanVien nv = new NhanVien();
@@ -66,7 +54,7 @@ public class NhanVienBUS {
         return flag;
     }
 
-    public boolean updateNhanVien(String ma, String ho, String ten, String gioiTinh, String dienThoai) {
+    public boolean updateNhanVien(String ma, String ho, String ten, String gioiTinh, String dienThoai ) {
         int maNV = Integer.parseInt(ma);
         ho = ho.trim();
         ten = ten.trim();
@@ -98,8 +86,8 @@ public class NhanVienBUS {
         tuKhoa = tuKhoa.toLowerCase();
         ArrayList<NhanVien> dsnv = new ArrayList<>();
         for (NhanVien nv : listNV) {
-            if (nv.getHo().toLowerCase().contains(tuKhoa) || nv.getTen().toLowerCase().contains(tuKhoa)
-                    || nv.getGioiTinh().toLowerCase().contains(tuKhoa) || nv.getDienThoai().contains(tuKhoa)) {
+            if (nv.getHo().toLowerCase().contains(tuKhoa) || nv.getTen().toLowerCase().contains(tuKhoa) ||
+                    nv.getGioiTinh().toLowerCase().contains(tuKhoa) || nv.getDienThoai().contains(tuKhoa)) {
                 dsnv.add(nv);
             }
         }
@@ -126,19 +114,19 @@ public class NhanVienBUS {
         return false;
     }
 
-    public boolean xoaFKHoadon_PhieuNhap_NV() {
+    public boolean xoaFKHoadon_PhieuNhap_NV(){
         nvDAO.deletaFKHoandon_PhieuNhap();
         boolean ketqua = nvDAO.deletaFKHoandon_PhieuNhap();
         return ketqua;
     }
 
-    public boolean updateFKHoadon_PhieuNhap_NV() {
+    public boolean updateFKHoadon_PhieuNhap_NV(){
         nvDAO.updateFKHoandon_PhieuNhap();
         boolean ketqua = nvDAO.updateFKHoandon_PhieuNhap();
         return ketqua;
-    }
-
-    public boolean xoaAllNhanVien() {
+    } 
+    
+    public boolean xoaAllNhanVien(){
         nvDAO.xoaAllInfor();
         boolean ketqua = nvDAO.xoaAllInfor();
         return ketqua;
@@ -156,11 +144,5 @@ public class NhanVienBUS {
         nv.setTrangThai(tThai);
         boolean flag = nvDAO.importNhanVienFromExcel(nv);
         return flag;
-    }
-
-    public void CapNhatChucVu(NhanVien nv) {
-        if (!nvDAO.capNhatChucVu(nv)) {
-            new dialog("Cập nhật chức vụ thất bại", dialog.ERROR_DIALOG);
-        }
     }
 }

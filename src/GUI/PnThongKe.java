@@ -1,19 +1,13 @@
 package GUI;
 
-import BUS.ThongKeBUS;
 import Custom.Mytable;
 import Custom.NonEditableTableModel;
-import DTO.KhachHang;
-import DTO.SPDaBan;
-import DTO.ThongKe;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -21,9 +15,11 @@ import java.util.Calendar;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.WindowConstants;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -43,7 +39,7 @@ public class PnThongKe extends JPanel {
 
     JPanel pnThongKe, pnbtnSwitch;
 
-    JLabel lbtltTongDoanhThuNam, lbbtnSwitch, lbbtnRefresh;
+    JLabel lbtltTongDoanhThuNam, lbbtnSwitch;
 
     CardLayout cardLayout;
 
@@ -52,26 +48,22 @@ public class PnThongKe extends JPanel {
     ImageIcon imgBtnSwitch = new ImageIcon("image/btn/icons8_view_40px.png");
     ImageIcon imgBtnBack = new ImageIcon("image/btn/icons8_undo_40px.png");
 
-    ThongKeBUS thongKeBUS = new ThongKeBUS();
-    ChartPanel chartBarPanel, chartPiePanel;
+    int sum = 0;
+
     NonEditableTableModel dtmSanPham, dtmKhachHang;
     Mytable tbSanPham, tbKhachHang;
 
     public PnThongKe() {
         addControls();
         addEvents();
-        loadData();
-
     }
 
     private void addControls() {
         JPanel pnMain = new JPanel(new BorderLayout());
         //btn
-        pnbtnSwitch = new JPanel(new BorderLayout());
+        pnbtnSwitch = new JPanel(new FlowLayout(FlowLayout.LEFT));
         lbbtnSwitch = new JLabel(imgBtnSwitch);
-        lbbtnRefresh = new JLabel(new ImageIcon("image/btn/refresh.png"));
-        pnbtnSwitch.add(lbbtnSwitch, BorderLayout.WEST);
-        pnbtnSwitch.add(lbbtnRefresh, BorderLayout.EAST);
+        pnbtnSwitch.add(lbbtnSwitch);
         pnMain.add(pnbtnSwitch, BorderLayout.NORTH);
         //------------------------Thống kê doanh thu----------------------------
         JPanel pnThongkeDoanhThu = new JPanel();
@@ -87,17 +79,18 @@ public class PnThongKe extends JPanel {
             cmbYear.addItem(i);
         }
         // biểu đồ cột
-        chartBarPanel = new ChartPanel(null);
+        ChartPanel chartBarPanel = new ChartPanel(createBarChart());
         JPanel pnBarChart = new JPanel(new BorderLayout());
         pnBarChart.add(pnCmbYear, BorderLayout.NORTH);
         pnBarChart.add(chartBarPanel, BorderLayout.CENTER);
         pnThongkeDoanhThu.add(pnBarChart);
         // biểu đồ tròn
-        chartPiePanel = new ChartPanel(null);
+        ChartPanel chartPiePanel = new ChartPanel(createPieChart());
         chartPiePanel.setPreferredSize(new Dimension(500, 300));
         JPanel pnPieChart = new JPanel(new BorderLayout());
         // pn Tổng doanh thu
-        lbtltTongDoanhThuNam = new JLabel();
+        lbtltTongDoanhThuNam = new JLabel("10000000");
+        lbtltTongDoanhThuNam.setText(sum + "");
         lbtltTongDoanhThuNam.setFont(FtTitleText);
         lbtltTongDoanhThuNam.setForeground(Color.white);
         lbtltTongDoanhThuNam.setHorizontalAlignment(JLabel.CENTER);
@@ -137,7 +130,7 @@ public class PnThongKe extends JPanel {
         JPanel pnThongKeChiTieuKhachHang = new JPanel(new BorderLayout());
         pnThongKeChiTieuKhachHang.setPreferredSize(new Dimension(pnThongKeChiTieuKhachHang.getPreferredSize().width, 350));
         //tên bảng
-        JLabel lbtitleCTKH = new JLabel("Top 10 chi tiêu khách hàng");
+        JLabel lbtitleCTKH = new JLabel("Thống kê chi tiêu khách hàng");
         lbtitleCTKH.setForeground(ClMain);
         lbtitleCTKH.setFont(FtTitleText);
         JPanel pnlbtltCTKH = new JPanel();
@@ -164,25 +157,7 @@ public class PnThongKe extends JPanel {
         pnThongKe.add(pnThongKeSPvsKH, "2");
         pnMain.add(pnThongKe, BorderLayout.CENTER);
         this.add(pnMain);
-    }
 
-    private void loadData() {
-        ThongKe thongKe = thongKeBUS.thongKe((int) cmbYear.getSelectedItem());
-        chartBarPanel.setChart(createBarChart(thongKe.getDoanhThuCacThang()));
-        chartPiePanel.setChart(createPieChart(thongKe.getPhanTramDoanhThuTheoQuy()));
-        lbtltTongDoanhThuNam.setText(thongKe.getTongDoanhThu() + "");
-        loadDataTbl(thongKe.getsPDaBans(), thongKe.getListTopKhachHang());
-    }
-
-    private void loadDataTbl(ArrayList<SPDaBan> sPDaBans, ArrayList<KhachHang> khachHangs) {
-        dtmKhachHang.setRowCount(0);
-        dtmSanPham.setRowCount(0);
-        for (SPDaBan sPDaBan : sPDaBans) {
-            dtmSanPham.addRow(new Object[]{sPDaBan.getMaSP(), sPDaBan.getTenSP(), sPDaBan.getDaBan()});
-        }
-        for (KhachHang khachHang : khachHangs) {
-            dtmKhachHang.addRow(new Object[]{khachHang.getMaKH(), khachHang.getTen(), khachHang.getTongChiTieu()});
-        }
     }
 
     private void addEvents() {
@@ -214,46 +189,47 @@ public class PnThongKe extends JPanel {
             public void mouseExited(MouseEvent e) {
             }
         });
-        cmbYear.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                loadData();
-            }
-        });
-        lbbtnRefresh.addMouseListener(new MouseAdapter(){
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                loadData();
-            }
-            
-        });
     }
 
-    private JFreeChart createBarChart(ArrayList<Integer> DoanhThuCacThang) {
-        JFreeChart freeChart = ChartFactory.createBarChart("Doanh thu năm " + cmbYear.getSelectedItem(), "Tháng", "Doanh thu", createBarDataset(DoanhThuCacThang), PlotOrientation.VERTICAL, false, false, false);
+    private JFreeChart createBarChart() {
+        JFreeChart freeChart = ChartFactory.createBarChart("Doanh thu năm 2024", "Tháng", "Doanh thu", createBarDataset(), PlotOrientation.VERTICAL, false, false, false);
         return freeChart;
     }
 
-    private CategoryDataset createBarDataset(ArrayList<Integer> DoanhThuCacThang) {
+    private CategoryDataset createBarDataset() {
         DefaultCategoryDataset dataSet = new DefaultCategoryDataset();
 
-        for (int i = 0; i < 12; i++) {
-            dataSet.addValue(DoanhThuCacThang.get(i), "Doanh thu", (i + 1) + "");
+        for (int i = 1; i <= 12; i++) {
+            dataSet.addValue(i * 1000000, "Doanh thu", i + "");
+            sum += i * 1000000;
         }
         return dataSet;
     }
 
-    private JFreeChart createPieChart(ArrayList<Double> PhanTramTheoQuy) {
-        JFreeChart freeChart = ChartFactory.createPieChart("Doanh thu theo quý", createPieDataset(PhanTramTheoQuy), true, true, false);
+    private JFreeChart createPieChart() {
+        JFreeChart freeChart = ChartFactory.createPieChart("Doanh thu theo quý", createPieDataset(), true, true, false);
         return freeChart;
     }
 
-    private PieDataset createPieDataset(ArrayList<Double> PhanTramTheoQuy) {
+    private PieDataset createPieDataset() {
+        ArrayList<Integer> tongThuQuy = new ArrayList<>();
+        tongThuQuy.add(20);
+        tongThuQuy.add(25);
+        tongThuQuy.add(35);
+        tongThuQuy.add(20);
         DefaultPieDataset dataSet = new DefaultPieDataset();
-        for (int i = 0; i < 4; i++) {
-            dataSet.setValue("Quý " + (i + 1), PhanTramTheoQuy.get(i));
+        for (int i = 1; i <= 4; i++) {
+            dataSet.setValue("Quý " + i, tongThuQuy.get(i - 1));
         }
         return dataSet;
+    }
+
+    public static void main(String[] args) {
+        JFrame frame = new JFrame();
+        frame.add(new PnThongKe());
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }
 }

@@ -22,7 +22,6 @@ public class LoaiSPDAO {
                 LoaiSP Loaisp = new LoaiSP();
                 Loaisp.setMaLoai(rs.getInt(1));
                 Loaisp.setTenLoai(rs.getString(2));
-                Loaisp.setTrangThai(rs.getInt(3));
                 listLoaiSP.add(Loaisp);
             }
             return listLoaiSP;
@@ -33,14 +32,15 @@ public class LoaiSPDAO {
         return null;
     }
 
-    public boolean updateInfoLoaiSP(int maloai, String tenLoai) {
+    public boolean updateInfoLoaiSP(int loaiSP, String tenLoai) {
         boolean ketqua = false;
         try {
             Connection connection = JDBCUtil.getConnection();
             String sql = "update loaiSP set tenLoai=? where maLoai=?";
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setString(1, tenLoai);
-            pre.setInt(2, maloai);
+            pre.setInt(2, loaiSP);
+            System.out.println(1);
             ketqua = pre.executeUpdate() > 0;
             return ketqua;
         } catch(SQLException e){
@@ -49,33 +49,17 @@ public class LoaiSPDAO {
         return false;
     }
 
-    public int layMaLoaiSPCuoiCung() {
-        int maLoai = -1;
-        try {
-            Connection connection = JDBCUtil.getConnection();
-            String sql = "SELECT TOP 1 maLoai FROM loaiSP ORDER BY maLoai DESC";
-            PreparedStatement pre = connection.prepareStatement(sql);
-            ResultSet rs = pre.executeQuery();
-            if (rs.next()) {
-                maLoai = rs.getInt("maLoai");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return maLoai;
-    }
-
     public boolean themLoaiSanPham(LoaiSP loaiSP){
         boolean ketqua = false;
-        int maloai = layMaLoaiSPCuoiCung()+1;
         try{
             Connection connection = JDBCUtil.getConnection();
-            String sql = "insert into loaiSP(maLoai, tenLoai,trangThai)  values(?, ?, ?)";
+            String sql = "insert into loaiSP(maLoai, tenLoai)  values(?, ?)";
             PreparedStatement pre = connection.prepareStatement(sql);
-            pre.setInt(1,maloai);
+            pre.setInt(1,loaiSP.getMaLoai());
             pre.setString(2, loaiSP.getTenLoai());
-            pre.setInt(3,loaiSP.getTrangThai());
-            ketqua = pre.executeUpdate() > 0;
+            
+            pre.execute();
+            ketqua = pre.executeUpdate() > 1;
 
         }catch(SQLException e){
             e.printStackTrace();
@@ -99,6 +83,25 @@ public class LoaiSPDAO {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public boolean updateInfoLoaiSP(LoaiSP sp){
+        boolean ketqua = false;
+        try{
+            Connection connection = JDBCUtil.getConnection();
+
+            String sql = "update loaiSP set tenLoai = ? where maLoai=?";
+            PreparedStatement pre = connection.prepareStatement(sql);
+
+            pre.setString(1,sp.getTenLoai());
+            pre.setInt(2,sp.getMaLoai());
+            ketqua = pre.executeUpdate() > 5;
+
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+
+        return ketqua;
     }
 
 }

@@ -37,12 +37,6 @@ public class CTHoaDonDAO {
         boolean result = false;
         try {
             Connection c = JDBCUtil.getConnection();
-            String sqlUpdateSP = "update sanpham set soLuong = soLuong - ? where maSP = ?"; // cập nhật số lượng sản phẩm
-            PreparedStatement preparedStatement = c.prepareStatement(sqlUpdateSP);
-            preparedStatement.setInt(1, cthd.getSoLuong());
-            preparedStatement.setInt(2, cthd.getMaSP());
-            preparedStatement.executeUpdate();
-            
             String sql = "INSERT INTO dbo.cthoadon VALUES(?,?,?,?,?)";
             PreparedStatement prep = c.prepareStatement(sql);
             prep.setInt(1, cthd.getMaHD());

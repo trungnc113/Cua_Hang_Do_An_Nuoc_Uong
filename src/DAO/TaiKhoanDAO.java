@@ -1,3 +1,7 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package DAO;
 
 import Custom.JDBCUtil;
@@ -12,25 +16,25 @@ import java.util.ArrayList;
 
 import BUS.DangNhapBUS;
 
+/**
+ *
+ * @author nguye
+ */
 public class TaiKhoanDAO {
-
     public TaiKhoanDAO() {
 
     }
 
-    public TaiKhoan selectById(int maNV, int opt) {
+    public TaiKhoan selectById(TaiKhoan t) {
         TaiKhoan taiKhoan = null;
         try {
             Connection c = JDBCUtil.getConnection();
-            String sql = "select * from taikhoan where maNV=?";
-            if (opt == 1) {
-                sql = sql + " and trangThai=1";
-            }
+            String sql = "select * from taikhoan where maNhanVien=? and trangThai=1";
             PreparedStatement pst = c.prepareStatement(sql);
-            pst.setInt(1, maNV);
+            pst.setString(1, "" + t.getMaQuyen());
             ResultSet rs = pst.executeQuery();
-            if (rs.next()) {
-                int maNhanVien = rs.getInt("maNV");
+            while (rs.next()) {
+                int maNhanVien = rs.getInt("maNhanVien");
                 int maQuyen = rs.getInt("maQuyen");
                 String tenDangNhap = rs.getString("tenDangNhap");
                 String matKhau = rs.getString("matKhau");
@@ -52,7 +56,7 @@ public class TaiKhoanDAO {
             PreparedStatement pst = c.prepareStatement(sql);
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
-                int maNhanVien = rs.getInt("maNV");
+                int maNhanVien = rs.getInt("maNhanVien");
                 int maQuyen = rs.getInt("maQuyen");
                 String tenDangNhap = rs.getString("tenDangNhap");
                 String matKhau = rs.getString("matKhau");
@@ -61,14 +65,14 @@ public class TaiKhoanDAO {
                 taiKhoans.add(taiKhoan);
             }
             JDBCUtil.closeConnection(c);
-            return taiKhoans;
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
         }
+        return taiKhoans;
     }
 
     public boolean insert(TaiKhoan tk) {
+        boolean ketQua = false ;
         try {
             Connection c = JDBCUtil.getConnection();
             String sql = "insert into taikhoan(maNV,maQuyen,tenDangNhap,matKhau,trangThai) "
@@ -87,6 +91,7 @@ public class TaiKhoanDAO {
             e.printStackTrace();
             return false;
         }
+        // return ketQua;
     }
 
     public int update(TaiKhoan tk) {
@@ -116,7 +121,7 @@ public class TaiKhoanDAO {
             String sql = "update taikhoan set trangThai=0 where maNV=?";
             PreparedStatement pst = c.prepareStatement(sql);
             pst.setInt(1, tk.getMaNhanVien());
-
+            
             ketQua = pst.executeUpdate();
             JDBCUtil.closeConnection(c);
         } catch (SQLException e) {
@@ -133,7 +138,7 @@ public class TaiKhoanDAO {
             PreparedStatement pst = c.prepareStatement(sql);
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
-                int maNhanVien = rs.getInt("maNV");
+                int maNhanVien = rs.getInt("maNhanVien");
                 int maQuyen = rs.getInt("maQuyen");
                 String tenDangNhap = rs.getString("tenDangNhap");
                 String matKhau = rs.getString("matKhau");
@@ -175,18 +180,18 @@ public class TaiKhoanDAO {
         return "";
     }
 
-    public int layQuyenTheoMa(int maNV) {
+    public String layQuyenTheoMa(int maNV) {
         try {
             String sql = "SELECT maQuyen FROM taikhoan WHERE maNV=" + maNV;
             Connection c = JDBCUtil.getConnection();
             PreparedStatement pst = c.prepareStatement(sql);
             ResultSet rs = pst.executeQuery();
             if (rs.next()) {
-                return rs.getInt(1);
+                return rs.getString(1);
             }
         } catch (Exception e) {
         }
-        return -1;
+        return "";
     }
 
     public boolean datLaiMatKhau(int maNV, String tenDangNhap) {
@@ -202,12 +207,12 @@ public class TaiKhoanDAO {
         return false;
     }
 
-    public boolean datLaiQuyen(int maNV, int quyen) {
+    public boolean datLaiQuyen(int maNV, String quyen) {
         try {
             String sql = "UPDATE taikhoan SET maQuyen=? WHERE maNV=?";
             Connection c = JDBCUtil.getConnection();
             PreparedStatement pre = c.prepareStatement(sql);
-            pre.setInt(1, quyen);
+            pre.setString(1, quyen);
             pre.setInt(2, maNV);
             return pre.executeUpdate() > 0;
         } catch (Exception e) {
@@ -266,5 +271,5 @@ public class TaiKhoanDAO {
         }
         return -1;
     }
-
+    
 }

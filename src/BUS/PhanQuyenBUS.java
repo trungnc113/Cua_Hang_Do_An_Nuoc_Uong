@@ -1,10 +1,19 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package BUS;
 
 import Custom.dialog;
 import DAO.PhanQuyenDAO;
+import DTO.NhaCungCap;
 import DTO.PhanQuyen;
 import java.util.ArrayList;
 
+/**
+ *
+ * @author nguye
+ */
 public class PhanQuyenBUS {
 
     public static PhanQuyen currentQuyen = null;
@@ -70,7 +79,7 @@ public class PhanQuyenBUS {
         int maQuyen = DangNhapBUS.taiKhoanLogin.getMaQuyen();
         PhanQuyen phanQuyentmp = new PhanQuyen();
         phanQuyentmp.setMaQuyen(maQuyen);
-        currentQuyen = phanQuyenDAO.selectById(phanQuyentmp);
+        this.currentQuyen = phanQuyenDAO.selectById(phanQuyentmp);
     }
 
     private int getNextMaQuyen() {

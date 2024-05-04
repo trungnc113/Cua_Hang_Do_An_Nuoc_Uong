@@ -1,23 +1,20 @@
 package BUS;
-
-import Custom.InputValidator;
 import DAO.TaiKhoanDAO;
 import DTO.TaiKhoan;
 import Custom.dialog;
-import DAO.PhanQuyenDAO;
 
 public class TaiKhoanBUS {
 
     private TaiKhoanDAO taiKhoanDAO = new TaiKhoanDAO();
-    private PhanQuyenDAO phanQuyenDAO = new PhanQuyenDAO();
 
     public String getTenDangNhapTheoMa(String ma) {
         int maNV = Integer.parseInt(ma);
         return taiKhoanDAO.layTenDangNhapTheoMa(maNV);
     }
 
-    public int getQuyenTheoMa(int ma) {
-        return taiKhoanDAO.layQuyenTheoMa(ma);
+    public String getQuyenTheoMa(String ma) {
+        int maNV = Integer.parseInt(ma);
+        return taiKhoanDAO.layQuyenTheoMa(maNV);
     }
 
     public void datLaiMatKhau(String ma, String tenDangNhap) {
@@ -32,12 +29,7 @@ public class TaiKhoanBUS {
 
     public void datLaiQuyen(String ma, String quyen) {
         int maNV = Integer.parseInt(ma);
-        int maQuyen = phanQuyenDAO.getIdByName(quyen.strip());
-        if (maQuyen < 0) {
-            new dialog("Không tìm thấy quyền", dialog.ERROR_DIALOG);
-            return;
-        }
-        boolean flag = taiKhoanDAO.datLaiQuyen(maNV, maQuyen);
+        boolean flag = taiKhoanDAO.datLaiQuyen(maNV, quyen);
         if (flag) {
             new dialog("Đặt lại thành công!", dialog.SUCCESS_DIALOG);
         } else {
@@ -49,56 +41,26 @@ public class TaiKhoanBUS {
         return taiKhoanDAO.kiemTraTrungTenDangNhap(tenDangNhap);
     }
 
-    public TaiKhoan getById(int maNV) {
-        return taiKhoanDAO.selectById(maNV, 1);
-    }
-
-    public boolean hasAccount(int maNV) {
-        TaiKhoan taiKhoan = taiKhoanDAO.selectById(maNV, 0); // lấy tất cả tài khoản bao gồm tk đã bị khóa
-        if (taiKhoan == null) {
-            return false;
-        }
-        if (taiKhoan.getTrangThai() == 1) {
-            new dialog("Nhân viên đã có tài khoản", dialog.ERROR_DIALOG);
-            return true;
-        }
-        // đã có tài khoản nhưng bị khóa
-        dialog dlg = new dialog("Tài khoản nhân viên bị khóa, xác nhận mở khóa?", dialog.WARNING_DIALOG);
-        if (dlg.getAction() == dialog.OK_OPTION) {
-            moKhoaTaiKhoan(maNV + "");
-        }
-        return true;
-    }
-
-    public boolean themTaiKhoan(String ma, String tenDangNhap, String tenQuyen) {
+    public boolean themTaiKhoan(String ma, String tenDangNhap, String quyen) {
         int maNV = Integer.parseInt(ma);
         if (tenDangNhap.trim().equals("")) {
             new dialog("Không được để trống Tên đăng nhập!", dialog.ERROR_DIALOG);
             return false;
         }
-        if (!InputValidator.isValidPass(tenDangNhap.strip())) { // kiểm tra ký tự
-            new dialog("Tên đăng nhập không được có ký tự", dialog.ERROR_DIALOG);
-            return false;
-        }
         if (kiemTraTrungTenDangNhap(tenDangNhap)) {
-            dialog dlg = new dialog("Tên đăng nhập bị trùng!\nCó thể tài khoản bị khoá,\nthực hiện mở khoá?", dialog.WARNING_DIALOG);
+            dialog dlg = new dialog("Tên đăng nhập bị trùng! Có thể tài khoản bị khoá, thực hiện mở khoá?", dialog.WARNING_DIALOG);
             if (dlg.getAction() == dialog.OK_OPTION) {
                 moKhoaTaiKhoan(ma);
                 return true;
             }
             return false;
         }
-        int maQuyen = phanQuyenDAO.getIdByName(tenQuyen.strip()); // tìm mã quyền bằng tên quyền
-        if (maQuyen < 0) {
-            new dialog("Không tìm thấy quyền", dialog.ERROR_DIALOG);
-            return false;
-        }
-        TaiKhoan tk = new TaiKhoan(maNV, maQuyen, tenDangNhap, tenDangNhap, 1);
+        TaiKhoan tk = new TaiKhoan(maNV, maNV, tenDangNhap,tenDangNhap, 1);
         boolean flag = taiKhoanDAO.insert(tk);
         if (flag) {
             new dialog("Cấp tài khoản thành công! Mật khẩu là " + tenDangNhap, dialog.SUCCESS_DIALOG);
         } else {
-            new dialog("Cấp tài khoản thất bại!", dialog.ERROR_DIALOG);
+            new dialog("Cấp tài khoản thất bại! Tài khoản đã tồn tại", dialog.ERROR_DIALOG);
         }
         return flag;
     }
@@ -124,7 +86,7 @@ public class TaiKhoanBUS {
     }
 
     public boolean doiMatKhau(String matKhauCu, String matKhauMoi, String nhapLaiMatKhau) {
-        if (!matKhauMoi.equals(nhapLaiMatKhau)) {
+        if(!matKhauMoi.equals(nhapLaiMatKhau)) {
             new dialog("Mật khẩu mới không khớp!", dialog.ERROR_DIALOG);
             return false;
         }
@@ -136,7 +98,7 @@ public class TaiKhoanBUS {
         }
         return flag;
     }
-
+    
     public int getTrangThai(String maNV) {
         int ma = Integer.parseInt(maNV);
         return taiKhoanDAO.getTrangThai(ma);

@@ -124,7 +124,7 @@ public class GiamGiaDAO {
     }
 
     public int getNewMa() {
-        int ma = -1;
+        int ma =-1;
         try {
             Connection c = JDBCUtil.getConnection();
             String sql = "select max(maGiam) as maGiam from giamgia";
@@ -141,30 +141,4 @@ public class GiamGiaDAO {
         }
     }
 
-    public ArrayList<GiamGia> searchGiamGias(String keyword) {
-        ArrayList<GiamGia> dsgg = new ArrayList<>();
-        try {
-            Connection c = JDBCUtil.getConnection();
-            String sql = "SELECT * FROM giamgia WHERE concat(maGiam,tenGiamGia) LIKE ? AND trangThai=1";
-            PreparedStatement prep = c.prepareStatement(sql);
-            prep.setString(1, "%" + keyword + "%");
-            ResultSet rs = prep.executeQuery();
-            while (rs.next()) {
-                GiamGia gg = new GiamGia();
-                gg.setMaGiam(rs.getInt("maGiam"));
-                gg.setTenGiamGia(rs.getString("tenGiamGia"));
-                gg.setPhanTramGiam(rs.getInt("phanTramGiam"));
-                gg.setDieuKien(rs.getInt("dieuKien"));
-                gg.setNgayBD(rs.getDate("ngayBD"));
-                gg.setNgayKT(rs.getDate("ngayKT"));
-                gg.setTrangThai(rs.getInt("trangThai"));
-                dsgg.add(gg);
-            }
-            JDBCUtil.closeConnection(c);
-            return dsgg;
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            return null;
-        }
-    }
 }

@@ -1,3 +1,7 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
+ */
 package GUI;
 
 import BUS.DangNhapBUS;
@@ -73,7 +77,7 @@ public class PnNhapHang extends javax.swing.JPanel {
 
     private void XuLyTimKiem() {
         dtmNhapHang.setRowCount(0);
-        ArrayList<SanPham> sanPhams = sanPhamBUS.TimKiemSPnhapHang(txtTimKiem.getText());
+        ArrayList<SanPham> sanPhams = sanPhamBUS.getListSPtheoMavaTen(txtTimKiem.getText());
         if (sanPhams == null) {
             return;
         }
@@ -569,10 +573,6 @@ public class PnNhapHang extends javax.swing.JPanel {
             tongTien += thanhTien;
         }
         XuatPhieuNhapGUI xuatPhieuNhapGUI = new XuatPhieuNhapGUI(currentNhanVien, currentNCC, tongTien, cTPhieuNhaps);
-        if (!xuatPhieuNhapGUI.getIsSuccess()) {
-            return;
-        }
-        dtmChoNhap.setRowCount(0);
         loadData();
     }
 
@@ -586,7 +586,7 @@ public class PnNhapHang extends javax.swing.JPanel {
             return;
         }
         XuLyNhap();
-
+        dtmChoNhap.setRowCount(0);
     }//GEN-LAST:event_btnNhapActionPerformed
 
 

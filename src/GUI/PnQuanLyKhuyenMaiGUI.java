@@ -472,9 +472,11 @@ public class PnQuanLyKhuyenMaiGUI extends javax.swing.JPanel {
             int maGiamGia=Integer.parseInt(tblGiamGia.getValueAt(rows[i], 0)+"");
             if(!giamGiaBUS.Delete(maGiamGia))
             {
+                new dialog("Không thể xóa giảm giá mã "+maGiamGia, dialog.ERROR_DIALOG);
                 return;
             }
         }
+        new dialog("Xóa giảm giá thành công", dialog.SUCCESS_DIALOG);
         loadData();
         resetInfo();
     }//GEN-LAST:event_btnDeleteActionPerformed

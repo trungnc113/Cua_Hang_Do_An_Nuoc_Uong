@@ -3,18 +3,18 @@ package GUI;
 import BUS.LoaiSPBUS;
 import DTO.LoaiSP;
 import Custom.Mytable;
-import Custom.NonEditableTableModel;
 import Custom.dialog;
 import java.util.ArrayList;
 import java.util.Vector;
+import javax.swing.table.DefaultTableModel;
 
 public class dlgQuanLyLoaiSP extends javax.swing.JDialog {
 
-    NonEditableTableModel dtmLoai; // dtm này không cho người dùng sửa bảng
+    DefaultTableModel dtmLoai;
 
     public dlgQuanLyLoaiSP() {
         initComponents();
-        dtmLoai = new NonEditableTableModel();
+        dtmLoai = new DefaultTableModel();
         dtmLoai.addColumn("Mã loại");
         dtmLoai.addColumn("Tên loại");
         tblLoai.setModel(dtmLoai);
@@ -26,16 +26,12 @@ public class dlgQuanLyLoaiSP extends javax.swing.JDialog {
 
     private void loadDataLenTblLoai() {
         dtmLoai.setRowCount(0);
-        loaiBUS.docDanhSachLoai();
         ArrayList<LoaiSP> dsl = loaiBUS.getDanhSachLoai();
         if (dsl != null) {
             for (LoaiSP loai : dsl) {
                 Vector<Object> vec = new Vector<>();
-                // if (loai.getTrangThai() != 0){
-                    vec.add(loai.getMaLoai());
-                    vec.add(loai.getTenLoai());
-                    vec.add(loai.getTrangThai());
-                // }
+                vec.add(loai.getMaLoai());
+                vec.add(loai.getTenLoai());
                 dtmLoai.addRow(vec);
             }
         }

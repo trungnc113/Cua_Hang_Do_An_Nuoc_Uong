@@ -40,12 +40,6 @@ public class HoaDonDAO {
         boolean result = false;
         try {
             Connection c = JDBCUtil.getConnection();
-            String sqlUpdateKH = "update khachhang set tongChiTieu = tongChiTieu + ? where maKH = ?"; // cập nhật chi tiêu khách hàng
-            PreparedStatement preparedStatement = c.prepareStatement(sqlUpdateKH);
-            preparedStatement.setInt(1, hd.getTongTien());
-            preparedStatement.setInt(2, hd.getMaKH());
-            preparedStatement.executeUpdate();
-            
             String sql = "INSERT INTO hoadon(MaHD, MaKH, MaNV, MaGiam, NgayLap, TongTien) VALUES(?,?, ?, ?, ?, ?)";
             PreparedStatement prep = c.prepareStatement(sql);
             prep.setInt(1, hd.getMaHD());
@@ -133,23 +127,5 @@ public class HoaDonDAO {
             e.printStackTrace();
         }
         return null;
-    }
-    
-    public int getNewId(){
-        int ma =-1;
-        try {
-            Connection c = JDBCUtil.getConnection();
-            String sql = "select max(maHD) as maHD from hoadon";
-            Statement st = c.createStatement();
-            ResultSet rs = st.executeQuery(sql);
-            if (rs.next()) {
-                ma = rs.getInt("maHD");
-            }
-            JDBCUtil.closeConnection(c);
-            return ma;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return ma;
-        }
     }
 }

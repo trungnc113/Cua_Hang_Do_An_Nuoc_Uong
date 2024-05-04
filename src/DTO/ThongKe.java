@@ -1,63 +1,82 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package DTO;
 
 import java.util.ArrayList;
 
+/**
+ * @author User
+ */
 public class ThongKe {
-
-    private int tongDoanhThu;
-    private ArrayList<Integer> DoanhThuCacThang;
-    private ArrayList<KhachHang> listTopKhachHang;
-    private ArrayList<SPDaBan> sPDaBans;
-    private ArrayList<Double> PhanTramDoanhThuTheoQuy;
+    public int soLuongSP;
+    public int soLuongKH;
+    public int soLuongNV;
+    public int[] tongThuQuy;
+    public ArrayList<SanPham> topSanPhamBanChay;
 
     public ThongKe() {
     }
 
-    public ArrayList<Integer> getDoanhThuCacThang() {
-        return DoanhThuCacThang;
+    public ThongKe(int soLuongSP, int soLuongKH, int soLuongNV, int[] tongThuQuy, ArrayList<SanPham> topSanPhamBanChay) {
+        this.soLuongSP = soLuongSP;
+        this.soLuongKH = soLuongKH;
+        this.soLuongNV = soLuongNV;
+        this.tongThuQuy = tongThuQuy;
+        this.topSanPhamBanChay = topSanPhamBanChay;
     }
 
-    public void setDoanhThuCacThang(ArrayList<Integer> DoanhThuCacThang) {
-        this.DoanhThuCacThang = DoanhThuCacThang;
+    public int getSoLuongSP() {
+        return soLuongSP;
     }
 
-    public ArrayList<KhachHang> getListTopKhachHang() {
-        return listTopKhachHang;
+    public void setSoLuongSP(int soLuongSP) {
+        this.soLuongSP = soLuongSP;
     }
 
-    public void setListTopKhachHang(ArrayList<KhachHang> listTopKhachHang) {
-        this.listTopKhachHang = listTopKhachHang;
+    public int getSoLuongKH() {
+        return soLuongKH;
     }
 
-    public ArrayList<SPDaBan> getsPDaBans() {
-        return sPDaBans;
+    public void setSoLuongKH(int soLuongKH) {
+        this.soLuongKH = soLuongKH;
     }
 
-    public void setsPDaBans(ArrayList<SPDaBan> sPDaBans) {
-        this.sPDaBans = sPDaBans;
+    public int getSoLuongNV() {
+        return soLuongNV;
     }
 
-    public ThongKe(ArrayList<Integer> DoanhThuCacThang, int tongDoanhThu, ArrayList<KhachHang> listTopKhachHang, ArrayList<SPDaBan> sPDaBans, ArrayList<Double> PhanTramDoanhThuTheoQuy) {
-        this.DoanhThuCacThang = DoanhThuCacThang;
-        this.tongDoanhThu = tongDoanhThu;
-        this.listTopKhachHang = listTopKhachHang;
-        this.sPDaBans = sPDaBans;
-        this.PhanTramDoanhThuTheoQuy = PhanTramDoanhThuTheoQuy;
+    public void setSoLuongNV(int soLuongNV) {
+        this.soLuongNV = soLuongNV;
+    }
+
+    public int[] getTongThuQuy() {
+        return tongThuQuy;
+    }
+
+    public int getTongThuQuy(int quy) {
+        return tongThuQuy[quy - 1];
+    }
+
+    public void setTongThuQuy(int[] tongThuQuy) {
+        this.tongThuQuy = tongThuQuy;
     }
 
     public int getTongDoanhThu() {
-        return tongDoanhThu;
+        int tong = 0;
+        for (int i = 0; i < 4; i++) {
+            tong += tongThuQuy[i];
+        }
+        return tong;
     }
 
-    public void setTongDoanhThu(int tongDoanhThu) {
-        this.tongDoanhThu = tongDoanhThu;
+    public ArrayList<SanPham> getTopSanPhamBanChay() {
+        return topSanPhamBanChay;
     }
 
-    public ArrayList<Double> getPhanTramDoanhThuTheoQuy() {
-        return PhanTramDoanhThuTheoQuy;
-    }
-
-    public void setPhanTramDoanhThuTheoQuy(ArrayList<Double> PhanTramDoanhThuTheoQuy) {
-        this.PhanTramDoanhThuTheoQuy = PhanTramDoanhThuTheoQuy;
+    public void setTopSanPhamBanChay(ArrayList<SanPham> topSanPhamBanChay) {
+        this.topSanPhamBanChay = topSanPhamBanChay;
     }
 }

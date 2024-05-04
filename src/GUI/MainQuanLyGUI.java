@@ -114,6 +114,7 @@ public class MainQuanLyGUI extends JFrame {
 
         for (JLabel opt : listMenuLeft) {
             opt.setVisible(false);
+            opt.setPreferredSize(new Dimension(250, 65));
             opt.setOpaque(false);
             opt.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             pnMenuLeft.add(opt);
@@ -399,20 +400,18 @@ public class MainQuanLyGUI extends JFrame {
                 }
             });
         }
-        btnDoiMatKhau.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                dlgDoiMatKhau dmk = new dlgDoiMatKhau();
-            }
 
-        });
     }
-
     private void minimizeFrame() {
         this.setState(Frame.ICONIFIED);
     }
 
     private void moveFrame(int x, int y) {
         this.setLocation(x - xMouse, y - yMouse);
+    }
+
+    public static void main(String[] args) {
+        MainQuanLyGUI t = new MainQuanLyGUI();
+        t.setVisible(true);
     }
 }

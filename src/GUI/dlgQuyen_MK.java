@@ -1,11 +1,9 @@
 package GUI;
 
-import BUS.NhanVienBUS;
 import BUS.PhanQuyenBUS;
 import BUS.TaiKhoanBUS;
 import DTO.PhanQuyen;
 import Custom.dialog;
-import DTO.NhanVien;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.util.ArrayList;
@@ -26,11 +24,9 @@ public class dlgQuyen_MK extends javax.swing.JDialog {
         this.setIconImage(icon);
 
         loadDataCmbQuyen();
-        this.setVisible(true);
     }
     private PhanQuyenBUS phanQuyenBUS = new PhanQuyenBUS();
     private TaiKhoanBUS taiKhoanBUS = new TaiKhoanBUS();
-    private NhanVienBUS nhanVienBUS = new NhanVienBUS();
 
     private void loadDataCmbQuyen() {
         txtMatKhau_MaNV.setText(maNV);
@@ -51,13 +47,9 @@ public class dlgQuyen_MK extends javax.swing.JDialog {
             cmbQuyen.addItem(pq.getTenQuyen());
         }
 
-        int maQuyen = taiKhoanBUS.getQuyenTheoMa(Integer.parseInt(maNV)); // lấy mã quyền
-        PhanQuyen currentQuyen = phanQuyenBUS.getById(maQuyen); // lấy quyền
-        if (currentQuyen == null) {
-            return;
-        }
+        String quyen = taiKhoanBUS.getQuyenTheoMa(maNV);
         for (int i = 0; i < cmbQuyen.getItemCount(); i++) {
-            if ((cmbQuyen.getItemAt(i) + "").equals(currentQuyen.getTenQuyen())) {
+            if (cmbQuyen.getItemAt(i).equals(quyen)) {
                 cmbQuyen.setSelectedIndex(i);
                 break;
             }
@@ -126,35 +118,35 @@ public class dlgQuyen_MK extends javax.swing.JDialog {
         javax.swing.GroupLayout pnMatKhauInfoLayout = new javax.swing.GroupLayout(pnMatKhauInfo);
         pnMatKhauInfo.setLayout(pnMatKhauInfoLayout);
         pnMatKhauInfoLayout.setHorizontalGroup(
-                pnMatKhauInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(pnMatKhauInfoLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(pnMatKhauInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel2)
-                                        .addComponent(jLabel1))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(pnMatKhauInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(txtMatKhau_TenDangNhap)
-                                        .addComponent(txtMatKhau_MaNV))
-                                .addContainerGap())
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnMatKhauInfoLayout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(pnMatKhauButton, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE))
+            pnMatKhauInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnMatKhauInfoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnMatKhauInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnMatKhauInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtMatKhau_TenDangNhap)
+                    .addComponent(txtMatKhau_MaNV))
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnMatKhauInfoLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(pnMatKhauButton, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         pnMatKhauInfoLayout.setVerticalGroup(
-                pnMatKhauInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(pnMatKhauInfoLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(pnMatKhauInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabel1)
-                                        .addComponent(txtMatKhau_MaNV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addGroup(pnMatKhauInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabel2)
-                                        .addComponent(txtMatKhau_TenDangNhap, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(pnMatKhauButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            pnMatKhauInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnMatKhauInfoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnMatKhauInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(txtMatKhau_MaNV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(pnMatKhauInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(txtMatKhau_TenDangNhap, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(pnMatKhauButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pnCapMatKhau.add(pnMatKhauInfo);
@@ -192,35 +184,35 @@ public class dlgQuyen_MK extends javax.swing.JDialog {
         javax.swing.GroupLayout pnMatKhauInfo2Layout = new javax.swing.GroupLayout(pnMatKhauInfo2);
         pnMatKhauInfo2.setLayout(pnMatKhauInfo2Layout);
         pnMatKhauInfo2Layout.setHorizontalGroup(
-                pnMatKhauInfo2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(pnMatKhauInfo2Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(pnMatKhauInfo2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel6)
-                                        .addComponent(jLabel5))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(pnMatKhauInfo2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(txtQuyen_MaNV)
-                                        .addComponent(cmbQuyen, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addContainerGap())
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnMatKhauInfo2Layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(pnMatKhauButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE))
+            pnMatKhauInfo2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnMatKhauInfo2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnMatKhauInfo2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel5))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnMatKhauInfo2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtQuyen_MaNV)
+                    .addComponent(cmbQuyen, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnMatKhauInfo2Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(pnMatKhauButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         pnMatKhauInfo2Layout.setVerticalGroup(
-                pnMatKhauInfo2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(pnMatKhauInfo2Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(pnMatKhauInfo2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabel5)
-                                        .addComponent(txtQuyen_MaNV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addGroup(pnMatKhauInfo2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabel6)
-                                        .addComponent(cmbQuyen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(pnMatKhauButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            pnMatKhauInfo2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnMatKhauInfo2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnMatKhauInfo2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(txtQuyen_MaNV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(pnMatKhauInfo2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(cmbQuyen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(pnMatKhauButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pnCapMatKhau2.add(pnMatKhauInfo2);
@@ -230,12 +222,12 @@ public class dlgQuyen_MK extends javax.swing.JDialog {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(pnTab)
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(pnTab)
         );
         layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(pnTab)
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(pnTab)
         );
 
         pack();
@@ -247,7 +239,6 @@ public class dlgQuyen_MK extends javax.swing.JDialog {
 
     private void btnLuuQuyenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLuuQuyenActionPerformed
         taiKhoanBUS.datLaiQuyen(maNV, cmbQuyen.getSelectedItem() + "");
-        nhanVienBUS.CapNhatChucVu(new NhanVien(Integer.parseInt(maNV), null, null, null, null, cmbQuyen.getSelectedItem() + "", 1));
     }//GEN-LAST:event_btnLuuQuyenActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

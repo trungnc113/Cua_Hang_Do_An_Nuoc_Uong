@@ -1,3 +1,7 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package Custom;
 
 import java.util.regex.Matcher;
@@ -52,16 +56,7 @@ public class InputValidator {
 
     //kiểm tra tên
     public static boolean isValidName(String name) {
-        String pattern = "^[^\\d!@#$%^&*()_+=\\[\\]{};':\"\\\\|,.<>/?]*$";
-        Pattern regex = Pattern.compile(pattern);
-        Matcher matcher = regex.matcher(name);
-        return matcher.matches();
+        return name.matches("[a-zA-Z]+");
     }
-    //kiểm tra mật khẩu
-    public static boolean isValidPass(String pass) {
-        String pattern = "^[^!@#$%^&*()_+=\\[\\]{};':\"\\\\|,.<>/?]*$";
-        Pattern regex = Pattern.compile(pattern);
-        Matcher matcher = regex.matcher(pass);
-        return matcher.matches();
-    }
+
 }

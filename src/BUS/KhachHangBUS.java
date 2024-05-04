@@ -43,7 +43,6 @@ public class KhachHangBUS {
         }
         return true;
     }
-
     // KT tên khách hàng chỉ được nhập kí tự
     private boolean CheckName(String name, String content) {
         if (!InputValidator.isValidName(name)) {
@@ -53,6 +52,19 @@ public class KhachHangBUS {
         return true;
     }
 
+    //KT mã khách hàng có bị trùng không
+    private boolean checkDuplicateID(KhachHang khachHang, String content) {
+        ArrayList<KhachHang> khachHangs = khachhangDao.getListKhachHang();
+
+        for (KhachHang kh : khachHangs) {
+            if (khachHang.getMaKH() == kh.getMaKH()) {
+                new dialog(content, dialog.ERROR_DIALOG);
+                return true;
+            }
+        }
+        return false;
+    }
+
     private boolean checkInfors(KhachHang khachHang) {
         if (CheckEmpty(khachHang, "Không được để trống thông tin")) {
             return false;
@@ -60,10 +72,13 @@ public class KhachHangBUS {
         if (!CheckPhoneNumber(khachHang.getDienThoai(), "Số điện thoại không hợp lệ")) {
             return false;
         }
+        if (checkDuplicateID(khachHang, "ID đã tồn tại")) {
+            return false;
+        }
         if (!CheckEmail(khachHang.getEmail(), "Email không hợp lệ")) {
             return false;
         }
-        if (!CheckName(khachHang.getTen(), "Tên khách hàng không hợp lệ")) {
+        if (!CheckName(khachHang.getTen(), "Tên khách hàng phải là kí tự")) {
             return false;
         }
         return true;
@@ -83,7 +98,6 @@ public class KhachHangBUS {
     }
 
     public boolean Insert(KhachHang khachHang) {
-        khachHang.setMaKH(getNextMaKH());
         if (!checkInfors(khachHang)) { //kiểm tra dữ liệu đầu vào 
             return false;
         }
@@ -109,23 +123,15 @@ public class KhachHangBUS {
     public int getNextMaKH() {
         return khachhangDao.getNewMa() + 1;
     }
-
     public ArrayList<KhachHang> searchKhachHang(String keyword) {
-        ArrayList<KhachHang> resultList = new ArrayList<>();
-        ArrayList<KhachHang> khachHangs = khachhangDao.getListKhachHang();
-        for (KhachHang kh : khachHangs) {
-            if (kh.getTen().toLowerCase().contains(keyword.toLowerCase())) {
-                resultList.add(kh);
-            }
+    ArrayList<KhachHang> resultList = new ArrayList<>();
+    ArrayList<KhachHang> khachHangs = khachhangDao.getListKhachHang();
+    for (KhachHang kh : khachHangs) {
+        if (kh.getTen().toLowerCase().contains(keyword.toLowerCase())) {
+            resultList.add(kh);
         }
-        return resultList;
     }
+    return resultList;
+}
 
-    public KhachHang getID(int maKh) {
-        return khachhangDao.getKhachHang(maKh);
-    }
-
-    public ArrayList<KhachHang> TimKiemKHtheoMavaTen(String keyword) {
-        return khachhangDao.searchKhachHang(keyword.trim());
-    }
 }
