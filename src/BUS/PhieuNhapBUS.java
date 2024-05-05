@@ -38,7 +38,6 @@ public class PhieuNhapBUS {
                 new dialog("vui lòng nhập đầy đủ ô giá", dialog.ERROR_DIALOG);
                 return null;
             }
-    
             try {
                 int min = Integer.parseInt(minPrice);
                 int max = Integer.parseInt(maxPrice);

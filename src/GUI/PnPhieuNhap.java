@@ -230,8 +230,14 @@ public class PnPhieuNhap extends JPanel {
                 java.sql.Date sqlEndDate = new java.sql.Date(endDate.getTime());
 
                 ArrayList<PhieuNhap> searchResults = phieuNhapBUS.findPNByRange(sqlStartDate, sqlEndDate, txtStartPrice.getText(), txtEndPrice.getText());
-                if (searchResults.size() == 0) {
-                    new dialog("không tìm thấy dữ liệu yêu cầu", dialog.INFO_DIALOG);
+                if (searchResults == null) {
+                    //new dialog("không tìm thấy dữ liệu yêu cầu", dialog.INFO_DIALOG);
+                }
+                else{
+                    if(searchResults.size() == 0)
+                    {
+                        new dialog("không tìm thấy dữ liệu yêu cầu", dialog.INFO_DIALOG);
+                    }
                 }
                 // Update the table with search results
                 updateTableData(searchResults);
@@ -257,7 +263,7 @@ public class PnPhieuNhap extends JPanel {
                     // If text is not empty, search by ID
                     if (!text.isEmpty()) {
                         ArrayList<PhieuNhap> searchResults = phieuNhapBUS.FindPNByPNid(maPN);
-                        if (searchResults.size() == 0) {
+                        if (searchResults == null) {
                             new dialog("không tìm thấy dữ liệu", dialog.INFO_DIALOG);
                             return;
                         } else {
@@ -276,6 +282,9 @@ public class PnPhieuNhap extends JPanel {
 
     private void updateTableData(ArrayList<PhieuNhap> searchResults) {
         dtmPhieuNhap.setRowCount(0); // Clear existing data
+        if(searchResults == null){
+            return;
+        }
         for (PhieuNhap pn : searchResults) {
             dtmPhieuNhap
                     .addRow(new Object[]{pn.getMaPN(), pn.getMaNCC(), pn.getMaNV(), pn.getNgayLap(), pn.getTongTien()});
