@@ -26,7 +26,6 @@ public class PnQuanLyKhachHangGUI extends javax.swing.JPanel {
     //Hàm khởi tạo
     public PnQuanLyKhachHangGUI() {
         initComponents();
-        tbKhachHang.getTableHeader().setBackground(Color.green);
         custom();
         loadData();
         addEvents();
